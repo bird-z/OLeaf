@@ -1,10 +1,7 @@
-import { StrictMode , useState,useEffect} from 'react'
+import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import axios from 'axios'
 import './index.css'
 import App from './App.jsx'
-import Mapp from './Mapp.jsx'
-
 
 
 // const promise2 = axios.get('http://localhost:3001/0/url')
@@ -15,6 +12,6 @@ import Mapp from './Mapp.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-   <Mapp/>
+    <App />
   </StrictMode>,
 )

@@ -1,0 +1,36 @@
+.slogan {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+  color: #0f0b1a;
+  text-align: left;
+}
+
+.slogan-line {
+  display: block;
+}
+
+/* 第一行：行楷主标题 */
+.slogan-line--calligraphy {
+  font-family: 'Zhi Mang Xing', 'Noto Sans SC Variable', system-ui, sans-serif;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 400; /* 书法字体仅单一字重 */
+  letter-spacing: 0.12em; /* 行楷宜疏，宽字距更大气 */
+  line-height: 1.3;
+}
+
+/* 第二行：副标语 */
+.slogan-line--sub {
+  margin-top: 1.5rem;
+  font-family: 'Noto Sans SC Variable', system-ui, 'PingFang SC', sans-serif;
+  font-size: clamp(1rem, 2vw, 1.4rem);
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  line-height: 1.8;
+  color: #4b4453;
+}
+
+/* BlurText 渲染的 <p> 去掉默认外边距 */
+.slogan-line--sub p {
+  margin: 0;
+}

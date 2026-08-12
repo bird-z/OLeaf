@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "allowJs": true,
+    "jsx": "react-jsx",
+    "moduleResolution": "bundler",
+    "ignoreDeprecations": "6.0"
+  },
+  "include": ["src"]
+}
