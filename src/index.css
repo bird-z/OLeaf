@@ -143,23 +143,6 @@ code {
   }
 }
 
-.hero {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding-bottom: 8px;
-
-  h1 {
-    margin: 0;
-    font-size: 36px;
-  }
-
-  @media (max-width: 1024px) {
-    h1 { font-size: 28px; }
-  }
-}
-
 .error-msg {
   font-size: 15px;
   color: var(--accent);
@@ -386,4 +369,13 @@ html {
 }
 body {
   overflow-x: clip;
+}
+
+/* 隐藏滚动条（保留滚动能力；整页翻屏下滚动条已是多余 chrome） */
+html {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* 旧 Edge */
+}
+::-webkit-scrollbar {
+  display: none; /* Chrome / Safari / 新 Edge */
 }

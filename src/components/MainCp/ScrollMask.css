@@ -1,0 +1,31 @@
+/* ScrollMask — 第二节打开方式：幕布式展开
+ * 偏离声明：动画 clip-path 超出 transform/opacity 经典白名单，
+ * 但 clip-path 在现代浏览器走合成器，不触发 reflow；一次性 one-shot。
+ */
+
+@import '../../../tokens.css';
+
+.scroll-mask {
+  clip-path: inset(10% 5% 10% 5% round var(--radius-card));
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    clip-path var(--dur-long) var(--ease-out),
+    opacity var(--dur-long) var(--ease-out),
+    transform var(--dur-long) var(--ease-out);
+}
+
+.scroll-mask.is-open {
+  clip-path: inset(0 0 0 0 round 0);
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-mask {
+    clip-path: none;
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
