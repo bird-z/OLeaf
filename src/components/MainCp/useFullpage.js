@@ -10,13 +10,13 @@ import { useEffect } from 'react';
  * 无障碍逃生：prefers-reduced-motion 下不接管，保持原生滚动。
  */
 
-const DURATION = 850; // 弹性滚动时长 ms
-const COOLDOWN = 280; // 动画结束后的冷却（吸收触控板惯性尾流）
+const DURATION = 1250; // 弹性滚动时长 ms（850 → 1250，切换更从容）
+const COOLDOWN = 320; // 动画结束后的冷却（吸收触控板惯性尾流，随时长上调）
 const SWIPE_MIN = 48; // 触摸轻扫最小位移 px
 const SNAP_TOL = 8; // 判定「当前位于某停靠点」的容差 px
 
 /* easeOutBack：过冲回弹，即「弹性」手感 */
-const easeOutBack = (t, s = 1.35) =>
+const easeOutBack = (t, s = 1.15) =>
   1 + (s + 1) * Math.pow(t - 1, 3) + s * Math.pow(t - 1, 2);
 
 const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);

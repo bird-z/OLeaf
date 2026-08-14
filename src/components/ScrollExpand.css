@@ -51,15 +51,16 @@
   -webkit-user-drag: none;
 }
 
+/* scrim：照片偏亮 → 用 paper 派生的浅色渐变罩，承托深色文字 */
 .scroll-expand__scrim {
   position: absolute;
   inset: 0;
   pointer-events: none;
   background: linear-gradient(
     to top,
-    color-mix(in oklch, var(--color-ink) 75%, transparent),
-    color-mix(in oklch, var(--color-ink) 10%, transparent) 45%,
-    color-mix(in oklch, var(--color-ink) 35%, transparent)
+    color-mix(in oklch, var(--color-paper) 82%, transparent),
+    color-mix(in oklch, var(--color-paper) 15%, transparent) 45%,
+    color-mix(in oklch, var(--color-paper) 45%, transparent)
   );
   opacity: 0;
 }
@@ -91,8 +92,8 @@
   font-size: var(--se-title-size);
   letter-spacing: 0.04em;
   line-height: 1.1;
-  color: var(--color-photo-warm);
-  text-shadow: 0 2px 24px color-mix(in oklch, var(--color-ink) 45%, transparent);
+  color: var(--color-ink); /* 亮照片：墨色标题 */
+  text-shadow: 0 2px 24px color-mix(in oklch, var(--color-paper) 70%, transparent);
   pointer-events: none;
   will-change: opacity, transform;
 }
@@ -106,7 +107,7 @@
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   letter-spacing: 0.12em;
-  color: color-mix(in oklch, var(--color-photo-ink) 60%, transparent);
+  color: color-mix(in oklch, var(--color-ink) 62%, transparent);
   pointer-events: none;
   will-change: opacity, transform;
 }
@@ -125,7 +126,7 @@
   font-size: var(--text-lg);
   font-weight: 600;
   letter-spacing: 0.06em;
-  color: var(--color-photo-ink);
+  color: var(--color-ink);
 }
 
 .scroll-expand__motto {
@@ -133,5 +134,5 @@
   font-size: var(--text-xs);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: color-mix(in oklch, var(--color-photo-ink) 60%, transparent);
+  color: color-mix(in oklch, var(--color-ink) 62%, transparent);
 }

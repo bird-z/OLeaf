@@ -11,7 +11,7 @@
 :root {
   --text: #4b4453;
   --text-h: #0f0b1a;
-  --bg: #ffffff;
+  --bg: #16121f; /* 页面底色转深，与星轨 hero / 深色 About 一致，过冲露底不穿帮 */
   --border: #d1d5db;
   --code-bg: #f3f0f9;
   --accent: #7c3aed;
