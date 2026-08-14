@@ -50,7 +50,8 @@ const CardNav = ({
         contentEl.style.position = wasPosition;
         contentEl.style.height = wasHeight;
 
-        return topBar + contentHeight + padding;
+        // fixed 悬浮后菜单不再推挤布局，高度限制在视口内（超出由 .card-nav.open 内部滚动兜底）
+        return Math.min(topBar + contentHeight + padding, window.innerHeight - 24);
       }
     }
     return 260;

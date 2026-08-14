@@ -8,17 +8,20 @@
 @import '../../tokens.css';
 
 .card-nav-container {
-  position: sticky;
+  position: fixed; /* 悬浮：hero 星轨全出血垫在玻璃 nav 下，不再有白色空隙 */
   top: 0;
   left: 0;
+  right: 0;
   width: 100%;
   z-index: 99;
   box-sizing: border-box;
   padding: var(--space-sm) var(--space-md) 0;
   font-family: var(--font-body);
+  pointer-events: none; /* 条外区域点击穿透到 hero */
 }
 
 .card-nav {
+  pointer-events: auto;
   /* ink + eco 16% 调出的深墨绿 */
   --nav-ink-green: color-mix(in oklch, var(--color-ink), var(--color-eco) 16%);
 
@@ -194,6 +197,12 @@
   visibility: hidden;
   pointer-events: none;
   z-index: 1;
+}
+
+/* 展开时允许内部滚动（高度已被 JS 限制在视口内，兜底防溢出） */
+.card-nav.open {
+  overflow-y: auto !important; /* 覆盖 GSAP 内联 overflow:hidden */
+  overscroll-behavior: contain;
 }
 
 .card-nav.open .card-nav-content {
