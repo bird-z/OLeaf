@@ -199,10 +199,15 @@
   z-index: 1;
 }
 
-/* 展开时允许内部滚动（高度已被 JS 限制在视口内，兜底防溢出） */
+/* 展开时允许内部滚动（高度已被 JS 限制在视口内，兜底防溢出），滚动条隐藏 */
 .card-nav.open {
   overflow-y: auto !important; /* 覆盖 GSAP 内联 overflow:hidden */
   overscroll-behavior: contain;
+  scrollbar-width: none; /* Firefox */
+}
+
+.card-nav.open::-webkit-scrollbar {
+  display: none; /* Chrome / Safari */
 }
 
 .card-nav.open .card-nav-content {
