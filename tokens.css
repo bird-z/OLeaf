@@ -1,0 +1,64 @@
+/* Hallmark design tokens — 江农学生协会
+ * genre: modern-minimal · theme: Cobalt 骨架 + 品牌紫 accent
+ * 所有页面/组件颜色、字体、间距、动效必须引用本文件的令牌，禁止内联原始值。
+ */
+
+:root {
+  /* ── Colour（锚定紫 hue 290，中性色带微量紫调） ── */
+  --color-paper:      oklch(98.5% 0.004 290);  /* 冷白微紫纸面 */
+  --color-paper-2:    oklch(96% 0.006 290);    /* 次级表面 */
+  --color-rule:       oklch(87% 0.008 290);    /* 细规则线 */
+  --color-neutral:    oklch(55% 0.012 290);    /* 次级文字 */
+  --color-muted:      oklch(42% 0.014 290);    /* 弱文字 */
+  --color-ink:        oklch(21% 0.02 290);     /* 主文字/主按钮 */
+  --color-accent:     oklch(48% 0.21 290);     /* 品牌紫（≈ #7c3aed）— 交互语义 */
+  --color-accent-ink: oklch(98.5% 0.004 290);  /* accent 上的文字 */
+  --color-focus:      oklch(48% 0.21 290);     /* 焦点环 */
+  --color-eco:        oklch(52% 0.14 152);     /* 叶绿 — EcoRem 生态语义 */
+  --color-eco-ink:    oklch(98.5% 0.01 152);   /* eco 上的文字 */
+
+  /* ── 暗底（摄影背景）专用 ── */
+  --color-photo-ink:    oklch(96% 0.005 290);  /* 照片上的主文字 */
+  --color-photo-warm:   oklch(94% 0.014 85);   /* 照片上的暖纸白（行楷标题，呼应立柱暖光） */
+  --color-photo-muted:  oklch(80% 0.012 290);  /* 照片上的次级文字 */
+  --color-eco-bright:   oklch(74% 0.17 152);   /* 暗底叶绿 */
+  --color-accent-bright: oklch(68% 0.19 290);  /* 暗底品牌紫 */
+  --color-focus-on-dark: oklch(82% 0.1 290);   /* 暗底焦点环 */
+
+  /* ── Typography（2+1：行楷 display · Geist body · Geist Mono outlier） ── */
+  --font-display: 'Zhi Mang Xing', 'Noto Sans SC Variable', serif;
+  --font-body:    'Geist Variable', 'Noto Sans SC Variable', system-ui, sans-serif;
+  --font-mono:    'Geist Mono', 'Noto Sans SC Variable', ui-monospace, monospace;
+
+  /* ── Type scale（1.25 major third） ── */
+  --text-xs:      0.64rem;
+  --text-sm:      0.8rem;
+  --text-base:    1rem;
+  --text-md:      1.25rem;
+  --text-lg:      1.5625rem;
+  --text-display-s: clamp(2.25rem, 3.5vw + 1rem, 3.8rem);
+  --text-display:   clamp(3rem, 11vw, 7rem); /* Marquee 行楷标题，单行 ≤12ch 放宽至 7rem */
+
+  /* ── Space（4pt 制） ── */
+  --space-3xs: 0.125rem;
+  --space-2xs: 0.25rem;
+  --space-xs:  0.5rem;
+  --space-sm:  0.75rem;
+  --space-md:  1rem;
+  --space-lg:  1.5rem;
+  --space-xl:  2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+
+  /* ── Motion ── */
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:     cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro:   120ms;
+  --dur-short:   220ms;
+  --dur-long:    420ms;
+
+  /* ── Radius ── */
+  --radius-card: 6px;
+  --radius-pill: 999px;
+}

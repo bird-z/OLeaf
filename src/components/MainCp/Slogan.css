@@ -1,36 +1,225 @@
-.slogan {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 4rem 2rem;
-  color: #0f0b1a;
+/* Hallmark · genre: modern-minimal · macrostructure: Marquee Hero · tone: technical
+ * theme: Cobalt 骨架 + 品牌紫 accent（交互）+ 叶绿 eco accent（品牌语义）
+ * enrichment: E8 摄影背景（生命.jpeg · 星轨校园夜景 + ink 派生 scrim）
+ * nav: 保留现有 CardNav（项目边界）· footer: n/a（本节为首页第一屏）
+ * 偏离声明：macro 默认 fold 内无 CTA，按用户需求首屏放入「加入我们」
+ * 变更记录：等高线 SVG 背景移除 —— 照片已承载土地/校园叙事，叠加即 clutter
+ * pre-emit critique: P4 H5 E4 S5 R5 V4
+ */
+
+@import '../../../tokens.css';
+
+.hero {
+  position: relative;
+  isolation: isolate; /* 背景照片 + scrim 压在内容下层 */
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-lg) clamp(var(--space-md), 4vw, var(--space-2xl)) var(--space-xl);
+  color: var(--color-photo-ink); /* 暗底：文字整体翻白 */
+  font-family: var(--font-body);
   text-align: left;
 }
 
-.slogan-line {
+/* ── E8 背景照片：星轨校园（LCP，绝对定位铺满） ── */
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* scrim：ink 令牌派生的渐变罩，左下深（文字区）右上浅（让星轨透气） */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    160deg,
+    color-mix(in oklch, var(--color-ink) 62%, transparent),
+    color-mix(in oklch, var(--color-ink) 18%, transparent) 45%,
+    color-mix(in oklch, var(--color-ink) 68%, transparent)
+  );
+  pointer-events: none;
+}
+
+/* ── 顶部技术标签行（mono outlier · slot 1） ── */
+.hero__meta {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-xs) var(--space-md);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid color-mix(in oklch, var(--color-photo-ink) 28%, transparent);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  color: var(--color-photo-muted);
+}
+
+/* ── EcoRem wordmark：Eco（亮叶绿）+ Rem（照片白），颜色即词源 ── */
+.hero__brand {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-xs) var(--space-lg);
+  margin-top: var(--space-xl);
+}
+
+.hero__wordmark {
+  font-family: var(--font-body);
+  font-weight: 800; /* 与正文 400 拉开极端字重对比 */
+  font-size: clamp(2.25rem, 6vw, 4.5rem);
+  letter-spacing: -0.035em;
+  line-height: 1;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.hero__wordmark-eco {
+  color: var(--color-eco-bright);
+}
+
+.hero__brand-gloss {
+  font-family: var(--font-mono); /* mono outlier · slot 2 */
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  color: var(--color-photo-muted);
+}
+
+/* ── 行楷主标题：暖纸白，与冷星轨形成冷暖对比 ── */
+.hero__title {
+  margin: auto 0;
+  padding: var(--space-xl) 0;
+  font-family: var(--font-display);
+  font-weight: 400; /* 行楷仅单一字重 */
+  font-size: var(--text-display);
+  line-height: 1.06;
+  letter-spacing: 0.04em; /* 中文书法宜疏不宜挤 */
+  color: var(--color-photo-warm);
+  /* 细分离影：把文字从亮星轨上剥开，可读性处理而非发光晕 */
+  text-shadow: 0 1px 18px color-mix(in oklch, var(--color-ink) 55%, transparent);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.hero__title-line {
   display: block;
 }
 
-/* 第一行：行楷主标题 */
-.slogan-line--calligraphy {
-  font-family: 'Zhi Mang Xing', 'Noto Sans SC Variable', system-ui, sans-serif;
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
-  font-weight: 400; /* 书法字体仅单一字重 */
-  letter-spacing: 0.12em; /* 行楷宜疏，宽字距更大气 */
-  line-height: 1.3;
+.hero__title-line--marked {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
 }
 
-/* 第二行：副标语 */
-.slogan-line--sub {
-  margin-top: 1.5rem;
-  font-family: 'Noto Sans SC Variable', system-ui, 'PingFang SC', sans-serif;
-  font-size: clamp(1rem, 2vw, 1.4rem);
-  font-weight: 400;
-  letter-spacing: 0.15em;
-  line-height: 1.8;
-  color: #4b4453;
+/* 品牌紫小方块：暗底下用提亮版 accent */
+.hero__mark {
+  flex-shrink: 0;
+  width: 0.16em;
+  height: 0.16em;
+  background: var(--color-accent-bright);
 }
 
-/* BlurText 渲染的 <p> 去掉默认外边距 */
-.slogan-line--sub p {
-  margin: 0;
+/* ── 底部行：副标语 + CTA，粗规则线收边（marquee 的 divider 语言） ── */
+.hero__foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: var(--space-lg);
+  border-top: 2px solid var(--color-photo-ink);
+  padding-top: var(--space-lg);
+}
+
+.hero__sub {
+  max-width: 65ch;
+  font-size: var(--text-md);
+  line-height: 1.65;
+  letter-spacing: 0.05em;
+  color: var(--color-photo-muted);
+}
+
+.hero__sub p {
+  margin: 0; /* BlurText 渲染的 <p> 去默认外边距 */
+}
+
+/* ── CTA：暗底反转——纸面填色，hover 时落回品牌紫 ── */
+.hero__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  min-height: 44px;
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-pill);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-size: var(--text-base);
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color var(--dur-short) var(--ease-out),
+    color var(--dur-short) var(--ease-out),
+    transform var(--dur-micro) var(--ease-out);
+}
+
+.hero__cta:hover {
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+  transform: translateY(-1.5px);
+}
+
+.hero__cta:active {
+  transform: translateY(1px);
+  transition-duration: var(--dur-micro);
+}
+
+.hero__cta:focus-visible {
+  outline: 2px solid var(--color-focus-on-dark);
+  outline-offset: 3px;
+}
+
+/* ── 入场：一次编排好的 stagger（≤450ms），之后页面保持静止 ── */
+.hero [data-reveal] {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: hero-reveal var(--dur-long) var(--ease-out) forwards;
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+
+@keyframes hero-reveal {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Mobile：40rem 以下底部行纵排 ── */
+@media (max-width: 40rem) {
+  .hero__foot {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+/* ── Reduced motion：空间动画塌缩为透明度过渡 ── */
+@media (prefers-reduced-motion: reduce) {
+  .hero [data-reveal] {
+    animation-duration: 150ms;
+    transform: none;
+  }
+
+  .hero__cta {
+    transition: background-color 150ms linear, color 150ms linear;
+  }
+
+  .hero__cta:hover,
+  .hero__cta:active {
+    transform: none;
+  }
 }
