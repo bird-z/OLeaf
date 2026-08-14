@@ -1,5 +1,6 @@
-/* Hallmark · CardNav — 悬浮导航条
- * 骨架：Cobalt 纸面浮条 · CTA = 品牌紫 accent · wordmark/卡片 = 叶绿 eco 语义
+/* Hallmark · CardNav — 星空墨绿玻璃导航条
+ * 骨架：ink+eco 调出的深墨绿半透明玻璃，backdrop blur 让 Hero 星轨真实透出
+ * CTA 沿用暗底反转语言（纸面 → hover 品牌紫）· wordmark 用暗底提亮令牌
  * 颜色/字体/间距/动效/圆角全部引用 tokens.css，禁止内联原始值
  * 卡片调色板由 nth-child 令牌分配（accent → eco → ink），item.bgColor 仍可按需覆盖
  */
@@ -18,16 +19,38 @@
 }
 
 .card-nav {
+  /* ink + eco 16% 调出的深墨绿 */
+  --nav-ink-green: color-mix(in oklch, var(--color-ink), var(--color-eco) 16%);
+
   display: block;
   height: 60px;
   padding: 0;
-  background: var(--color-paper);
-  border: 1px solid var(--color-rule);
+  /* 星空墨绿玻璃：静态微星点叠在深墨绿半透明底上，
+     backdrop blur 让 Hero 星轨照片真实透进导航条（与 Slogan 同源，不冲突） */
+  background:
+    radial-gradient(1px 1px at 18% 32%, color-mix(in oklch, var(--color-photo-ink) 42%, transparent) 50%, transparent 56%),
+    radial-gradient(1px 1px at 42% 68%, color-mix(in oklch, var(--color-photo-ink) 30%, transparent) 50%, transparent 56%),
+    radial-gradient(1.5px 1.5px at 63% 26%, color-mix(in oklch, var(--color-photo-ink) 38%, transparent) 50%, transparent 56%),
+    radial-gradient(1px 1px at 81% 58%, color-mix(in oklch, var(--color-photo-ink) 26%, transparent) 50%, transparent 56%),
+    radial-gradient(1px 1px at 93% 34%, color-mix(in oklch, var(--color-photo-ink) 34%, transparent) 50%, transparent 56%),
+    color-mix(in oklch, var(--nav-ink-green) 86%, transparent);
+  backdrop-filter: blur(14px) saturate(1.15);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  border: 1px solid color-mix(in oklch, var(--color-eco-bright) 20%, transparent);
   border-radius: var(--radius-card);
-  box-shadow: 0 10px 32px color-mix(in oklch, var(--color-ink) 18%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklch, var(--color-photo-ink) 8%, transparent),
+    0 12px 36px color-mix(in oklch, var(--color-ink) 42%, transparent);
   position: relative;
   overflow: hidden;
   will-change: height;
+}
+
+/*  backdrop-filter 不可用时退化为实色墨绿 */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .card-nav {
+    background: color-mix(in oklch, var(--color-ink), var(--color-eco) 16%);
+  }
 }
 
 .card-nav-top {
@@ -59,17 +82,17 @@
   border: none;
   border-radius: var(--radius-card);
   font: inherit;
-  color: var(--color-ink);
+  color: var(--color-photo-ink); /* 暗底：翻白 */
   cursor: pointer;
   transition: background-color var(--dur-short) var(--ease-out);
 }
 
 .hamburger-menu:hover {
-  background: color-mix(in oklch, var(--color-ink) 6%, transparent);
+  background: color-mix(in oklch, var(--color-photo-ink) 8%, transparent);
 }
 
 .hamburger-menu:focus-visible {
-  outline: 2px solid var(--color-focus);
+  outline: 2px solid var(--color-focus-on-dark);
   outline-offset: 2px;
 }
 
@@ -89,7 +112,7 @@
   transform: translateY(-4px) rotate(-45deg);
 }
 
-/* ── Logo 区：竖线 eco 绿 + EcoRem wordmark（与 Hero wordmark 同款双色） ── */
+/* ── Logo 区：竖线 eco 亮绿 + EcoRem wordmark（暗底提亮版，与 Hero wordmark 同源） ── */
 .logo-container {
   display: flex;
   align-items: center;
@@ -104,22 +127,22 @@
 .logo-divider {
   width: 2px;
   height: 28px;
-  background: var(--color-eco);
+  background: var(--color-eco-bright);
 }
 
 .logo-wordmark {
   font-size: var(--text-md);
   font-weight: 800; /* 与 Hero wordmark 一致的极端字重 */
   letter-spacing: -0.02em;
-  color: var(--color-ink);
+  color: var(--color-photo-ink);
   white-space: nowrap;
 }
 
 .logo-wordmark-eco {
-  color: var(--color-eco);
+  color: var(--color-eco-bright);
 }
 
-/* ── CTA：品牌紫 pill（与 Hero CTA 同一语言），hover 压深 + 微浮起 ── */
+/* ── CTA：暗底反转——纸面填色，hover 落回品牌紫（与 Hero CTA 同一语言） ── */
 .card-nav-cta-button {
   order: 2;
   margin-left: auto;
@@ -129,8 +152,8 @@
   height: 40px;
   padding: 0 var(--space-lg);
   border-radius: var(--radius-pill);
-  background: var(--color-accent);
-  color: var(--color-accent-ink);
+  background: var(--color-paper);
+  color: var(--color-ink);
   font-size: var(--text-sm);
   font-weight: 600;
   text-decoration: none;
@@ -138,12 +161,14 @@
   cursor: pointer;
   transition:
     background-color var(--dur-short) var(--ease-out),
+    color var(--dur-short) var(--ease-out),
     transform var(--dur-micro) var(--ease-out);
 }
 
 .card-nav-cta-button:hover {
-  background: color-mix(in oklch, var(--color-accent) 85%, var(--color-ink));
-  transform: translateY(-1px);
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+  transform: translateY(-1.5px);
 }
 
 .card-nav-cta-button:active {
@@ -151,7 +176,7 @@
 }
 
 .card-nav-cta-button:focus-visible {
-  outline: 2px solid var(--color-focus);
+  outline: 2px solid var(--color-focus-on-dark);
   outline-offset: 3px;
 }
 
