@@ -20,6 +20,7 @@
   /* ── 暗底（摄影背景）专用 ── */
   --color-photo-ink:    oklch(96% 0.005 290);  /* 照片上的主文字 */
   --color-photo-warm:   oklch(94% 0.014 85);   /* 照片上的暖纸白（行楷标题，呼应立柱暖光） */
+  --color-paper-dark:   oklch(16% 0.012 290);  /* 深色纸面 — 暗节底色，与星轨夜空同色系 */
   --color-photo-muted:  oklch(80% 0.012 290);  /* 照片上的次级文字 */
   --color-eco-bright:   oklch(74% 0.17 152);   /* 暗底叶绿 */
   --color-accent-bright: oklch(68% 0.19 290);  /* 暗底品牌紫 */

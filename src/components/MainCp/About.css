@@ -2,21 +2,40 @@
  * 承接首页系统：tokens.css 令牌 · modern-minimal · 内容来自用户幻灯片（真实文案）
  * 结构：堆叠单栏 section head（gate 54）→ 双栏（文左图右）→ 收尾宣言
  * 节奏：暗色 hero 之后回到亮纸面，段落呼吸 = 视觉节奏
+ * 变更记录：
+ *   [协作·另一 pi] 整节翻暗（paper-dark，与星轨 hero 同一夜空色系）
+ *   [本分支] 挂载 ScrollMask 幕布入场（原备用组件）；head 右侧 mono 节序标记
+ *            （01 · About，非 eyebrow——与 hero meta 同一 mono outlier 语言）；
+ *            section 加 id="about" 锚点；tags hover 微交互
+ * pre-emit critique: P4 H4 E4 S5 R5 V4
  */
 
 @import '../../../tokens.css';
 
 .about {
   padding: var(--space-3xl) clamp(var(--space-md), 4vw, var(--space-2xl)) var(--space-2xl);
-  background: var(--color-paper);
-  color: var(--color-ink);
+  background: var(--color-paper-dark); /* 深色底，与星轨 hero 同一夜空色系 */
+  color: var(--color-photo-ink);
   font-family: var(--font-body);
   text-align: left;
 }
 
-/* ── Section head：单栏堆叠，无 eyebrow ── */
+/* ── Section head：单栏堆叠 + 右侧 mono 节序标记（baseline 对齐，非 eyebrow） ── */
 .about__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-xs) var(--space-lg);
   margin-bottom: var(--space-2xl);
+}
+
+.about__index {
+  font-family: var(--font-mono); /* mono outlier，与 hero meta 行同一语言 */
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  color: var(--color-photo-muted);
+  white-space: nowrap;
 }
 
 .about__title {
@@ -26,7 +45,7 @@
   font-size: var(--text-display-s);
   line-height: 1.1;
   letter-spacing: 0.04em;
-  color: var(--color-ink);
+  color: var(--color-photo-warm); /* 暖纸白，与 hero 标题同款 */
   overflow-wrap: anywhere;
   min-width: 0;
 }
@@ -43,17 +62,17 @@
   margin: 0;
   font-size: var(--text-base);
   line-height: 1.75;
-  color: var(--color-muted);
+  color: var(--color-photo-muted);
 }
 
 .about__copy .about__lede {
   font-size: var(--text-md);
-  color: var(--color-ink);
+  color: var(--color-photo-ink);
 }
 
 .about__lede strong {
   font-weight: 700;
-  color: var(--color-eco); /* 协会名着叶绿，呼应 wordmark */
+  color: var(--color-eco-bright); /* 暗底用提亮叶绿 */
 }
 
 /* ── 四个方向：菱形小标 + 文字列表，不做胶囊 ── */
@@ -63,7 +82,7 @@
   gap: var(--space-sm) var(--space-xl);
   margin: var(--space-sm) 0 0;
   padding: var(--space-md) 0 0;
-  border-top: 1px solid var(--color-rule);
+  border-top: 1px solid color-mix(in oklch, var(--color-photo-ink) 20%, transparent);
   list-style: none;
 }
 
@@ -73,22 +92,41 @@
   gap: var(--space-xs);
   font-size: var(--text-sm);
   letter-spacing: 0.08em;
-  color: var(--color-neutral);
+  color: var(--color-photo-muted);
   white-space: nowrap;
+  transition: color var(--dur-short) var(--ease-out);
 }
 
 .about__tags li::before {
   content: '';
   width: 6px;
   height: 6px;
-  background: var(--color-eco);
+  background: var(--color-eco-bright);
   transform: rotate(45deg); /* 菱形，取自原幻灯片的 ◆ 标记 */
   flex-shrink: 0;
+  transition:
+    background-color var(--dur-short) var(--ease-out),
+    transform var(--dur-short) var(--ease-out);
 }
 
-/* ── Mobile：收拢间距 ── */
+/* hover 微交互：菱形转品牌紫（暗底提亮版）并旋转，文字落回主文字色 */
+.about__tags li:hover {
+  color: var(--color-photo-ink);
+}
+
+.about__tags li:hover::before {
+  background: var(--color-accent-bright);
+  transform: rotate(135deg);
+}
+
+/* ── Mobile：收拢间距，head 纵排（gate 52） ── */
 @media (max-width: 60rem) {
   .about {
     padding-top: var(--space-2xl);
+  }
+
+  .about__head {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
