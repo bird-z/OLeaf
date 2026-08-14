@@ -1,9 +1,7 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
-// use your own icon import if react-icons is not available
 import { GoArrowUpRight } from 'react-icons/go';
 import './CardNav.css';
-import BlurText from './BlurText';
 
 const CardNav = ({
   logo,
@@ -11,7 +9,7 @@ const CardNav = ({
   items,
   className = '',
   ease = 'power3.out',
-  baseColor = '#fff',
+  baseColor,
   menuColor,
   buttonBgColor,
   buttonTextColor
@@ -19,6 +17,7 @@ const CardNav = ({
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const navRef = useRef(null);
+  const hamburgerRef = useRef(null);
   const cardsRef = useRef([]);
   const tlRef = useRef(null);
 
@@ -40,7 +39,7 @@ const CardNav = ({
         contentEl.style.position = 'static';
         contentEl.style.height = 'auto';
 
-        contentEl.offsetHeight;
+        void contentEl.offsetHeight; // 强制 reflow，确保 scrollHeight 读到最新布局
 
         const topBar = 60;
         const padding = 16;
@@ -61,18 +60,27 @@ const CardNav = ({
     const navEl = navRef.current;
     if (!navEl) return null;
 
+    // Reduced motion：空间位移塌缩，仅保留快速高度/透明度过渡
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const duration = reduced ? 0.15 : 0.4;
+    const tlEase = reduced ? 'none' : ease;
+
     gsap.set(navEl, { height: 60, overflow: 'hidden' });
-    gsap.set(cardsRef.current, { y: 50, opacity: 0 });
+    gsap.set(cardsRef.current, { y: reduced ? 0 : 50, opacity: 0 });
 
     const tl = gsap.timeline({ paused: true });
 
     tl.to(navEl, {
       height: calculateHeight,
-      duration: 0.4,
-      ease
+      duration,
+      ease: tlEase
     });
 
-    tl.to(cardsRef.current, { y: 0, opacity: 1, duration: 0.4, ease, stagger: 0.08 }, '-=0.1');
+    tl.to(
+      cardsRef.current,
+      { y: 0, opacity: 1, duration, ease: tlEase, stagger: reduced ? 0 : 0.08 },
+      '-=0.1'
+    );
 
     return tl;
   };
@@ -130,68 +138,79 @@ const CardNav = ({
     }
   };
 
+  // Esc 关闭菜单，焦点交还 hamburger
+  const handleNavKeyDown = e => {
+    if (e.key === 'Escape' && isExpanded) {
+      toggleMenu();
+      hamburgerRef.current?.focus();
+    }
+  };
+
   const setCardRef = i => el => {
     if (el) cardsRef.current[i] = el;
   };
 
   return (
     <div className={`card-nav-container ${className}`}>
-      <nav ref={navRef} className={`card-nav ${isExpanded ? 'open' : ''}`} style={{ backgroundColor: baseColor }}>
+      <nav
+        ref={navRef}
+        className={`card-nav ${isExpanded ? 'open' : ''}`}
+        style={baseColor ? { backgroundColor: baseColor } : undefined}
+        aria-label="主导航"
+        onKeyDown={handleNavKeyDown}
+      >
         <div className="card-nav-top">
-          <div
+          <button
+            type="button"
+            ref={hamburgerRef}
             className={`hamburger-menu ${isHamburgerOpen ? 'open' : ''}`}
             onClick={toggleMenu}
-            onKeyDown={e => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                toggleMenu();
-              }
-            }}
-            role="button"
-            aria-label={isExpanded ? 'Close menu' : 'Open menu'}
+            aria-label={isExpanded ? '关闭菜单' : '打开菜单'}
             aria-expanded={isExpanded}
-            tabIndex={0}
-            style={{ color: menuColor || '#000' }}
+            aria-controls="card-nav-content"
+            style={menuColor ? { color: menuColor } : undefined}
           >
-            <div className="hamburger-line" />
-            <div className="hamburger-line" />
-          </div>
+            <span className="hamburger-line" />
+            <span className="hamburger-line" />
+          </button>
 
           <div className="logo-container">
             <img src={logo} alt={logoAlt} className="logo" />
-           <span className="h-10 w-0.5 bg-[#024614] md:h-10"></span>
-          <BlurText 
-            text="ECOREM"
-            animateBy="Letters"
-            direction="top"
-            delay={200}
-            className="text-2xl font-bold text-[#024614] md:text-3xl"
-          />
+            <span className="logo-divider" aria-hidden="true" />
+            <span className="logo-wordmark">
+              <span className="logo-wordmark-eco">Eco</span>Rem
+            </span>
           </div>
 
-
-
-          <button
-            type="button"
+          <a
             className="card-nav-cta-button"
-            style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
+            href="#join"
+            style={buttonBgColor ? { backgroundColor: buttonBgColor, color: buttonTextColor } : undefined}
           >
-            Join us 
-          </button>
+            Join Us
+          </a>
         </div>
 
-        <div className="card-nav-content" aria-hidden={!isExpanded}>
+        <div className="card-nav-content" id="card-nav-content" aria-hidden={!isExpanded}>
           {(items || []).slice(0, 3).map((item, idx) => (
             <div
               key={`${item.label}-${idx}`}
               className="nav-card"
               ref={setCardRef(idx)}
-              style={{ backgroundColor: item.bgColor, color: item.textColor }}
+              style={item.bgColor ? { backgroundColor: item.bgColor, color: item.textColor } : undefined}
             >
               <div className="nav-card-label">{item.label}</div>
               <div className="nav-card-links">
                 {item.links?.map((lnk, i) => (
-                  <a key={`${lnk.label}-${i}`} className="nav-card-link" href={lnk.href} aria-label={lnk.ariaLabel}>
+                  <a
+                    key={`${lnk.label}-${i}`}
+                    className="nav-card-link"
+                    href={lnk.href}
+                    aria-label={lnk.ariaLabel}
+                    onClick={() => {
+                      if (isExpanded) toggleMenu();
+                    }}
+                  >
                     <GoArrowUpRight className="nav-card-link-icon" aria-hidden="true" />
                     {lnk.label}
                   </a>

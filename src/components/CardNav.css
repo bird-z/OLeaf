@@ -1,3 +1,11 @@
+/* Hallmark · CardNav — 悬浮导航条
+ * 骨架：Cobalt 纸面浮条 · CTA = 品牌紫 accent · wordmark/卡片 = 叶绿 eco 语义
+ * 颜色/字体/间距/动效/圆角全部引用 tokens.css，禁止内联原始值
+ * 卡片调色板由 nth-child 令牌分配（accent → eco → ink），item.bgColor 仍可按需覆盖
+ */
+
+@import '../../tokens.css';
+
 .card-nav-container {
   position: sticky;
   top: 0;
@@ -5,17 +13,18 @@
   width: 100%;
   z-index: 99;
   box-sizing: border-box;
-  padding: 12px 16px 0;
+  padding: var(--space-sm) var(--space-md) 0;
+  font-family: var(--font-body);
 }
 
 .card-nav {
   display: block;
   height: 60px;
   padding: 0;
-  background-color: #1a1a2e;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 0.75rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  background: var(--color-paper);
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-card);
+  box-shadow: 0 10px 32px color-mix(in oklch, var(--color-ink) 18%, transparent);
   position: relative;
   overflow: hidden;
   will-change: height;
@@ -30,34 +39,45 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem 1rem 0.55rem 1.25rem;
+  padding: 0 var(--space-sm) 0 var(--space-md);
   z-index: 2;
 }
 
+/* ── Hamburger：原生 <button>，44px 触控目标 ── */
 .hamburger-menu {
-  height: 100%;
   order: 3;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   gap: 6px;
-  margin-left: 0.5rem;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: var(--radius-card);
+  font: inherit;
+  color: var(--color-ink);
+  cursor: pointer;
+  transition: background-color var(--dur-short) var(--ease-out);
 }
 
-.hamburger-menu:hover .hamburger-line {
-  opacity: 0.75;
+.hamburger-menu:hover {
+  background: color-mix(in oklch, var(--color-ink) 6%, transparent);
+}
+
+.hamburger-menu:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
 }
 
 .hamburger-line {
-  width: 30px;
+  width: 24px;
   height: 2px;
   background-color: currentColor;
-  transition:
-    transform 0.25s ease,
-    opacity 0.2s ease,
-    margin 0.3s ease;
+  transition: transform var(--dur-short) var(--ease-out);
   transform-origin: 50% 50%;
 }
 
@@ -69,47 +89,83 @@
   transform: translateY(-4px) rotate(-45deg);
 }
 
+/* ── Logo 区：竖线 eco 绿 + EcoRem wordmark（与 Hero wordmark 同款双色） ── */
 .logo-container {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-sm);
   order: 0;
 }
 
 .logo {
-  height: 50px;
+  height: 40px;
 }
 
+.logo-divider {
+  width: 2px;
+  height: 28px;
+  background: var(--color-eco);
+}
+
+.logo-wordmark {
+  font-size: var(--text-md);
+  font-weight: 800; /* 与 Hero wordmark 一致的极端字重 */
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+  white-space: nowrap;
+}
+
+.logo-wordmark-eco {
+  color: var(--color-eco);
+}
+
+/* ── CTA：品牌紫 pill（与 Hero CTA 同一语言），hover 压深 + 微浮起 ── */
 .card-nav-cta-button {
-  background-color: #7c3aed;
-  color: white;
-  border: none;
-  border-radius: calc(0.75rem - 0.35rem);
-  padding: 0 1rem; 
-  height: 100%;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  align-items: center;
   order: 2;
   margin-left: auto;
-  margin-right: 12px;
+  margin-right: var(--space-2xs);
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 var(--space-lg);
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--dur-short) var(--ease-out),
+    transform var(--dur-micro) var(--ease-out);
 }
 
 .card-nav-cta-button:hover {
-  background-color: #6d28d9;
+  background: color-mix(in oklch, var(--color-accent) 85%, var(--color-ink));
+  transform: translateY(-1px);
 }
 
+.card-nav-cta-button:active {
+  transform: translateY(1px);
+}
+
+.card-nav-cta-button:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+/* ── 展开内容区 ── */
 .card-nav-content {
   position: absolute;
   left: 0;
   right: 0;
   top: 60px;
   bottom: 0;
-  padding: 0.5rem;
+  padding: var(--space-sm);
   display: flex;
   align-items: flex-end;
-  gap: 12px;
+  gap: var(--space-sm);
   visibility: hidden;
   pointer-events: none;
   z-index: 1;
@@ -124,60 +180,75 @@
   height: 100%;
   flex: 1 1 0;
   min-width: 0;
-  border-radius: calc(0.75rem - 0.2rem);
+  border-radius: calc(var(--radius-card) - 2px);
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 16px 20px;
-  gap: 8px;
+  padding: var(--space-md) var(--space-lg);
+  gap: var(--space-xs);
   user-select: none;
 }
 
+/* 调色板：accent 品牌紫 → eco 叶绿 → ink 墨（令牌三元） */
+.nav-card:nth-child(1) {
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+}
+
+.nav-card:nth-child(2) {
+  background: var(--color-eco);
+  color: var(--color-eco-ink);
+}
+
+.nav-card:nth-child(3) {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
 .nav-card-label {
-  font-weight: 500;
-  font-size: 22px;
-  letter-spacing: -0.5px;
+  font-weight: 600;
+  font-size: var(--text-md);
+  letter-spacing: -0.01em;
 }
 
 .nav-card-links {
   margin-top: auto;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-2xs);
 }
 
 .nav-card-link {
-  font-size: 15px;
+  width: fit-content;
+  color: inherit;
+  font-size: var(--text-sm);
   cursor: pointer;
   text-decoration: none;
   opacity: 0.85;
-  transition: opacity 0.3s ease;
+  transition: opacity var(--dur-short) var(--ease-out);
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-2xs);
 }
 
 .nav-card-link:hover {
   opacity: 1;
 }
 
-.hamburger-line {
-  width: 28px;
-  height: 2px;
-  background-color: currentColor;
-  transition:
-    transform 0.25s ease,
-    opacity 0.2s ease;
-  transform-origin: 50% 50%;
+/* 卡片为深底色，焦点环用暗底令牌 */
+.nav-card-link:focus-visible {
+  outline: 2px solid var(--color-focus-on-dark);
+  outline-offset: 2px;
+  opacity: 1;
 }
 
 @media (max-width: 768px) {
   .card-nav-container {
-    padding: 10px 12px 0;
+    padding: var(--space-xs) var(--space-sm) 0;
   }
 
   .card-nav-top {
-    padding: 0.5rem 1rem;
+    padding: 0 var(--space-sm);
     justify-content: space-between;
   }
 
@@ -192,14 +263,14 @@
   }
 
   .card-nav-cta-button {
-    display: none;
+    display: none; /* Hero 首屏已提供 Join Us，避免移动端重复 CTA */
   }
 
   .card-nav-content {
     flex-direction: column;
     align-items: stretch;
-    gap: 8px;
-    padding: 0.5rem;
+    gap: var(--space-xs);
+    padding: var(--space-sm);
     bottom: 0;
     justify-content: flex-start;
   }
@@ -209,14 +280,30 @@
     min-height: 60px;
     flex: 1 1 auto;
     max-height: none;
-    padding: 12px 14px;
+    padding: var(--space-sm) var(--space-md);
   }
 
   .nav-card-label {
-    font-size: 17px;
+    font-size: var(--text-base);
   }
 
   .nav-card-link {
-    font-size: 14px;
+    font-size: var(--text-sm);
+  }
+}
+
+/* ── Reduced motion：过渡塌缩为 150ms 线性，位移效果关闭 ── */
+@media (prefers-reduced-motion: reduce) {
+  .hamburger-menu,
+  .hamburger-line,
+  .card-nav-cta-button,
+  .nav-card-link {
+    transition-duration: 150ms;
+    transition-timing-function: linear;
+  }
+
+  .card-nav-cta-button:hover,
+  .card-nav-cta-button:active {
+    transform: none;
   }
 }
