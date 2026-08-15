@@ -88,6 +88,25 @@
   text-wrap: balance;
 }
 
+/* ── 成员墙（DriftWall 独立内容块）：节头与轮播之间的透视漂移墙 ── */
+.members__wall {
+  position: relative;
+  height: clamp(320px, 44vh, 460px);
+  margin-bottom: var(--space-2xl);
+}
+
+.members__wall-caption {
+  position: absolute;
+  right: 0;
+  bottom: calc(-1 * var(--space-lg));
+  margin: 0;
+  font-family: var(--font-mono); /* mono outlier，与节序标记同一语言 */
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  color: var(--color-photo-muted);
+  white-space: nowrap;
+}
+
 /* ── Mobile：节头纵排（gate 52） ── */
 @media (max-width: 60rem) {
   .members {
@@ -101,6 +120,10 @@
 
   .members__head-side {
     text-align: left;
+  }
+
+  .members__wall {
+    height: clamp(260px, 36vh, 360px); /* 小屏横向行漂移，高度收拢 */
   }
 }
 

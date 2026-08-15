@@ -1,6 +1,10 @@
 import ScrollMask from './ScrollMask.jsx';
 import MembersCarousel from './MembersCarousel.jsx';
 import ProfileCard from '../ProfileCard.jsx';
+import DriftWall from '../DriftWall.jsx';
+import pscImg from '../../assets/psc.jpg';
+import hackathonImg from '../../assets/hackathon.jpg';
+import lifeImg from '../../assets/生命.jpeg';
 import './Members.css';
 
 /* 数据驱动·可扩展：新增成员只需在数组末尾加一项。
@@ -82,6 +86,20 @@ const MEMBERS = [
   }
 ];
 
+/* 成员墙瓷砖：6 张行楷姓氏字卡 × 3 张活动照混排（决策：字卡+照片混排）。
+ * 交错排序让各列/各行字卡与照片均匀分布；DriftWall 内部无限复制，重复天然成立。 */
+const WALL_ITEMS = [
+  { kind: 'char', char: '林', accent: 'eco', title: '林沛然' },
+  { kind: 'image', image: pscImg, title: '第一次全体（扩大）会议合影' },
+  { kind: 'char', char: '苏', accent: 'accent', title: '苏晚晴' },
+  { kind: 'char', char: '叶', accent: 'eco', title: '叶蓁蓁' },
+  { kind: 'image', image: hackathonImg, title: '第一届「黑客松」AI 创作大赛合影' },
+  { kind: 'char', char: '陈', accent: 'accent', title: '陈屿舟' },
+  { kind: 'char', char: '何', accent: 'eco', title: '何田田' },
+  { kind: 'image', image: lifeImg, title: '校园星轨夜景' },
+  { kind: 'char', char: '高', accent: 'accent', title: '高蕴哲' }
+];
+
 function Members() {
   return (
     <section className="members" id="members" aria-labelledby="members-title">
@@ -97,6 +115,19 @@ function Members() {
             </p>
           </div>
         </header>
+
+        <div className="members__wall">
+          <DriftWall
+            items={WALL_ITEMS}
+            lanes={5}
+            speed={26}
+            grayscale
+            ariaLabel="成员墙：六张姓氏字卡与三张活动照片交替漂移"
+          />
+          <p className="members__wall-caption" aria-hidden="true">
+            The Wall · 字卡为序，更多同路人持续生长
+          </p>
+        </div>
 
         <MembersCarousel
           items={MEMBERS}

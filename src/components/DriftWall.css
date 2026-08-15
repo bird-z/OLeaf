@@ -1,0 +1,178 @@
+/* DriftWall · ReactBits 本地改造版（成员墙样式）
+ * 令牌化: 遮罩底色 #060010 → paper-dark 同系 · 圆角 14px → --radius-card ·
+ *        内层底 #0b0b12 → paper-dark 更深色 · 缓动/时长 → tokens
+ * 新增: 横向模式（小屏行漂移）· 行楷姓氏字卡瓷砖（ProfileCard 字头像语言延伸）
+ */
+
+@import '../../tokens.css';
+
+.drift-wall {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  perspective: var(--dw-perspective, 1200px);
+  perspective-origin: 50% 50%;
+  --dw-tile-w: 200px;
+  --dw-tile-h: 132px;
+  --dw-gap: 18px;
+  --dw-lift: 64px;
+  --dw-dim: 0.55;
+  --dw-gray: 1;
+  --dw-edge: 40%;
+  -webkit-mask-image:
+    radial-gradient(ellipse 78% 82% at 50% 46%, #000 var(--dw-edge), transparent 100%),
+    linear-gradient(to top, #000 var(--dw-edge), transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    radial-gradient(ellipse 78% 82% at 50% 46%, #000 var(--dw-edge), transparent 100%),
+    linear-gradient(to top, #000 var(--dw-edge), transparent 100%);
+  mask-composite: intersect;
+}
+
+/* 竖向（桌面）：列并排，轨道竖漂 */
+.drift-wall__plane {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  flex-direction: row;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+.drift-wall__lane {
+  position: relative;
+  width: calc(var(--dw-tile-w) + var(--dw-gap));
+  transform-style: preserve-3d;
+}
+
+.drift-wall__track {
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+.drift-wall__tile {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: calc(var(--dw-tile-h) + var(--dw-gap));
+  flex: 0 0 auto;
+  outline: none;
+  transform-style: preserve-3d;
+}
+
+/* 横向（小屏）：行纵叠，轨道横漂 */
+.drift-wall--horizontal .drift-wall__plane {
+  flex-direction: column;
+}
+
+.drift-wall--horizontal .drift-wall__lane {
+  width: auto;
+  height: calc(var(--dw-tile-h) + var(--dw-gap));
+}
+
+.drift-wall--horizontal .drift-wall__track {
+  flex-direction: row;
+}
+
+.drift-wall--horizontal .drift-wall__tile {
+  width: calc(var(--dw-tile-w) + var(--dw-gap));
+  height: 100%;
+}
+
+.drift-wall__inner {
+  position: absolute;
+  inset: calc(var(--dw-gap) / 2);
+  display: block;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: color-mix(in oklch, var(--color-paper-dark) 55%, black);
+  border: 1px solid color-mix(in oklch, var(--color-photo-ink) 8%, transparent);
+  opacity: var(--dw-dim);
+  transform: translateZ(0);
+  pointer-events: none;
+  transition:
+    transform var(--dur-long) var(--ease-out),
+    opacity var(--dur-long) var(--ease-out),
+    box-shadow var(--dur-long) var(--ease-out);
+}
+
+.drift-wall__tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(var(--dw-gray)) saturate(0.92);
+  transition: filter var(--dur-long) var(--ease-out);
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* 照片压暗罩：夜空同色系（原 #060010 蓝黑 → paper-dark 派生） */
+.drift-wall__overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--color-paper-dark);
+  opacity: 0.42;
+  pointer-events: none;
+  transition: opacity var(--dur-long) var(--ease-out);
+}
+
+/* ── 行楷姓氏字卡瓷砖：accent 渐变底 + 行楷单字（无真人照片决策的延伸） ── */
+.drift-wall__char {
+  --_accent: var(--color-eco-bright);
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  color: var(--color-accent-ink);
+  background: linear-gradient(
+    145deg,
+    color-mix(in oklch, var(--_accent) 72%, transparent),
+    color-mix(in oklch, var(--_accent) 34%, black)
+  );
+}
+
+.drift-wall__char[data-accent='accent'] {
+  --_accent: var(--color-accent-bright);
+}
+
+/* hover 浮起：瓷砖向观察者升起，邻砖保持压暗 */
+.drift-wall__tile.is-active .drift-wall__inner {
+  opacity: 1;
+  transform: translateZ(var(--dw-lift));
+  box-shadow: 0 24px 60px -18px rgba(0, 0, 0, 0.7);
+}
+
+.drift-wall__tile.is-active img {
+  filter: grayscale(0) saturate(1.05);
+}
+
+.drift-wall__tile.is-active .drift-wall__overlay {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drift-wall__plane,
+  .drift-wall__track {
+    will-change: auto;
+  }
+
+  .drift-wall__inner,
+  .drift-wall__tile img,
+  .drift-wall__overlay {
+    transition-duration: 150ms;
+    transition-timing-function: linear;
+  }
+
+  .drift-wall__tile.is-active .drift-wall__inner {
+    transform: none;
+  }
+}
