@@ -30,6 +30,8 @@
   width: 100%;
   overflow: hidden;
   --se-title-size: 4rem;
+  /* 实色底：stage 上滑遮盖 hero 时，照片小窗四周不再透出前一页 */
+  background: var(--color-paper-dark);
 }
 
 .scroll-expand__frame {
@@ -51,16 +53,16 @@
   -webkit-user-drag: none;
 }
 
-/* scrim：照片偏亮 → 用 paper 派生的浅色渐变罩，承托深色文字 */
+/* scrim：ink 派生深色渐变罩——压暗照片文字区，与全页深色基调衔接 */
 .scroll-expand__scrim {
   position: absolute;
   inset: 0;
   pointer-events: none;
   background: linear-gradient(
     to top,
-    color-mix(in oklch, var(--color-paper) 82%, transparent),
-    color-mix(in oklch, var(--color-paper) 15%, transparent) 45%,
-    color-mix(in oklch, var(--color-paper) 45%, transparent)
+    color-mix(in oklch, var(--color-ink) 78%, transparent),
+    color-mix(in oklch, var(--color-ink) 12%, transparent) 45%,
+    color-mix(in oklch, var(--color-ink) 38%, transparent)
   );
   opacity: 0;
 }
@@ -92,8 +94,8 @@
   font-size: var(--se-title-size);
   letter-spacing: 0.04em;
   line-height: 1.1;
-  color: var(--color-ink); /* 亮照片：墨色标题 */
-  text-shadow: 0 2px 24px color-mix(in oklch, var(--color-paper) 70%, transparent);
+  color: var(--color-photo-warm); /* 暖纸白，与 hero 标题同一处理 */
+  text-shadow: 0 2px 24px color-mix(in oklch, var(--color-ink) 55%, transparent);
   pointer-events: none;
   will-change: opacity, transform;
 }
@@ -107,7 +109,7 @@
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   letter-spacing: 0.12em;
-  color: color-mix(in oklch, var(--color-ink) 62%, transparent);
+  color: color-mix(in oklch, var(--color-photo-ink) 65%, transparent);
   pointer-events: none;
   will-change: opacity, transform;
 }
@@ -126,7 +128,7 @@
   font-size: var(--text-lg);
   font-weight: 600;
   letter-spacing: 0.06em;
-  color: var(--color-ink);
+  color: var(--color-photo-ink);
 }
 
 .scroll-expand__motto {
@@ -134,5 +136,5 @@
   font-size: var(--text-xs);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: color-mix(in oklch, var(--color-ink) 62%, transparent);
+  color: color-mix(in oklch, var(--color-photo-ink) 65%, transparent);
 }

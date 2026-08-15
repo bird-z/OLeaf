@@ -3,7 +3,16 @@
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
 @import "@fontsource-variable/noto-sans-sc";
-@import "@fontsource/zhi-mang-xing";
+/* 行楷 display：子集化 woff2（21 字形 · 6KB，替代 fontsource 全量 109 分包）
+ * 覆盖：启迪生命扉向未来 / 因热爱而启程 / 特色工作室 / 生物启扉协会
+ * 新增 display 文案需重新生成：pyftsubset 脚本见 git 记录或联系维护者 */
+@font-face {
+  font-family: 'Zhi Mang Xing';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/zhi-mang-xing-subset.woff2') format('woff2');
+}
 @import "@fontsource/geist-mono";
 
 @custom-variant dark (&:is(.dark *));

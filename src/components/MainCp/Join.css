@@ -1,0 +1,417 @@
+/* Hallmark · 第四节：加入我们（Join）
+ * genre: modern-minimal · 深色节（决策：整节翻暗，延续全站夜空基调，跟随页面底色）
+ * 内容: 用户幻灯片「JOIN US」页真实文案（四部门 + 招新面板）
+ * 结构: 节头（行楷短题「从好奇出发」+ 右侧 mono 节序/gloss + 规则线带 eco 段）
+ *       → 显式双栏：左 2×2 部门网格（数据驱动）· 右招新面板（span 2 撑满）
+ * 标题决策: 原句 13 字超出行楷最佳区间，取幻灯片高亮短语「从好奇出发」作大标题，
+ *          原句降为 gloss，避免断行寡字
+ * 决策记录: 「了解部门」先不链接（span 占位，弱 hover，无位移，避免假 affordance）·
+ *          「在线报名」先不链接（button 占位 + sheen 动态光泽，确认渠道后换 <a>）·
+ *          招新年份动态取当前年 · 明黄 CTA 不引入，改 eco-bright 实底（叶绿 = 生长语义），
+ *          为本节唯一高饱和大色块锚点 · 邮箱纯文本，确认后包 mailto:
+ * 挂载提示: 已在 App 挂载；useFullpage.computeStops 已追加 '.join' 停靠点
+ * pre-emit critique: P4 H4 E4 S5 R5 V4
+ */
+
+@import '../../../tokens.css';
+
+.join {
+  padding: var(--space-3xl) clamp(var(--space-md), 4vw, var(--space-2xl));
+  color: var(--color-photo-ink);
+  font-family: var(--font-body);
+  text-align: left;
+}
+
+/* ── 节头：与 Studios 同一语言（标题居左 · 节序+gloss 居右 · 规则线带 eco 段） ── */
+.join__head {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-md) var(--space-xl);
+  padding-bottom: var(--space-lg);
+  margin-bottom: var(--space-2xl);
+  border-bottom: 1px solid color-mix(in oklch, var(--color-photo-ink) 16%, transparent);
+}
+
+.join__head::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: clamp(3rem, 8vw, 5.5rem);
+  height: 1px;
+  background: var(--color-eco-bright);
+}
+
+.join__title {
+  margin: 0;
+  font-family: var(--font-display); /* 行楷，与 hero / About / Studios 标题同一 display 角色 */
+  font-weight: 400;
+  font-size: var(--text-display-s);
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+  color: var(--color-photo-warm);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.join__head-side {
+  max-width: 38ch;
+  text-align: right;
+}
+
+.join__index {
+  display: block;
+  margin-bottom: var(--space-xs);
+  font-family: var(--font-mono); /* mono outlier，与 About / Studios 节序标记同一语言 */
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  color: var(--color-photo-muted);
+  white-space: nowrap;
+}
+
+.join__gloss {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  color: var(--color-photo-muted);
+  text-wrap: balance;
+}
+
+/* ── 显式双栏：左 2×2 部门网格 · 右招新面板（4 卡 + 面板共 5 格，auto-fit 会排布尴尬） ── */
+.join__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: var(--space-lg);
+  align-items: stretch;
+}
+
+.join__depts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-lg);
+}
+
+/* ── 部门卡：沿用 Studios 卡语言（surface 槽位 + hover 微浮），编号升格为大号 mono ── */
+.join__dept {
+  --_accent: var(--color-eco-bright);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-lg);
+  background: color-mix(in oklch, var(--color-photo-ink) 4%, transparent);
+  border: 1px solid color-mix(in oklch, var(--color-photo-ink) 10%, transparent);
+  border-radius: var(--radius-card);
+  transition:
+    transform var(--dur-short) var(--ease-out),
+    border-color var(--dur-short) var(--ease-out);
+}
+
+.join__dept[data-accent='eco'] {
+  --_accent: var(--color-eco-bright);
+}
+
+.join__dept[data-accent='accent'] {
+  --_accent: var(--color-accent-bright);
+}
+
+.join__dept:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in oklch, var(--_accent) 35%, transparent);
+}
+
+.join__dept-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+.join__dept-no {
+  font-family: var(--font-mono); /* 编号 = 数据感，mono outlier */
+  font-size: var(--text-lg);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--_accent);
+  line-height: 1;
+}
+
+.join__dept-en {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-photo-muted);
+  white-space: nowrap;
+}
+
+.join__dept-name {
+  margin: 0;
+  font-family: var(--font-body); /* 部门名用粗黑体，与节标题行楷拉开层级 */
+  font-weight: 700;
+  font-size: var(--text-md);
+  letter-spacing: -0.01em;
+  color: var(--color-photo-ink);
+}
+
+.join__dept-desc {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.75;
+  color: var(--color-photo-muted);
+}
+
+/* 「了解部门」占位：margin-top:auto 沉底对齐；弱 hover 仅变色，无位移（链接待定） */
+.join__dept-more {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  margin-top: auto;
+  padding-top: var(--space-md);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  color: var(--color-photo-muted);
+  white-space: nowrap;
+  transition: color var(--dur-short) var(--ease-out);
+}
+
+.join__dept:hover .join__dept-more {
+  color: var(--_accent);
+}
+
+/* ── 招新面板：深色之上的更深色，eco 顶 hairline，本节视觉锚点 ── */
+.join__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  padding: var(--space-xl) var(--space-lg);
+  background: color-mix(in oklch, var(--color-paper-dark) 72%, black);
+  border: 1px solid color-mix(in oklch, var(--color-photo-ink) 12%, transparent);
+  border-radius: var(--radius-card);
+  overflow: hidden; /* 裁剪 CTA sheen */
+}
+
+.join__panel::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  height: 2px;
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
+  background: linear-gradient(90deg, var(--color-eco-bright), transparent 70%);
+  opacity: 0.9;
+}
+
+.join__panel-eyebrow {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-photo-muted);
+  white-space: nowrap;
+}
+
+.join__panel-title {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  font-weight: 700;
+  font-size: var(--text-md);
+  letter-spacing: -0.01em;
+  color: var(--color-photo-ink);
+}
+
+.join__panel-title em {
+  font-style: normal;
+  font-family: var(--font-display); /* 高亮行用行楷，呼应节标题 */
+  font-weight: 400;
+  font-size: var(--text-lg);
+  letter-spacing: 0.06em;
+  color: var(--color-eco-bright);
+}
+
+/* 招新要点：菱形 ◆ 小标，复用 About tags 语言 */
+.join__points {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.join__points li {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  color: var(--color-photo-muted);
+}
+
+.join__points li::before {
+  content: '';
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  background: var(--color-eco-bright);
+  transform: rotate(45deg) translateY(-1px);
+}
+
+/* 咨询邮箱：mono 突出数据感 */
+.join__contact {
+  margin-top: auto; /* 联系区沉底，面板与左列等高时对齐 */
+  padding-top: var(--space-md);
+  border-top: 1px solid color-mix(in oklch, var(--color-photo-ink) 14%, transparent);
+}
+
+.join__contact-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin: 0 0 var(--space-xs);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  color: var(--color-photo-muted);
+}
+
+.join__contact-mail {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-md);
+  letter-spacing: 0.02em;
+  color: var(--color-photo-ink);
+  overflow-wrap: anywhere;
+}
+
+/* ── CTA：eco-bright 实底（本节唯一高饱和大色块），sheen 循环光泽 + hover 微浮辉光 ── */
+.join__cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  width: 100%;
+  padding: var(--space-sm) var(--space-lg);
+  border: none;
+  border-radius: var(--radius-card);
+  background: var(--color-eco-bright);
+  color: var(--color-paper-dark);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  overflow: hidden; /* 裁剪 sheen 扫光 */
+  transition:
+    transform var(--dur-short) var(--ease-out),
+    box-shadow var(--dur-short) var(--ease-out);
+}
+
+/* sheen：斜向扫光，6s 慢循环，停在画面外不闪烁 */
+.join__cta::after {
+  content: '';
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: -30%;
+  width: 36%;
+  background: linear-gradient(
+    105deg,
+    transparent,
+    color-mix(in oklch, var(--color-accent-ink) 55%, transparent),
+    transparent
+  );
+  transform: translateX(-120%) skewX(-12deg);
+  animation: join-sheen 6s var(--ease-in-out) infinite;
+  pointer-events: none;
+}
+
+@keyframes join-sheen {
+  0%,
+  55% {
+    transform: translateX(-120%) skewX(-12deg);
+  }
+  85%,
+  100% {
+    transform: translateX(420%) skewX(-12deg);
+  }
+}
+
+.join__cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px color-mix(in oklch, var(--color-eco-bright) 35%, transparent);
+}
+
+.join__cta:active {
+  transform: translateY(0);
+}
+
+.join__cta:focus-visible {
+  outline: 2px solid var(--color-focus-on-dark);
+  outline-offset: 3px;
+}
+
+.join__panel-note {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.7;
+  text-align: center;
+  color: var(--color-photo-muted);
+  text-wrap: balance;
+}
+
+/* ── Mobile：节头纵排（gate 52），布局收单列，面板沉底 ── */
+@media (max-width: 60rem) {
+  .join {
+    padding-top: var(--space-2xl);
+  }
+
+  .join__head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .join__head-side {
+    text-align: left;
+  }
+
+  .join__layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 34rem) {
+  .join__depts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ── Reduced motion：sheen 与位移关闭，仅留色彩过渡 ── */
+@media (prefers-reduced-motion: reduce) {
+  .join__dept,
+  .join__dept-more,
+  .join__cta {
+    transition-duration: 150ms;
+    transition-timing-function: linear;
+  }
+
+  .join__dept:hover,
+  .join__cta:hover {
+    transform: none;
+  }
+
+  .join__cta::after {
+    animation: none;
+  }
+}

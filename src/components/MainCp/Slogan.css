@@ -3,7 +3,15 @@
  * enrichment: E8 摄影背景（生命.jpeg · 星轨校园夜景 + ink 派生 scrim）
  * nav: 保留现有 CardNav（项目边界）· footer: n/a（本节为首页第一屏）
  * 偏离声明：macro 默认 fold 内无 CTA，按用户需求首屏放入「加入我们」
- * 变更记录：等高线 SVG 背景移除 —— 照片已承载土地/校园叙事，叠加即 clutter
+ * 变更记录：
+ *   - 等高线 SVG 背景移除 —— 照片已承载土地/校园叙事，叠加即 clutter
+ *   - BlurText（motion/JS + filter:blur 逐字）→ 纯 CSS 逐字 reveal：消除 paint-heavy
+ *     滤镜动画与 JS 依赖，与容器 data-reveal 统一为一条入场时间线（总长 ≈1.1s）
+ *   - 新增滚动视差（--hero-p 驱动背景 scale/translate）衔接 useFullpage 弹性翻页
+ *   - 新增 scroll cue（mono 细线脉动）；scrim 叠加底部 vignette 保证 foot 区 AA 对比
+ *   - 背景静态图 → 星轨延时视频（生命.mp4 重制版：裁掉豆包 AI 游动水印带 →
+ *     lanczos 升至 1080p + 去噪锐化 + CRF20 · 首尾 0.5s 交叉淡化无缝循环 · 去音轨，
+ *     4.6s/1.6MB）；poster 复用 AVIF 预载承担首帧；reduced-motion 回退静态 <picture>
  * pre-emit critique: P4 H5 E4 S5 R5 V4
  */
 
@@ -12,6 +20,7 @@
 .hero {
   position: relative;
   isolation: isolate; /* 背景照片 + scrim 压在内容下层 */
+  overflow: hidden; /* 视差 scale 出界裁剪 */
   min-height: 100svh;
   display: flex;
   flex-direction: column;
@@ -22,29 +31,44 @@
   text-align: left;
 }
 
-/* ── E8 背景照片：星轨校园（LCP，绝对定位铺满） ── */
-.hero__bg {
+/* picture/video 仅作媒体容器，不参与布局（绝对定位铺满） */
+.hero picture,
+.hero__video {
   position: absolute;
   inset: 0;
   z-index: -2;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
   pointer-events: none;
 }
 
-/* scrim：ink 令牌派生的渐变罩，左下深（文字区）右上浅（让星轨透气） */
+/* ── E8 背景媒体：星轨校园（LCP）· 视差：随 --hero-p 放大并下移，滞后感 ── */
+.hero__bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translate3d(0, calc(var(--hero-p, 0) * 5%), 0)
+    scale(calc(1.1 + var(--hero-p, 0) * 0.04));
+  will-change: transform;
+}
+
+/* scrim：ink 令牌派生。主层左下深右上浅（让星轨透气）；
+ * 叠加底部 vignette —— foot 区副标语为 photo-muted（80% 亮度），压底确保 AA 对比 */
 .hero::before {
   content: '';
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(
-    160deg,
-    color-mix(in oklch, var(--color-ink) 62%, transparent),
-    color-mix(in oklch, var(--color-ink) 18%, transparent) 45%,
-    color-mix(in oklch, var(--color-ink) 68%, transparent)
-  );
+  background:
+    linear-gradient(
+      to top,
+      color-mix(in oklch, var(--color-ink) 38%, transparent),
+      transparent 42%
+    ),
+    linear-gradient(
+      160deg,
+      color-mix(in oklch, var(--color-ink) 62%, transparent),
+      color-mix(in oklch, var(--color-ink) 18%, transparent) 45%,
+      color-mix(in oklch, var(--color-ink) 68%, transparent)
+    );
   pointer-events: none;
 }
 
@@ -126,27 +150,61 @@
   background: var(--color-accent-bright);
 }
 
-/* ── 底部行：副标语 + CTA，粗规则线收边（marquee 的 divider 语言） ── */
+/* ── 底部行：副标语 + CTA。粗规则线改为 ::before 动画（scaleX 展开），
+ *   不再用容器 data-reveal —— 避免与逐字动画双重入场 ── */
 .hero__foot {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   flex-wrap: wrap;
   gap: var(--space-lg);
-  border-top: 2px solid var(--color-photo-ink);
   padding-top: var(--space-lg);
+}
+
+.hero__foot::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--color-photo-ink);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: hero-rule var(--dur-long) var(--ease-out) 320ms forwards;
+}
+
+@keyframes hero-rule {
+  to {
+    transform: scaleX(1);
+  }
 }
 
 .hero__sub {
   max-width: 65ch;
+  margin: 0;
   font-size: var(--text-md);
   line-height: 1.65;
   letter-spacing: 0.05em;
   color: var(--color-photo-muted);
 }
 
-.hero__sub p {
-  margin: 0; /* BlurText 渲染的 <p> 去默认外边距 */
+/* 逐字 reveal：标题落位后（340ms 起）以 24ms 步进播种式浮现，
+ * 仅 opacity + 小位移，无 filter —— 合成器可全程托管 */
+.hero__letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.5em);
+  animation: hero-letter 380ms var(--ease-out) forwards;
+  animation-delay: calc(340ms + var(--i, 0) * 24ms);
+}
+
+@keyframes hero-letter {
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* ── CTA：暗底反转——纸面填色，hover 时落回品牌紫 ── */
@@ -185,6 +243,44 @@
   outline-offset: 3px;
 }
 
+/* ── Scroll cue：mono 标签 + 细线脉动；整页翻屏模式下的方向暗示。
+ *   随 --hero-p 快速淡出（开始滚动即隐），reduced-motion 下静止 ── */
+.hero__cue {
+  position: absolute;
+  left: 50%;
+  bottom: var(--space-md);
+  translate: -50% 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2xs);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-photo-muted);
+  opacity: calc(1 - var(--hero-p, 0) * 4);
+}
+
+.hero__cue-line {
+  width: 1px;
+  height: 34px;
+  background: currentColor;
+  transform-origin: top;
+  animation: hero-cue 2.4s var(--ease-in-out) 1.4s infinite;
+}
+
+@keyframes hero-cue {
+  0%, 100% {
+    transform: scaleY(0.25);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
 /* ── 入场：一次编排好的 stagger（≤450ms），之后页面保持静止 ── */
 .hero [data-reveal] {
   opacity: 0;
@@ -200,19 +296,38 @@
   }
 }
 
-/* ── Mobile：40rem 以下底部行纵排 ── */
+/* ── Mobile：40rem 以下底部行纵排；cue 让位（避免与纵排 foot 重叠） ── */
 @media (max-width: 40rem) {
   .hero__foot {
     align-items: flex-start;
     flex-direction: column;
   }
+
+  .hero__cue {
+    display: none;
+  }
 }
 
-/* ── Reduced motion：空间动画塌缩为透明度过渡 ── */
+/* ── Reduced motion：空间动画塌缩为透明度过渡，视差/脉动关闭 ── */
 @media (prefers-reduced-motion: reduce) {
-  .hero [data-reveal] {
+  .hero__bg {
+    transform: none;
+    will-change: auto;
+  }
+
+  .hero [data-reveal],
+  .hero__letter {
     animation-duration: 150ms;
     transform: none;
+  }
+
+  .hero__foot::before {
+    animation-duration: 150ms;
+  }
+
+  .hero__cue-line {
+    animation: none;
+    transform: scaleY(1);
   }
 
   .hero__cta {

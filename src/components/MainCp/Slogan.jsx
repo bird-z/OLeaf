@@ -1,20 +1,84 @@
-import BlurText from '../BlurText.jsx';
-import heroBg from '../../assets/生命.jpeg';
+import { useEffect, useRef, useState } from 'react';
 import './Slogan.css';
 
+const SUBTITLE = '一粒因热爱播种的种子 在江农的土壤里生根发芽';
+
 function Slogan() {
+  const heroRef = useRef(null);
+  /* reduced-motion → 静态 <picture>；否则渲染星轨延时视频背景（静音循环内联播放） */
+  const [motionOK] = useState(
+    () => !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
+
+  /* 滚动视差：--hero-p ∈ [0,1] 驱动背景缩放/位移，与 useFullpage 弹性翻页衔接。
+   * rAF 节流 + passive 监听；reduced-motion 下不启用（CSS 侧同步塌缩）。 */
+  useEffect(() => {
+    const el = heroRef.current;
+    if (!el) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const p = Math.min(1, Math.max(0, window.scrollY / window.innerHeight));
+      el.style.setProperty('--hero-p', p.toFixed(4));
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+
   return (
-    <section className="hero" aria-labelledby="hero-title">
-      {/* 第一幕背景：星轨下的校园（LCP 元素，直引不懒加载） */}
-      <img
-        className="hero__bg"
-        src={heroBg}
-        alt=""
-        aria-hidden="true"
-        fetchpriority="high"
-        width="2048"
-        height="1367"
-      />
+    <section className="hero" ref={heroRef} aria-labelledby="hero-title">
+      {/* 第一幕背景：星轨延时视频（LCP 由 poster 承担 · 静音/循环/内联）。
+          reduced-motion 或 JS 未就绪时回退为静态 <picture> 多尺寸图 */}
+      {motionOK ? (
+        <video
+          className="hero__bg hero__video"
+          ref={el => {
+            if (el) el.muted = true; // JSX muted 属性在部分浏览器不落 property，手动兜底
+          }}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster="/hero/life-1536.avif"
+          aria-hidden="true"
+          tabIndex={-1}
+        >
+          <source src="/hero/life-loop.mp4" type="video/mp4" />
+        </video>
+      ) : (
+        <picture>
+          <source
+            type="image/avif"
+            srcSet="/hero/life-768.avif 768w, /hero/life-1536.avif 1536w, /hero/life-2048.avif 2048w"
+            sizes="100vw"
+          />
+          <source
+            type="image/webp"
+            srcSet="/hero/life-768.webp 768w, /hero/life-1536.webp 1536w, /hero/life-2048.webp 2048w"
+            sizes="100vw"
+          />
+          <img
+            className="hero__bg"
+            src="/hero/life-2048.jpg"
+            alt=""
+            aria-hidden="true"
+            fetchpriority="high"
+            width="2048"
+            height="1367"
+          />
+        </picture>
+      )}
 
       <div className="hero__meta" data-reveal style={{ '--i': 0 }}>
         <span>JXAU · EcoRem</span>
@@ -38,19 +102,29 @@ function Slogan() {
         </span>
       </h1>
 
-      <div className="hero__foot" data-reveal style={{ '--i': 4 }}>
-        <div className="hero__sub">
-          <BlurText
-            text="一粒因热爱播种的种子 在江农的土壤里生根发芽"
-            animateBy="letters"
-            delay={45}
-            direction="top"
-          />
-        </div>
-        <a className="hero__cta" href="#join">
+      <div className="hero__foot">
+        {/* 副标语：纯 CSS 逐字 reveal（无 JS 依赖，reduced-motion 塌缩为淡入）。
+            aria-label 承载完整文本，逐字 span 对读屏隐藏 */}
+        <p className="hero__sub" aria-label={SUBTITLE}>
+          <span aria-hidden="true">
+            {[...SUBTITLE].map((ch, i) => (
+              <span className="hero__letter" style={{ '--i': i }} key={`${ch}-${i}`}>
+                {ch === ' ' ? ' ' : ch}
+              </span>
+            ))}
+          </span>
+        </p>
+        {/* TODO: 报名区块上线后改回 #join */}
+        <a className="hero__cta" href="#about" data-reveal style={{ '--i': 5 }}>
           Join Us
           <span className="hero__cta-arrow" aria-hidden="true">→</span>
         </a>
+      </div>
+
+      {/* 滚动提示：mono 细线脉动，随视差进度淡出 */}
+      <div className="hero__cue" aria-hidden="true">
+        <span className="hero__cue-label">Scroll</span>
+        <span className="hero__cue-line" />
       </div>
     </section>
   );

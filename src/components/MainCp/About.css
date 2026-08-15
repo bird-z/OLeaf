@@ -13,6 +13,8 @@
 @import '../../../tokens.css';
 
 .about {
+  position: relative;
+  z-index: 2; /* 压过 ScrollExpand 的 sticky stage（定位元素默认画在静态块上层），杜绝图片跨页 */
   padding: var(--space-3xl) clamp(var(--space-md), 4vw, var(--space-2xl)) var(--space-2xl);
   background: var(--color-paper-dark); /* 深色底，与星轨 hero 同一夜空色系 */
   color: var(--color-photo-ink);
@@ -48,6 +50,55 @@
   color: var(--color-photo-warm); /* 暖纸白，与 hero 标题同款 */
   overflow-wrap: anywhere;
   min-width: 0;
+}
+
+/* ── 双栏：文左 + 相册右（DepthCarousel） ── */
+.about__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); /* 相册栏加宽，配合放大卡片 */
+  gap: var(--space-xl) 0; /* 列间距 0（按你的修改），行间距保留给移动端堆叠 */
+  align-items: center;
+}
+
+.about__gallery {
+  position: relative;
+  min-width: 0; /* 允许 grid 收缩，carousel 内部自适应缩放 */
+  min-height: 440px;
+}
+
+/* ── 相册图注：mono 计数 + 当前照片名，切卡同步（key 驱动淡入） ── */
+.about__gallery-caption {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  margin: var(--space-sm) 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  color: var(--color-photo-muted);
+  animation: caption-in var(--dur-short) var(--ease-out);
+}
+
+.about__gallery-count {
+  color: var(--color-eco-bright);
+  white-space: nowrap;
+}
+
+@keyframes caption-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about__gallery-caption {
+    animation: none;
+  }
 }
 
 /* ── 单栏正文（照片与收尾句已升格为 ScrollExpand 转场） ── */
@@ -123,6 +174,14 @@
 @media (max-width: 60rem) {
   .about {
     padding-top: var(--space-2xl);
+  }
+
+  .about__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .about__gallery {
+    min-height: 340px;
   }
 
   .about__head {

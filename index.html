@@ -1,10 +1,21 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>shnda</title>
+    <!-- LCP：hero 星轨背景（AVIF srcset，浏览器按 DPR/视口选尺寸；不支持 AVIF 则跳过不预载） -->
+    <link
+      rel="preload"
+      as="image"
+      type="image/avif"
+      imagesrcset="/hero/life-768.avif 768w, /hero/life-1536.avif 1536w, /hero/life-2048.avif 2048w"
+      imagesizes="100vw"
+      fetchpriority="high"
+    />
+    <!-- 行楷 display 子集（6KB），避免首屏标题 FOUT -->
+    <link rel="preload" as="font" href="/fonts/zhi-mang-xing-subset.woff2" type="font/woff2" crossorigin />
+    <title>生物启扉协会 EcoRem · 启迪生命 扉向未来</title>
   </head>
   <body>
     <div id="root"></div>
