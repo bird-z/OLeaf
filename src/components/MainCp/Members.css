@@ -1,0 +1,97 @@
+/* Hallmark · 第三节：成员介绍（Members）
+ * genre: modern-minimal · 深色节（延续全站夜空基调，跟随页面底色）
+ * 内容: 用户幻灯片「OUR MEMBERS」两页真实文案（6 位成员）
+ * 结构: 节头（行楷短题「繁花」+ 右侧 mono 节序/gloss + 规则线带 eco 段）
+ *       → MembersCarousel 单卡聚焦轮转（ProfileCard 成员卡）
+ * 标题决策: 原句 12 字超出行楷最佳区间，取幻灯片章节标签「繁花」（2 字行楷极佳）
+ *          作大标题，原句「每一份好奇，都值得被看见」降为 gloss（与 Join 同一决策）
+ * 决策记录: 成员按职务排序（会长→副会长→主任→部长），非幻灯片出现顺序 ·
+ *          无真人照片 → 行楷姓氏字头像 · Contact 隐藏 · tilt 桌面保留
+ * 挂载提示: 已在 App 挂载（Studios 与 Join 之间）；useFullpage 已追加 '.members' 停靠点，
+ *          滚轮逃逸已追加 '.members-carousel'
+ * pre-emit critique: P4 H5 E4 S5 R5 V4
+ */
+
+@import '../../../tokens.css';
+
+.members {
+  padding: var(--space-3xl) clamp(var(--space-md), 4vw, var(--space-2xl));
+  color: var(--color-photo-ink);
+  font-family: var(--font-body);
+  text-align: left;
+  overflow: hidden; /* 轮转邻卡 peek 不溢出视口 */
+}
+
+/* ── 节头：与 Studios / Join 同一语言（标题居左 · 节序+gloss 居右 · 规则线带 eco 段） ── */
+.members__head {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-md) var(--space-xl);
+  padding-bottom: var(--space-lg);
+  margin-bottom: var(--space-xl);
+  border-bottom: 1px solid color-mix(in oklch, var(--color-photo-ink) 16%, transparent);
+}
+
+.members__head::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: clamp(3rem, 8vw, 5.5rem);
+  height: 1px;
+  background: var(--color-eco-bright);
+}
+
+.members__title {
+  margin: 0;
+  font-family: var(--font-display); /* 行楷，与 hero / About / Studios / Join 标题同一 display 角色 */
+  font-weight: 400;
+  font-size: var(--text-display-s);
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+  color: var(--color-photo-warm);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.members__head-side {
+  max-width: 38ch;
+  text-align: right;
+}
+
+.members__index {
+  display: block;
+  margin-bottom: var(--space-xs);
+  font-family: var(--font-mono); /* mono outlier，与各节节序标记同一语言 */
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  color: var(--color-photo-muted);
+  white-space: nowrap;
+}
+
+.members__gloss {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  color: var(--color-photo-muted);
+  text-wrap: balance;
+}
+
+/* ── Mobile：节头纵排（gate 52） ── */
+@media (max-width: 60rem) {
+  .members {
+    padding-top: var(--space-2xl);
+  }
+
+  .members__head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .members__head-side {
+    text-align: left;
+  }
+}

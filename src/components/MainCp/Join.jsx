@@ -71,7 +71,7 @@ function Join() {
             从好奇出发
           </h2>
           <div className="join__head-side">
-            <span className="join__index" aria-hidden="true">03 · Join</span>
+            <span className="join__index" aria-hidden="true">04 · Join</span>
             <p className="join__gloss">
               不必已经专业，只需要保有好奇——找到与你气味相投的部门。
             </p>

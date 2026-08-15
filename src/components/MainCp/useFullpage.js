@@ -51,7 +51,10 @@ export function useFullpage() {
       const studios = document.querySelector('.studios'); // 第三节：特色工作室
       if (studios) stops.push(studios.getBoundingClientRect().top + y);
 
-      const join = document.querySelector('.join'); // 第四节：加入我们
+      const members = document.querySelector('.members'); // 成员介绍
+      if (members) stops.push(members.getBoundingClientRect().top + y);
+
+      const join = document.querySelector('.join'); // 加入我们
       if (join) stops.push(join.getBoundingClientRect().top + y);
 
       const max = document.documentElement.scrollHeight - vh;
@@ -99,7 +102,7 @@ export function useFullpage() {
     };
 
     const onWheel = e => {
-      if (e.target.closest?.('.depth-carousel')) return; // 轮播内部滚轮归轮播，不翻页
+      if (e.target.closest?.('.depth-carousel, .members-carousel')) return; // 轮播内部滚轮归轮播，不翻页
       if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return; // 横向滚动不接管
       if (animating || performance.now() < cooldownUntil) {
         e.preventDefault(); // 动画与冷却期间吞掉惯性尾流

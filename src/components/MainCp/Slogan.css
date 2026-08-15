@@ -9,9 +9,7 @@
  *     滤镜动画与 JS 依赖，与容器 data-reveal 统一为一条入场时间线（总长 ≈1.1s）
  *   - 新增滚动视差（--hero-p 驱动背景 scale/translate）衔接 useFullpage 弹性翻页
  *   - 新增 scroll cue（mono 细线脉动）；scrim 叠加底部 vignette 保证 foot 区 AA 对比
- *   - 背景静态图 → 星轨延时视频（生命.mp4 重制版：裁掉豆包 AI 游动水印带 →
- *     lanczos 升至 1080p + 去噪锐化 + CRF20 · 首尾 0.5s 交叉淡化无缝循环 · 去音轨，
- *     4.6s/1.6MB）；poster 复用 AVIF 预载承担首帧；reduced-motion 回退静态 <picture>
+ *   - 视频背景方案已回退：恢复静态 <picture>（视频素材画质/水印不达标）
  * pre-emit critique: P4 H5 E4 S5 R5 V4
  */
 
@@ -31,16 +29,15 @@
   text-align: left;
 }
 
-/* picture/video 仅作媒体容器，不参与布局（绝对定位铺满） */
-.hero picture,
-.hero__video {
+/* picture 仅作格式协商容器，不参与布局（img 绝对定位铺满） */
+.hero picture {
   position: absolute;
   inset: 0;
   z-index: -2;
   pointer-events: none;
 }
 
-/* ── E8 背景媒体：星轨校园（LCP）· 视差：随 --hero-p 放大并下移，滞后感 ── */
+/* ── E8 背景照片：星轨校园（LCP）· 视差：随 --hero-p 放大并下移，滞后感 ── */
 .hero__bg {
   width: 100%;
   height: 100%;
