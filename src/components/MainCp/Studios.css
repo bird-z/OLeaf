@@ -1,0 +1,280 @@
+/* Hallmark · 第三节：特色工作室（Studios）
+ * genre: modern-minimal · tone: technical · 深色节（承接全站夜空基调，跟随页面底色）
+ * 内容: 用户幻灯片第 5 页真实文案（特色工作室 / FEATURED STUDIOS）
+ * 结构: 节头（行楷标题 + 右侧 mono 节序/理念句 + 规则线带 eco 段）
+ *       → 可扩展三卡网格（数据驱动 auto-fit）
+ *       → 招募空状态卡（全站唯一虚线，视觉锚点）
+ * 决策记录: 深色风格（用户定）· CTA 先不链接（span 占位）· 不引入叶脉母题 ·
+ *          卡片 accent 走双 accent 提亮版（eco-bright / accent-bright），
+ *          翻译自幻灯片的卡片顶部渐变条
+ * 挂载提示: 挂载进 App 后需在 useFullpage.computeStops 追加 '.studios' 停靠点
+ * pre-emit critique: P4 H5 E4 S5 R5 V4
+ */
+
+@import '../../../tokens.css';
+
+.studios {
+  padding: var(--space-3xl) clamp(var(--space-md), 4vw, var(--space-2xl));
+  color: var(--color-photo-ink);
+  font-family: var(--font-body);
+  text-align: left;
+}
+
+/* ── 节头：标题居左 · 节序+理念句居右 · 底部规则线带 eco 段（呼应 hero 的 divider 语言） ── */
+.studios__head {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-md) var(--space-xl);
+  padding-bottom: var(--space-lg);
+  margin-bottom: var(--space-2xl);
+  border-bottom: 1px solid color-mix(in oklch, var(--color-photo-ink) 16%, transparent);
+}
+
+.studios__head::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: clamp(3rem, 8vw, 5.5rem);
+  height: 1px;
+  background: var(--color-eco-bright);
+}
+
+.studios__title {
+  margin: 0;
+  font-family: var(--font-display); /* 行楷，与 hero / About 标题同一 display 角色 */
+  font-weight: 400;
+  font-size: var(--text-display-s);
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+  color: var(--color-photo-warm);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.studios__head-side {
+  max-width: 38ch;
+  text-align: right;
+}
+
+.studios__index {
+  display: block;
+  margin-bottom: var(--space-xs);
+  font-family: var(--font-mono); /* mono outlier，与 About 节序标记同一语言 */
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  color: var(--color-photo-muted);
+  white-space: nowrap;
+}
+
+.studios__gloss {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  color: var(--color-photo-muted);
+  text-wrap: balance; /* 避免末行单字寡行 */
+}
+
+/* ── 可扩展卡网格：auto-fit，新增工作室自动重排，卡片等高 ── */
+.studios__grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+  gap: var(--space-lg);
+}
+
+.studios__card {
+  /* 每卡 accent 槽位：data-accent 注入提亮版双 accent 之一 */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-lg);
+  background: color-mix(in oklch, var(--color-photo-ink) 4%, transparent);
+  border: 1px solid color-mix(in oklch, var(--color-photo-ink) 10%, transparent);
+  border-radius: var(--radius-card);
+  transition:
+    transform var(--dur-short) var(--ease-out),
+    border-color var(--dur-short) var(--ease-out);
+}
+
+.studios__card[data-accent='eco'] {
+  --_accent: var(--color-eco-bright);
+}
+
+.studios__card[data-accent='accent'] {
+  --_accent: var(--color-accent-bright);
+}
+
+/* 顶部渐变 hairline：accent → 透明（翻译自幻灯片的卡片顶部渐变条） */
+.studios__card::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  height: 2px;
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
+  background: linear-gradient(90deg, var(--_accent), transparent 70%);
+  opacity: 0.85;
+}
+
+.studios__card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in oklch, var(--_accent, var(--color-photo-ink)) 35%, transparent);
+}
+
+.studios__card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.studios__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid color-mix(in oklch, var(--_accent) 45%, transparent);
+  border-radius: var(--radius-card);
+  background: color-mix(in oklch, var(--_accent) 10%, transparent);
+  color: var(--_accent);
+}
+
+.studios__no {
+  font-family: var(--font-mono); /* 编号 = 数据感，mono outlier */
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-photo-muted);
+  white-space: nowrap;
+}
+
+.studios__category {
+  margin: var(--space-xs) 0 0;
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--_accent, var(--color-photo-muted));
+}
+
+.studios__name {
+  margin: 0;
+  font-family: var(--font-body); /* 卡名用粗黑体，与节标题行楷拉开层级 */
+  font-weight: 700;
+  font-size: var(--text-md);
+  letter-spacing: -0.01em;
+  color: var(--color-photo-ink);
+}
+
+.studios__desc {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.75;
+  color: var(--color-photo-muted);
+}
+
+/* tags：描边胶囊（沿用幻灯片语言），margin-top:auto 沉底对齐 */
+.studios__tags {
+  list-style: none;
+  margin: auto 0 0;
+  padding: var(--space-md) 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.studios__tags li {
+  padding: var(--space-2xs) var(--space-sm);
+  border: 1px solid color-mix(in oklch, var(--color-photo-ink) 18%, transparent);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-xs);
+  letter-spacing: 0.04em;
+  color: var(--color-photo-muted);
+  white-space: nowrap;
+  transition:
+    color var(--dur-short) var(--ease-out),
+    border-color var(--dur-short) var(--ease-out);
+}
+
+.studios__tags li:hover {
+  color: var(--_accent, var(--color-photo-ink));
+  border-color: color-mix(in oklch, var(--_accent, var(--color-photo-ink)) 55%, transparent);
+}
+
+/* ── 招募空状态卡：全站唯一虚线，CTA 占位（链接待定） ── */
+.studios__card--join {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: transparent;
+  border: 1px dashed color-mix(in oklch, var(--color-photo-ink) 25%, transparent);
+}
+
+.studios__card--join::before {
+  display: none; /* 无顶部渐变条 */
+}
+
+.studios__card--join:hover {
+  border-color: color-mix(in oklch, var(--color-accent-bright) 55%, transparent);
+  background: color-mix(in oklch, var(--color-accent-bright) 5%, transparent);
+}
+
+.studios__plus {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: var(--space-xs);
+  border: 1px dashed color-mix(in oklch, var(--color-photo-ink) 30%, transparent);
+  border-radius: 50%;
+  color: var(--color-photo-muted);
+}
+
+.studios__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  margin-top: var(--space-sm);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--color-accent-bright);
+  white-space: nowrap;
+}
+
+/* ── Mobile：节头纵排（gate 52），网格自动单列 ── */
+@media (max-width: 60rem) {
+  .studios {
+    padding-top: var(--space-2xl);
+  }
+
+  .studios__head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .studios__head-side {
+    text-align: left;
+  }
+}
+
+/* ── Reduced motion：位移关闭，仅留色彩过渡 ── */
+@media (prefers-reduced-motion: reduce) {
+  .studios__card,
+  .studios__tags li {
+    transition-duration: 150ms;
+    transition-timing-function: linear;
+  }
+
+  .studios__card:hover {
+    transform: none;
+  }
+}
