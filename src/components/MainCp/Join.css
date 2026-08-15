@@ -43,6 +43,42 @@
   width: clamp(3rem, 8vw, 5.5rem);
   height: 1px;
   background: var(--color-eco-bright);
+  /* 入场：随节打开自左生长 */
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-long) var(--ease-out) 320ms;
+}
+
+.scroll-mask.is-open .join__head::after {
+  transform: scaleX(1);
+}
+
+/* 部门卡分幕：节打开后逐张落位（animation + backwards，不干扰 hover transform） */
+@keyframes join-card-in {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+}
+
+.scroll-mask.is-open .join__dept {
+  animation: join-card-in var(--dur-long) var(--ease-out) backwards;
+}
+
+.scroll-mask.is-open .join__dept:nth-child(2) {
+  animation-delay: 80ms;
+}
+
+.scroll-mask.is-open .join__dept:nth-child(3) {
+  animation-delay: 160ms;
+}
+
+.scroll-mask.is-open .join__dept:nth-child(4) {
+  animation-delay: 240ms;
+}
+
+.scroll-mask.is-open .join__panel {
+  animation: join-card-in var(--dur-long) var(--ease-out) 160ms backwards;
 }
 
 .join__title {
@@ -153,11 +189,31 @@
 
 .join__dept-name {
   margin: 0;
+  align-self: flex-start; /* 收缩至文本宽，供 hover hairline 使用 */
+  position: relative;
   font-family: var(--font-body); /* 部门名用粗黑体，与节标题行楷拉开层级 */
   font-weight: 700;
   font-size: var(--text-md);
   letter-spacing: -0.01em;
   color: var(--color-photo-ink);
+}
+
+/* hover 微交互：部门名下 accent hairline 自左生长 */
+.join__dept-name::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 1px;
+  background: var(--_accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-short) var(--ease-out);
+}
+
+.join__dept:hover .join__dept-name::after {
+  transform: scaleX(1);
 }
 
 .join__dept-desc {
@@ -167,8 +223,7 @@
   color: var(--color-photo-muted);
 }
 
-/* 「了解部门」占位：margin-top:auto 沉底对齐；弱 hover 仅变色，无位移（链接待定） */
-.join__dept-more {
+/* 「了解部门」占位：margin-top:auto 沉底对齐；弱 hover 仅变色，无位移（链接待定） */.join__dept-more {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2xs);
@@ -409,6 +464,19 @@
   .join__dept:hover,
   .join__cta:hover {
     transform: none;
+  }
+
+  .join__dept-name::after {
+    transition: none;
+  }
+
+  .join__head::after {
+    transition: none;
+  }
+
+  .scroll-mask.is-open .join__dept,
+  .scroll-mask.is-open .join__panel {
+    animation: none;
   }
 
   .join__cta::after {

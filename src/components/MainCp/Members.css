@@ -43,6 +43,14 @@
   width: clamp(3rem, 8vw, 5.5rem);
   height: 1px;
   background: var(--color-eco-bright);
+  /* 入场：随节打开自左生长 */
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-long) var(--ease-out) 320ms;
+}
+
+.scroll-mask.is-open .members__head::after {
+  transform: scaleX(1);
 }
 
 .members__title {
@@ -93,5 +101,12 @@
 
   .members__head-side {
     text-align: left;
+  }
+}
+
+/* ── Reduced motion：规则线入场关闭 ── */
+@media (prefers-reduced-motion: reduce) {
+  .members__head::after {
+    transition: none;
   }
 }

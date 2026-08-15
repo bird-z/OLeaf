@@ -93,6 +93,11 @@ function MembersCarousel({
       role="group"
       aria-roledescription="carousel"
       aria-label={ariaLabel}
+      tabIndex={0}
+      onKeyDown={e => {
+        if (e.key === 'ArrowLeft') go(-1);
+        else if (e.key === 'ArrowRight') go(1);
+      }}
       onPointerEnter={() => setPaused(true)}
       onPointerLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}

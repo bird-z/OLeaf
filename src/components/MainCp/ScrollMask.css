@@ -21,9 +21,42 @@
   transform: none;
 }
 
+/* 内容分幕：幕布展开后，直接子块（节头 → 主体）依次落位，
+ * 全站各节统一节奏（150ms 起步，步进 120ms），一次入场不重复 */
+.scroll-mask > * {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity var(--dur-long) var(--ease-out),
+    transform var(--dur-long) var(--ease-out);
+}
+
+.scroll-mask.is-open > * {
+  opacity: 1;
+  transform: none;
+}
+
+.scroll-mask.is-open > *:nth-child(1) {
+  transition-delay: 150ms;
+}
+
+.scroll-mask.is-open > *:nth-child(2) {
+  transition-delay: 270ms;
+}
+
+.scroll-mask.is-open > *:nth-child(3) {
+  transition-delay: 390ms;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .scroll-mask {
     clip-path: none;
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .scroll-mask > * {
     opacity: 1;
     transform: none;
     transition: none;

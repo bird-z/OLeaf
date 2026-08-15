@@ -1,11 +1,13 @@
 @import "tailwindcss";
+@import "../tokens.css"; /* Hallmark 令牌：全局地基统一引用，禁止另立色值/字体栈 */
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
 @import "@fontsource-variable/noto-sans-sc";
-/* 行楷 display：子集化 woff2（21 字形 · 6KB，替代 fontsource 全量 109 分包）
- * 覆盖：启迪生命扉向未来 / 因热爱而启程 / 特色工作室 / 生物启扉协会
- * 新增 display 文案需重新生成：pyftsubset 脚本见 git 记录或联系维护者 */
+/* 行楷 display：子集化 woff2（116 字形 · 33KB，替代 fontsource 全量 93 分包）
+ * 覆盖：全部 display 场景 —— 各节标题（启迪生命扉向未来 / 因热爱而启程 / 特色工作室 /
+ * 繁花 / 从好奇出发）+ 成员姓氏字头像 + 成员引文（含「」，。）
+ * 新增 display 文案需重新生成：fontTools 合并 @fontsource/zhi-mang-xing 分包后 pyftsubset */
 @font-face {
   font-family: 'Zhi Mang Xing';
   font-style: normal;
@@ -18,25 +20,27 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --text: #4b4453;
-  --text-h: #0f0b1a;
-  --bg: #16121f; /* 页面底色转深，与星轨 hero / 深色 About 一致，过冲露底不穿帮 */
-  --border: #d1d5db;
-  --code-bg: #f3f0f9;
-  --accent: #7c3aed;
-  --accent-bg: rgba(124, 58, 237, 0.1);
-  --accent-border: rgba(124, 58, 237, 0.5);
-  --social-bg: rgba(243, 240, 249, 0.6);
+  /* 暗底夜空主题：全局色板统一引用 tokens（原浅色色板已翻暗，与 About/Studios/Members/Join 同色系） */
+  --text: var(--color-photo-muted);
+  --text-h: var(--color-photo-ink);
+  --bg: var(--color-paper-dark); /* 与 About 节背景同一令牌，消除节间底色差 */
+  --border: var(--color-rule);
+  --code-bg: var(--color-paper-2);
+  --accent: var(--color-accent);
+  --accent-bg: color-mix(in oklch, var(--color-accent) 12%, transparent);
+  --accent-border: color-mix(in oklch, var(--color-accent) 50%, transparent);
+  --social-bg: color-mix(in oklch, var(--color-photo-ink) 4%, transparent);
   --shadow:
     rgba(0, 0, 0, 0.12) 0 10px 15px -3px, rgba(0, 0, 0, 0.06) 0 4px 6px -2px;
 
-  --sans: system-ui, 'Segoe UI', Roboto, 'Noto Sans SC Variable', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  /* 字体栈统一：三栈全部指向 tokens（2+1：行楷 display · Geist body · Geist Mono outlier） */
+  --sans: var(--font-body);
+  --heading: var(--font-body);
+  --mono: var(--font-mono);
 
-  font: 18px/145% var(--sans);
+  font: 18px/145% var(--font-body);
   letter-spacing: 0.18px;
-  color-scheme: light;
+  color-scheme: dark;
   color: var(--text);
   background: var(--bg);
   font-synthesis: none;
@@ -281,8 +285,9 @@ code {
 }
 
 @theme inline {
-  --font-heading: var(--font-sans);
-  --font-sans: 'Geist Variable', sans-serif;
+  --font-heading: var(--font-body);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-mono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -368,7 +373,7 @@ code {
     }
   }
   html {
-    font-family: 'Geist Variable', sans-serif;
+    font-family: var(--font-body); /* 与 :root 同源，消除双字体栈 */
   }
 }
 
@@ -378,6 +383,19 @@ html {
 }
 body {
   overflow-x: clip;
+}
+
+/* Hallmark · 全局统一地基
+ * ::selection 走 eco 叶绿（生命语义）· 焦点环用暗底提亮令牌 ·
+ * 注意：不加全局 scroll-behavior:smooth —— useFullpage 的 rAF 逐帧 scrollTo 会被平滑化打断 */
+::selection {
+  background: color-mix(in oklch, var(--color-eco) 65%, transparent);
+  color: var(--color-eco-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus-on-dark);
+  outline-offset: 2px;
 }
 
 /* 隐藏滚动条（保留滚动能力；整页翻屏下滚动条已是多余 chrome） */

@@ -41,6 +41,34 @@
   width: clamp(3rem, 8vw, 5.5rem);
   height: 1px;
   background: var(--color-eco-bright);
+  /* 入场：随节打开自左生长 */
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-long) var(--ease-out) 320ms;
+}
+
+.scroll-mask.is-open .studios__head::after {
+  transform: scaleX(1);
+}
+
+/* 卡片分幕：节打开后逐张落位（animation + backwards，不干扰 hover transform） */
+@keyframes studios-card-in {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+}
+
+.scroll-mask.is-open .studios__card {
+  animation: studios-card-in var(--dur-long) var(--ease-out) backwards;
+}
+
+.scroll-mask.is-open .studios__card:nth-child(2) {
+  animation-delay: 90ms;
+}
+
+.scroll-mask.is-open .studios__card:nth-child(3) {
+  animation-delay: 180ms;
 }
 
 .studios__title {
@@ -145,6 +173,12 @@
   border-radius: var(--radius-card);
   background: color-mix(in oklch, var(--_accent) 10%, transparent);
   color: var(--_accent);
+  transition: transform var(--dur-short) var(--ease-out);
+}
+
+/* hover 微交互：图标轻侧倾，卡片整体微浮（生动但克制） */
+.studios__card:hover .studios__icon {
+  transform: rotate(-6deg) scale(1.05);
 }
 
 .studios__no {
@@ -276,5 +310,17 @@
 
   .studios__card:hover {
     transform: none;
+  }
+
+  .studios__card:hover .studios__icon {
+    transform: none;
+  }
+
+  .studios__head::after {
+    transition: none;
+  }
+
+  .scroll-mask.is-open .studios__card {
+    animation: none;
   }
 }

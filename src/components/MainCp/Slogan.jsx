@@ -90,8 +90,7 @@ function Slogan() {
             ))}
           </span>
         </p>
-        {/* TODO: 报名区块上线后改回 #join */}
-        <a className="hero__cta" href="#about" data-reveal style={{ '--i': 5 }}>
+        <a className="hero__cta" href="#join" data-reveal style={{ '--i': 5 }}>
           Join Us
           <span className="hero__cta-arrow" aria-hidden="true">→</span>
         </a>
