@@ -25,6 +25,7 @@
   --color-eco-bright:   oklch(74% 0.17 152);   /* 暗底叶绿 */
   --color-accent-bright: oklch(68% 0.19 290);  /* 暗底品牌紫 */
   --color-focus-on-dark: oklch(82% 0.1 290);   /* 暗底焦点环 */
+  --color-brass:        oklch(76% 0.11 88);    /* 黄铜金 — 页底英文 caps / 联系标题短划（取自协会幻灯片页底） */
 
   /* ── Typography（2+1：行楷 display · Geist body · Geist Mono outlier） ── */
   --font-display: 'Zhi Mang Xing', 'Noto Sans SC Variable', serif;
