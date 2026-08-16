@@ -135,13 +135,17 @@ function Members() {
             />
           )}
         />
-        
+
         <div className="members__wall">
           <DriftWall
             items={WALL_ITEMS}
-            lanes={5}
+            lanes={9}
             speed={26}
-            grayscale
+            tileWidth={280}
+            tileHeight={180}
+            gap={12}
+            dim={0.9}
+            grayscale={false}
             ariaLabel="成员墙：六张姓氏字卡与三张活动照片交替漂移"
           />
           <p className="members__wall-caption" aria-hidden="true">
