@@ -1,0 +1,123 @@
+/* EventsPage — 教育活动 · Ecosystem Index（学期分组卡片墙）
+ * 与科普/科学页结构刻意不同（多样化规则）：分组网格 + 图文卡
+ */
+
+@import '../../tokens.css';
+
+.events {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xl);
+}
+
+/* ── 学期分组头：mono 学期 + 细线 ── */
+.events__term {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin: 0 0 var(--space-lg);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  color: var(--color-eco-bright);
+}
+
+.events__term::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: color-mix(in oklch, var(--color-photo-ink) 16%, transparent);
+}
+
+/* ── 卡片网格：不等宽打破 AI 三连网格感 ── */
+.events__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: var(--space-lg);
+}
+
+.event-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid color-mix(in oklch, var(--color-photo-ink) 12%, transparent);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: color-mix(in oklch, var(--color-paper-dark) 88%, var(--color-photo-ink) 4%);
+  transition:
+    border-color var(--dur-short) var(--ease-out),
+    transform var(--dur-short) var(--ease-out);
+}
+
+.event-card:hover {
+  border-color: color-mix(in oklch, var(--color-eco-bright) 45%, transparent);
+  transform: translateY(-2px);
+}
+
+.event-card__img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  display: block;
+}
+
+/* 占位卡：虚线框 + mono 提示，一看就是待补充而非最终设计 */
+.event-card--empty {
+  border-style: dashed;
+}
+
+.event-card__placeholder {
+  aspect-ratio: 3 / 2;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  color: color-mix(in oklch, var(--color-photo-muted) 60%, transparent);
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 10px,
+    color-mix(in oklch, var(--color-photo-ink) 3%, transparent) 10px,
+    color-mix(in oklch, var(--color-photo-ink) 3%, transparent) 20px
+  );
+}
+
+.event-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-md) var(--space-lg) var(--space-lg);
+}
+
+.event-card__date {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  color: var(--color-eco-bright);
+}
+
+.event-card__title {
+  margin: 0;
+  font-size: var(--text-md);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--color-photo-ink);
+}
+
+.event-card__desc {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  color: var(--color-photo-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .event-card {
+    transition: border-color 150ms linear;
+  }
+
+  .event-card:hover {
+    transform: none;
+  }
+}

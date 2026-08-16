@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { GoArrowUpRight } from 'react-icons/go';
 import './CardNav.css';
@@ -202,20 +203,39 @@ const CardNav = ({
             >
               <div className="nav-card-label">{item.label}</div>
               <div className="nav-card-links">
-                {item.links?.map((lnk, i) => (
-                  <a
-                    key={`${lnk.label}-${i}`}
-                    className="nav-card-link"
-                    href={lnk.href}
-                    aria-label={lnk.ariaLabel}
-                    onClick={() => {
-                      if (isExpanded) toggleMenu();
-                    }}
-                  >
-                    <GoArrowUpRight className="nav-card-link-icon" aria-hidden="true" />
-                    {lnk.label}
-                  </a>
-                ))}
+                {item.links?.map((lnk, i) => {
+                  const inner = (
+                    <>
+                      <GoArrowUpRight className="nav-card-link-icon" aria-hidden="true" />
+                      {lnk.label}
+                    </>
+                  );
+                  const handleClick = () => {
+                    if (isExpanded) toggleMenu();
+                  };
+                  // 站内路径用 <Link>（SPA 无刷新），站外/锚点保持 <a>
+                  return lnk.href?.startsWith('/') ? (
+                    <Link
+                      key={`${lnk.label}-${i}`}
+                      className="nav-card-link"
+                      to={lnk.href}
+                      aria-label={lnk.ariaLabel}
+                      onClick={handleClick}
+                    >
+                      {inner}
+                    </Link>
+                  ) : (
+                    <a
+                      key={`${lnk.label}-${i}`}
+                      className="nav-card-link"
+                      href={lnk.href}
+                      aria-label={lnk.ariaLabel}
+                      onClick={handleClick}
+                    >
+                      {inner}
+                    </a>
+                  );
+                })}
               </div>
             </div>
           ))}

@@ -1,0 +1,139 @@
+/* SciencePage — 科学与工程 · Narrative Workflow（1.0→2.0→3.0 流程时间线）
+ * 品牌紫侧重；与活动页卡片墙、科普页目录索引形成第三种结构
+ */
+
+@import '../../tokens.css';
+
+.science {
+  display: flex;
+  flex-direction: column;
+}
+
+.science__stage {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-lg);
+}
+
+/* ── 时间线左轨：mono 阶段号 + 竖线贯穿 ── */
+.science__rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.science__step {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  letter-spacing: 0.1em;
+  color: var(--color-accent-bright);
+  border: 1px solid color-mix(in oklch, var(--color-accent-bright) 45%, transparent);
+  border-radius: var(--radius-pill);
+  padding: var(--space-2xs) var(--space-sm);
+  white-space: nowrap;
+}
+
+.science__line {
+  flex: 1;
+  width: 1px;
+  background: color-mix(in oklch, var(--color-accent-bright) 25%, transparent);
+}
+
+.science__stage:last-child .science__line {
+  background: linear-gradient(
+    to bottom,
+    color-mix(in oklch, var(--color-accent-bright) 25%, transparent),
+    transparent
+  );
+}
+
+/* ── 阶段内容 ── */
+.science__content {
+  padding-bottom: var(--space-3xl);
+  min-width: 0;
+}
+
+.science__label {
+  margin: 0 0 var(--space-lg);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--color-photo-ink);
+}
+
+.science__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: var(--space-lg);
+}
+
+.science__card {
+  padding: var(--space-lg);
+  border: 1px solid color-mix(in oklch, var(--color-photo-ink) 12%, transparent);
+  border-radius: var(--radius-card);
+  background: color-mix(in oklch, var(--color-paper-dark) 88%, var(--color-photo-ink) 4%);
+  transition: border-color var(--dur-short) var(--ease-out);
+}
+
+.science__card:hover {
+  border-color: color-mix(in oklch, var(--color-accent-bright) 45%, transparent);
+}
+
+.science__card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.science__studio {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent-bright);
+}
+
+/* 状态三色：孵化中=muted · 进行中=eco · 已发布=accent */
+.science__status {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.science__status--孵化中 {
+  color: var(--color-photo-muted);
+}
+
+.science__status--进行中 {
+  color: var(--color-eco-bright);
+}
+
+.science__status--已发布 {
+  color: var(--color-accent-bright);
+}
+
+.science__name {
+  margin: 0 0 var(--space-xs);
+  font-size: var(--text-md);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--color-photo-ink);
+}
+
+.science__desc {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  color: var(--color-photo-muted);
+}
+
+/* ── Mobile：时间线收窄 ── */
+@media (max-width: 40rem) {
+  .science__stage {
+    gap: var(--space-md);
+  }
+}

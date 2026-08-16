@@ -1,0 +1,125 @@
+/* Hallmark · PageShell — 活动档案页统一骨架
+ * 锁定层：mono 节序 / 行楷页头 / 双语 lede / 粗规则线页尾 CTA
+ * 令牌全部来自 tokens.css；accent 两档：eco（叶绿）· accent（品牌紫）
+ */
+
+@import '../../../tokens.css';
+
+.page-shell {
+  min-height: 100svh;
+  padding: var(--space-3xl) clamp(var(--space-md), 4vw, var(--space-2xl)) var(--space-2xl);
+  background: var(--color-paper-dark);
+  color: var(--color-photo-ink);
+  font-family: var(--font-body);
+  text-align: left;
+}
+
+/* ── 页头：单栏堆叠，mono 节序在上（gate 54 合法堆叠，非左右分布） ── */
+.page-shell__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin-bottom: var(--space-2xl);
+  padding-top: var(--space-3xl); /* 给 fixed 玻璃 nav 让位 */
+}
+
+.page-shell__index {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-eco-bright);
+}
+
+.page-shell--accent .page-shell__index {
+  color: var(--color-accent-bright);
+}
+
+.page-shell__title {
+  margin: 0;
+  font-family: var(--font-display); /* 行楷，与 hero 同一 display 角色 */
+  font-weight: 400;
+  font-size: var(--text-display);
+  line-height: 1.06;
+  letter-spacing: 0.04em;
+  color: var(--color-photo-warm);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.page-shell__lede {
+  margin: 0;
+  max-width: 58ch;
+  font-size: var(--text-md);
+  line-height: 1.75;
+  color: var(--color-photo-muted);
+}
+
+/* ── 页尾：粗规则线 + CTA（与 About 收尾同一 divider 语言） ── */
+.page-shell__tail {
+  margin-top: var(--space-3xl);
+  padding-top: var(--space-lg);
+  border-top: 2px solid var(--color-photo-ink);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+.page-shell__tail-text {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.page-shell__tail-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  min-height: 44px;
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-pill);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-size: var(--text-base);
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color var(--dur-short) var(--ease-out),
+    color var(--dur-short) var(--ease-out),
+    transform var(--dur-micro) var(--ease-out);
+}
+
+.page-shell__tail-cta:hover {
+  background: var(--color-eco);
+  color: var(--color-eco-ink);
+  transform: translateY(-1.5px);
+}
+
+.page-shell--accent .page-shell__tail-cta:hover {
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+}
+
+.page-shell__tail-cta:active {
+  transform: translateY(1px);
+}
+
+.page-shell__tail-cta:focus-visible {
+  outline: 2px solid var(--color-focus-on-dark);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-shell__tail-cta {
+    transition: background-color 150ms linear, color 150ms linear;
+  }
+
+  .page-shell__tail-cta:hover,
+  .page-shell__tail-cta:active {
+    transform: none;
+  }
+}
