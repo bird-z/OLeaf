@@ -54,8 +54,8 @@ function Wallet() {
       </section>
 
       {/* 充值额度 */}
-      <section className="card" aria-labelledby="tier-title">
-        <h2 className="card__title" id="tier-title">选择充值额度</h2>
+      <section className="panel" aria-labelledby="tier-title">
+        <h2 className="panel__title" id="tier-title">选择充值额度</h2>
         <div className="tier-grid">
           {RECHARGE_TIERS.map(t => (
             <button
@@ -88,7 +88,7 @@ function Wallet() {
 
       {/* 充值记录 */}
       <section aria-labelledby="record-title">
-        <h2 className="card__title" id="record-title" style={{ paddingLeft: 2 }}>充值记录</h2>
+        <h2 className="panel__title" id="record-title" style={{ paddingLeft: 2 }}>充值记录</h2>
         <DataTable
           columns={columns}
           rows={RECHARGE_RECORDS}

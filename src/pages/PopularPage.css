@@ -63,6 +63,8 @@
   gap: var(--space-lg);
   padding: var(--space-lg) var(--space-xs);
   border-bottom: 1px solid color-mix(in oklch, var(--color-photo-ink) 14%, transparent);
+  color: inherit;
+  text-decoration: none;
   transition: background-color var(--dur-short) var(--ease-out);
 }
 

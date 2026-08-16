@@ -4,230 +4,263 @@
     "category": "AI",
     "excerpt": "这是一份为你整理的 Linux x86_64 汇编代码速查笔记。在 GDB 调试中，默认使用的是 AT&T 语法（寄存器带 %，立即数带 $，目标操作数在右边）。掌握这些基础指令，…",
     "minutes": 4,
-    "path": "AI/汇编.md"
+    "path": "AI/汇编.md",
+    "file": "AI__汇编.md"
   },
   {
     "title": "claude",
     "category": "AI",
     "excerpt": "install claude use npm install is useful input deepseek in it bash export ANTHROPIC_BASE_U…",
     "minutes": 1,
-    "path": "AI/claude.md"
+    "path": "AI/claude.md",
+    "file": "AI__claude.md"
   },
   {
     "title": "CMake-理解与实践",
     "category": "AI",
     "excerpt": "[x] 理解 CMake 构建系统的核心概念 [x] 掌握 CMakeLists.txt 的结构与语法 [x] 看懂 STM32 项目的 CMake 构建配置 [x] 学会工具链文…",
     "minutes": 17,
-    "path": "AI/CMake-理解与实践.md"
+    "path": "AI/CMake-理解与实践.md",
+    "file": "AI__CMake-理解与实践.md"
   },
   {
     "title": "gcc",
     "category": "AI",
     "excerpt": "调试前必须加上 g 参数生成调试信息，建议加上 O0 关闭优化。",
     "minutes": 5,
-    "path": "AI/gcc.md"
+    "path": "AI/gcc.md",
+    "file": "AI__gcc.md"
   },
   {
     "title": "lsinitramfs",
     "category": "AI",
     "excerpt": "lsinitramfs 是一个 POSIX shell 脚本，用于列出一个或多个 initramfs（初始 RAM 文件系统）文件的内容。它是 unmkinitramfs 命令的封…",
     "minutes": 7,
-    "path": "AI/lsinitramfs-笔记.md"
+    "path": "AI/lsinitramfs-笔记.md",
+    "file": "AI__lsinitramfs.md"
   },
   {
     "title": "pthreads",
     "category": "AI",
     "excerpt": "[!abstract] 概述 POSIX.1 定义了一套线程编程接口，通称 Pthreads。一个进程可包含多个线程，它们执行同一程序，共享全局内存，但各自拥有独立的栈空间。",
     "minutes": 9,
-    "path": "AI/pthreads-笔记.md"
+    "path": "AI/pthreads-笔记.md",
+    "file": "AI__pthreads.md"
   },
   {
     "title": "Vim光标移动与跳转速查",
     "category": "AI",
     "excerpt": "除了 gd（跳转到当前文件内的定义）之外，以下操作可以让你在代码中实现 \"手不离主键区\"，与 VS Code 原生快捷键（F12、Alt + F12）不冲突，可混合使用。",
     "minutes": 4,
-    "path": "AI/Vim光标移动与跳转速查.md"
+    "path": "AI/Vim光标移动与跳转速查.md",
+    "file": "AI__Vim光标移动与跳转速查.md"
   },
   {
     "title": "正则表达",
     "category": "com",
     "excerpt": "^ and & ^ is a start at a sentence when ^ is out of square brackets & is a end at a senten…",
     "minutes": 1,
-    "path": "com/正则表达.md"
+    "path": "com/正则表达.md",
+    "file": "com__正则表达.md"
   },
   {
     "title": "Make",
     "category": "com",
     "excerpt": "makefile rule [!note] overview target... : prerequisites.... recipe ... ...",
     "minutes": 1,
-    "path": "com/Make.md"
+    "path": "com/Make.md",
+    "file": "com__Make.md"
   },
   {
     "title": "make and Cmake",
     "category": "com",
     "excerpt": "Makefile step 1 make hello:main.cpp $(CXX) o hello main.cpp CXX 内置变量 系统变量 echo \"ok\" setp 2",
     "minutes": 1,
-    "path": "com/make and Cmake.md"
+    "path": "com/make and Cmake.md",
+    "file": "com__make and Cmake.md"
   },
   {
     "title": "Note",
     "category": "com",
     "excerpt": "Quote you can use defferent kind of corlor to difine quit [!NOTE] like this and you can do…",
     "minutes": 1,
-    "path": "com/Note.md"
+    "path": "com/Note.md",
+    "file": "com__Note.md"
   },
   {
     "title": "opition",
     "category": "com",
     "excerpt": "grep（全称 Global Regular Expression Print）是 Linux 和 Unix 系统中最核心、最常用的文本搜索工具。它的核心作用是在一个或多个文件中，…",
     "minutes": 3,
-    "path": "com/opition.md"
+    "path": "com/opition.md",
+    "file": "com__opition.md"
   },
   {
     "title": "pipe",
     "category": "com",
     "excerpt": "[!note] man pipe you can get office form it",
     "minutes": 1,
-    "path": "com/pipe.md"
+    "path": "com/pipe.md",
+    "file": "com__pipe.md"
   },
   {
     "title": "RISC-V",
     "category": "com",
     "excerpt": "Add and Sub riscv add x1,x2,x3 x1=x2+x3",
     "minutes": 1,
-    "path": "com/RISC-V.md"
+    "path": "com/RISC-V.md",
+    "file": "com__RISC-V.md"
   },
   {
     "title": "jxau proj",
     "category": "crawlerL",
     "excerpt": "goal i need to get information from https://www.jxau.edu.cn/jsfc.htm all pages teacher inf…",
     "minutes": 1,
-    "path": "crawlerL/jxau proj.md"
+    "path": "crawlerL/jxau proj.md",
+    "file": "crawlerL__jxau proj.md"
   },
   {
     "title": "scrapy",
     "category": "crawlerL",
     "excerpt": "",
     "minutes": 1,
-    "path": "crawlerL/scrapy.md"
+    "path": "crawlerL/scrapy.md",
+    "file": "crawlerL__scrapy.md"
   },
   {
     "title": "2026-06-12",
     "category": "diary",
     "excerpt": "✨ 日记启程之日 ✨ 从今天起，用文字记录生活的每一帧。 无论是学习、思考还是心情， 都是独属于自己的成长轨迹。 不为什么，只为认真生活。 — 写给未来的自己",
     "minutes": 1,
-    "path": "diary/2026-06-12.md"
+    "path": "diary/2026-06-12.md",
+    "file": "diary__2026-06-12.md"
   },
   {
     "title": "2026-06-13",
     "category": "diary",
     "excerpt": "时间 事项 状态 7:30 起床 ✅ 9:00 英语四级考试 ✅ 12:00 14:00 休息 ⬜ 14:00 校区集合 ⬜",
     "minutes": 1,
-    "path": "diary/2026-06-13.md"
+    "path": "diary/2026-06-13.md",
+    "file": "diary__2026-06-13.md"
   },
   {
     "title": "Pi",
     "category": "Harness",
     "excerpt": "",
     "minutes": 1,
-    "path": "Harness/Pi.md"
+    "path": "Harness/Pi.md",
+    "file": "Harness__Pi.md"
   },
   {
     "title": "并发",
     "category": "linuxP",
     "excerpt": "info threads sreach current thread set schedulerlocking on lock threads on only one",
     "minutes": 1,
-    "path": "linuxP/并发.md"
+    "path": "linuxP/并发.md",
+    "file": "linuxP__并发.md"
   },
   {
     "title": "同步",
     "category": "linuxP",
     "excerpt": "",
     "minutes": 1,
-    "path": "linuxP/同步.md"
+    "path": "linuxP/同步.md",
+    "file": "linuxP__同步.md"
   },
   {
     "title": "data",
     "category": "myproj",
     "excerpt": "Part1: crawl news_name title news_url url news_flow flow",
     "minutes": 1,
-    "path": "myproj/data.md"
+    "path": "myproj/data.md",
+    "file": "myproj__data.md"
   },
   {
     "title": "full stack",
     "category": "myproj",
     "excerpt": "create a server by npx zsh npx jsonserver port 3001 data.json",
     "minutes": 1,
-    "path": "myproj/full stack.md"
+    "path": "myproj/full stack.md",
+    "file": "myproj__full stack.md"
   },
   {
     "title": "Algorithm",
     "category": "tool",
     "excerpt": "LL fast_pow(LL base, LL exp, int mod) {",
     "minutes": 1,
-    "path": "tool/Algorithm.md"
+    "path": "tool/Algorithm.md",
+    "file": "tool__Algorithm.md"
   },
   {
     "title": "git",
     "category": "tool",
     "excerpt": "clone git clone https:://github.com/birdz/... git status current status",
     "minutes": 1,
-    "path": "tool/git.md"
+    "path": "tool/git.md",
+    "file": "tool__git.md"
   },
   {
     "title": "temp",
     "category": "tool",
     "excerpt": "为什么有流量部 流量部就是线上市场的最前端，线上市场的学生从何处而来 ， 就是我们流量部 ，校区的结果从何而来，就是我们流量部， 流量部决定团队伙伴的结果，流量部决定校区的结果，帮…",
     "minutes": 2,
-    "path": "tool/temp.md"
+    "path": "tool/temp.md",
+    "file": "tool__temp.md"
   },
   {
     "title": "yolov10",
     "category": "tool",
     "excerpt": "Conda 是一个开源的包管理系统和环境管理系统，用于安装多个版本的软件包及其依赖关系，并在它们之间轻松切换。它是数据科学和机器学习领域的标准工具之一。",
     "minutes": 7,
-    "path": "tool/yolov10.md"
+    "path": "tool/yolov10.md",
+    "file": "tool__yolov10.md"
   },
   {
     "title": "API",
     "category": "web",
     "excerpt": "Https some kind of error 404 Not Found 400 Bad Request 500 Internal Server Error 200 secce…",
     "minutes": 1,
-    "path": "web/API.md"
+    "path": "web/API.md",
+    "file": "web__API.md"
   },
   {
     "title": "Backend",
     "category": "web",
     "excerpt": "Example get() and post()",
     "minutes": 1,
-    "path": "web/Backend.md"
+    "path": "web/Backend.md",
+    "file": "web__Backend.md"
   },
   {
     "title": "class1",
     "category": "web",
     "excerpt": "tag about HTML \\<tagname abc=\"\"\\ content goes here \\<tagname\\ Inserting links \\<a href=\"\"\\…",
     "minutes": 1,
-    "path": "web/class1.md"
+    "path": "web/class1.md",
+    "file": "web__class1.md"
   },
   {
     "title": "Curl",
     "category": "web",
     "excerpt": "好的！以下是一份结构清晰、实用性强的 curl 使用笔记，涵盖了从基础到进阶的核心用法，并附有真实场景示例，方便你快速查阅和使用。",
     "minutes": 7,
-    "path": "web/Curl.md"
+    "path": "web/Curl.md",
+    "file": "web__Curl.md"
   },
   {
     "title": "html",
     "category": "web",
     "excerpt": "超链接 \\<a href=\" \" </a link 未使用 visited 已使用 hover 悬浮时 adtive 使用时",
     "minutes": 53,
-    "path": "web/html.md"
+    "path": "web/html.md",
+    "file": "web__html.md"
   },
   {
     "title": "ReactStart",
     "category": "web",
     "excerpt": "File board jsx import { createRoot } from 'reactdom/client';",
     "minutes": 3,
-    "path": "web/ReactStart.md"
+    "path": "web/ReactStart.md",
+    "file": "web__ReactStart.md"
   }
 ]

@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import PageShell from '../components/MainCp/PageShell.jsx';
 import ARTICLES from '../data/articles.json';
 import './PopularPage.css';
@@ -57,7 +58,7 @@ function PopularPage() {
       {/* 目录式索引行 */}
       <div className="popular__list">
         {filtered.map(a => (
-          <article className="popular__row" key={a.path}>
+          <Link className="popular__row" key={a.path} to={`/popular/${a.category}/${encodeURIComponent(a.title)}`}>
             <div className="popular__row-main">
               <h3 className="popular__row-title">{a.title}</h3>
               <p className="popular__row-excerpt">{a.excerpt}</p>
@@ -66,7 +67,7 @@ function PopularPage() {
               <span className="popular__row-cat">{a.category}</span>
               <span className="popular__row-minutes">{a.minutes} min</span>
             </div>
-          </article>
+          </Link>
         ))}
       </div>
     </PageShell>

@@ -1,0 +1,142 @@
+/* ArticlePage — 文章详情（markdown 正文排版）
+ * 长文阅读：65ch measure · 1.8 行高 · 行内代码/代码块/表格令牌化
+ */
+
+@import '../../tokens.css';
+
+.article__back {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: var(--space-xl);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  color: var(--color-eco-bright);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.article__back:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* ── 正文排版 ── */
+.article__body {
+  max-width: 65ch;
+  font-size: var(--text-base);
+  line-height: 1.8;
+  color: var(--color-photo-muted);
+}
+
+.article__body h1,
+.article__body h2,
+.article__body h3,
+.article__body h4 {
+  margin: var(--space-xl) 0 var(--space-sm);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--color-photo-ink);
+}
+
+.article__body h1 { font-size: var(--text-xl); }
+.article__body h2 { font-size: var(--text-lg); }
+.article__body h3 { font-size: var(--text-md); }
+
+.article__body p {
+  margin: 0 0 var(--space-md);
+}
+
+.article__body a {
+  color: var(--color-eco-bright);
+  text-decoration: none;
+}
+
+.article__body a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.article__body ul,
+.article__body ol {
+  margin: 0 0 var(--space-md);
+  padding-left: var(--space-lg);
+}
+
+.article__body li {
+  margin-bottom: var(--space-2xs);
+}
+
+.article__body strong {
+  color: var(--color-photo-ink);
+  font-weight: 600;
+}
+
+/* 行内代码：mono + 浅底 */
+.article__body code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: color-mix(in oklch, var(--color-photo-ink) 8%, transparent);
+  color: var(--color-eco-bright);
+}
+
+/* 代码块：顶规则 + mono 标签语言 */
+.article__body pre {
+  margin: 0 0 var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  border: 1px solid color-mix(in oklch, var(--color-photo-ink) 12%, transparent);
+  border-radius: var(--radius-card);
+  background: color-mix(in oklch, var(--color-paper-dark) 80%, var(--color-photo-ink) 4%);
+  overflow-x: auto;
+}
+
+.article__body pre code {
+  padding: 0;
+  background: none;
+  color: var(--color-photo-ink);
+  font-size: var(--text-xs);
+  line-height: 1.7;
+}
+
+/* 引用块：左侧 eco 细线 */
+.article__body blockquote {
+  margin: 0 0 var(--space-md);
+  padding: var(--space-xs) var(--space-md);
+  border-left: 2px solid var(--color-eco-bright);
+  color: var(--color-photo-muted);
+}
+
+.article__body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-card);
+}
+
+.article__body table {
+  width: 100%;
+  margin-bottom: var(--space-md);
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.article__body th,
+.article__body td {
+  padding: var(--space-xs) var(--space-sm);
+  border: 1px solid color-mix(in oklch, var(--color-photo-ink) 12%, transparent);
+  text-align: left;
+}
+
+.article__body th {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: var(--color-eco-bright);
+}
+
+.article__body hr {
+  margin: var(--space-xl) 0;
+  border: none;
+  border-top: 1px solid color-mix(in oklch, var(--color-photo-ink) 14%, transparent);
+}

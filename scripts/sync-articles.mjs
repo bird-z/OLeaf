@@ -8,6 +8,7 @@ import { join, basename } from 'node:path';
 
 const VAULT = '/home/bird/note/los';
 const OUT = new URL('../src/data/articles.json', import.meta.url);
+const BODY_DIR = new URL('../src/data/articles/', import.meta.url);
 const SKIP_DIRS = new Set(['.obsidian', '.claudian', '.git']);
 
 const stripMd = s =>
@@ -33,12 +34,16 @@ for (const dir of readdirSync(VAULT)) {
         .map(p => stripMd(p))
         .find(p => p.length > 20 && !p.startsWith('!')) || '';
     const words = raw.replace(/\s/g, '').length;
+    // 正文落盘：分类__标题.md（文件名净化，供 import.meta.glob 读取）
+    const fileName = `${dir}__${title}`.replace(/[\\/:*?"<>|]/g, '_') + '.md';
+    writeFileSync(new URL(fileName, BODY_DIR), raw);
     articles.push({
       title,
       category: dir,
       excerpt: paragraph.slice(0, 90) + (paragraph.length > 90 ? '…' : ''),
       minutes: Math.max(1, Math.round(words / 400)),
-      path: join(dir, file)
+      path: join(dir, file),
+      file: fileName
     });
   }
 }
