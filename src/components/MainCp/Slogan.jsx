@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { useAnchorScroll } from '../../lib/scrollTo.js';
 import './Slogan.css';
 
 const SUBTITLE = '一粒因热爱播种的种子 在江农的土壤里生根发芽';
@@ -10,6 +11,7 @@ const HERO_SRCSET = fmt =>
 
 function Slogan() {
   const heroRef = useRef(null);
+  const anchorScroll = useAnchorScroll(); // HashRouter：#join 原生锚点会白屏，走 JS 滚动
 
   /* 滚动视差：--hero-p ∈ [0,1] 驱动背景缩放/位移，与 useFullpage 弹性翻页衔接。
    * rAF 节流 + passive 监听；reduced-motion 下不启用（CSS 侧同步塌缩）。 */
@@ -95,7 +97,7 @@ function Slogan() {
             ))}
           </span>
         </p>
-        <a className="hero__cta" href="#join" data-reveal style={{ '--i': 5 }}>
+        <a className="hero__cta" href="#join" onClick={anchorScroll('join')} data-reveal style={{ '--i': 5 }}>
           Join Us
           <span className="hero__cta-arrow" aria-hidden="true">→</span>
         </a>

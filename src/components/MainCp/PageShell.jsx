@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { useAnchorScroll } from '../../lib/scrollTo.js';
 import Nav from './Nav.jsx';
 import ScrollMask from './ScrollMask.jsx';
 import './PageShell.css';
@@ -9,6 +9,7 @@ import './PageShell.css';
  * accent: 'eco'（叶绿侧重）| 'accent'（品牌紫侧重），驱动节序号与 CTA  hover 色
  */
 function PageShell({ no, id, title, en, lede, accent = 'eco', displayTitle = true, children }) {
+  const anchorScroll = useAnchorScroll(); // HashRouter：页尾 CTA 回主站 #join 须走 JS 滚动
   return (
     <div className={`page-shell page-shell--${accent}`} id={id}>
       <Nav />
@@ -28,10 +29,10 @@ function PageShell({ no, id, title, en, lede, accent = 'eco', displayTitle = tru
 
         <footer className="page-shell__tail">
           <p className="page-shell__tail-text">想一起做点有意思的事？</p>
-          <Link className="page-shell__tail-cta" to="/#join">
+          <a className="page-shell__tail-cta" href="#join" onClick={anchorScroll('join')}>
             加入我们
             <span aria-hidden="true">→</span>
-          </Link>
+          </a>
         </footer>
       </ScrollMask>
     </div>

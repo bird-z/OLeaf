@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAnchorScroll } from '../lib/scrollTo.js';
 import { gsap } from 'gsap';
 import { GoArrowUpRight } from 'react-icons/go';
 import './CardNav.css';
@@ -17,6 +18,7 @@ const CardNav = ({
 }) => {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const anchorScroll = useAnchorScroll(); // HashRouter：CTA #join 走 JS 滚动，防白屏
   const navRef = useRef(null);
   const hamburgerRef = useRef(null);
   const cardsRef = useRef([]);
@@ -187,6 +189,7 @@ const CardNav = ({
           <a
             className="card-nav-cta-button"
             href="#join"
+            onClick={anchorScroll('join')}
             style={buttonBgColor ? { backgroundColor: buttonBgColor, color: buttonTextColor } : undefined}
           >
             Join Us
