@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import Nav from './Nav.jsx';
 import ScrollMask from './ScrollMask.jsx';
 import './PageShell.css';
 
@@ -10,6 +11,7 @@ import './PageShell.css';
 function PageShell({ no, id, title, en, lede, accent = 'eco', children }) {
   return (
     <div className={`page-shell page-shell--${accent}`} id={id}>
+      <Nav />
       <ScrollMask>
         <header className="page-shell__head">
           <span className="page-shell__index" aria-hidden="true">
