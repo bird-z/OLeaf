@@ -36,6 +36,7 @@ function ArticlePage() {
       en={`${article.minutes} min read`}
       lede=""
       accent="eco"
+      displayTitle={false}
     >
       <Link className="article__back" to="/popular">← 返回知识普及</Link>
       <article className="article__body">

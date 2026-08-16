@@ -47,6 +47,16 @@
   min-width: 0;
 }
 
+/* 动态/拉丁标题（文章详情）：行楷子集不覆盖任意字符，走 body 字体 */
+.page-shell__title--sans {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-display-s);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--color-photo-ink);
+}
+
 .page-shell__lede {
   margin: 0;
   max-width: 58ch;
