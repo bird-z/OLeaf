@@ -8,7 +8,7 @@ function Nav() {
       logoAlt="EcoRem · 江农学生协会"
       items={[
         { label: 'Academic', links: [
-          { label: 'API', href: '/api', ariaLabel: 'EcoRem API 中转站控制台' },
+          { label: 'API', href: 'http://localhost:3000', ariaLabel: 'EcoRem API 中转站控制台' },
           { label: 'Research', href: '#', ariaLabel: 'View activity' },
           { label: 'Publications', href: '#', ariaLabel: 'View activity' },
         ]},
