@@ -13,7 +13,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('/fonts/zhi-mang-xing-subset.woff2') format('woff2');
+  src: url('./assets/fonts/zhi-mang-xing-subset.woff2') format('woff2');
 }
 @import "@fontsource/geist-mono";
 

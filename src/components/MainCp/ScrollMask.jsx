@@ -12,6 +12,16 @@ function ScrollMask({ children, className = '', threshold = 0.15 }) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    /* 同步兜底：挂载时已在视口内 → 直接揭开。
+     * 原因：整页包装（PageShell）高度常超 4000px，IO 初始回调在个别环境
+     * 会带回 ratio:0/isIntersecting:false 且不再重发，页面永久隐形。 */
+    const r = el.getBoundingClientRect();
+    if (r.top < window.innerHeight && r.bottom > 0) {
+      setOpen(true);
+      return;
+    }
+
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {

@@ -3,6 +3,11 @@ import './Slogan.css';
 
 const SUBTITLE = '一粒因热爱播种的种子 在江农的土壤里生根发芽';
 
+/* 部署在 GitHub Pages /OLeaf/ 子路径：public 资源一律用 BASE_URL 拼接 */
+const BASE = import.meta.env.BASE_URL;
+const HERO_SRCSET = fmt =>
+  `${BASE}hero/life-768.${fmt} 768w, ${BASE}hero/life-1536.${fmt} 1536w, ${BASE}hero/life-2048.${fmt} 2048w`;
+
 function Slogan() {
   const heroRef = useRef(null);
 
@@ -37,17 +42,17 @@ function Slogan() {
       <picture>
         <source
           type="image/avif"
-          srcSet="/hero/life-768.avif 768w, /hero/life-1536.avif 1536w, /hero/life-2048.avif 2048w"
+          srcSet={HERO_SRCSET('avif')}
           sizes="100vw"
         />
         <source
           type="image/webp"
-          srcSet="/hero/life-768.webp 768w, /hero/life-1536.webp 1536w, /hero/life-2048.webp 2048w"
+          srcSet={HERO_SRCSET('webp')}
           sizes="100vw"
         />
         <img
           className="hero__bg"
-          src="/hero/life-2048.jpg"
+          src={`${BASE}hero/life-2048.jpg`}
           alt=""
           aria-hidden="true"
           fetchPriority="high"
