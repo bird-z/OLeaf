@@ -13,6 +13,8 @@
 
 .footer {
   padding: var(--space-3xl) clamp(var(--space-md), 4vw, var(--space-2xl)) var(--space-lg);
+  /* 黑-绿交替节奏：页底收束于黑底（显式声明），与 Join 夜绿节形成收尾对比 */
+  background: var(--color-paper-dark);
   border-top: 1px solid color-mix(in oklch, var(--color-photo-ink) 10%, transparent);
   color: var(--color-photo-ink);
   font-family: var(--font-body);

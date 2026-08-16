@@ -16,6 +16,15 @@
 
 .members {
   padding: var(--space-3xl) clamp(var(--space-md), 4vw, var(--space-2xl));
+  /* 黑-绿交替节奏：本节黑底（显式声明，不再依赖页面底色）。
+     稀疏星点图案呼应 hero 星轨与 CardNav 微星点 */
+  background:
+    radial-gradient(1px 1px at 18% 26%, color-mix(in oklch, var(--color-photo-ink) 20%, transparent) 50%, transparent 56%),
+    radial-gradient(1px 1px at 44% 72%, color-mix(in oklch, var(--color-photo-ink) 14%, transparent) 50%, transparent 56%),
+    radial-gradient(1.5px 1.5px at 67% 18%, color-mix(in oklch, var(--color-photo-ink) 17%, transparent) 50%, transparent 56%),
+    radial-gradient(1px 1px at 84% 52%, color-mix(in oklch, var(--color-photo-ink) 12%, transparent) 50%, transparent 56%),
+    radial-gradient(1px 1px at 32% 88%, color-mix(in oklch, var(--color-photo-ink) 15%, transparent) 50%, transparent 56%),
+    var(--color-paper-dark);
   color: var(--color-photo-ink);
   font-family: var(--font-body);
   text-align: left;
@@ -91,7 +100,7 @@
 /* ── 成员墙（DriftWall 独立内容块）：节头与轮播之间的透视漂移墙 ── */
 .members__wall {
   position: relative;
-  height: clamp(320px, 44vh, 460px);
+  height: clamp(420px, 56vh, 620px);
   margin-bottom: var(--space-2xl);
 }
 
@@ -123,7 +132,7 @@
   }
 
   .members__wall {
-    height: clamp(260px, 36vh, 360px); /* 小屏横向行漂移，高度收拢 */
+    height: clamp(300px, 44vh, 440px); /* 小屏横向行漂移，高度收拢 */
   }
 }
 

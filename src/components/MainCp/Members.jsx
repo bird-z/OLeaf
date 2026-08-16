@@ -116,20 +116,7 @@ function Members() {
           </div>
         </header>
 
-        <div className="members__wall">
-          <DriftWall
-            items={WALL_ITEMS}
-            lanes={5}
-            speed={26}
-            grayscale
-            ariaLabel="成员墙：六张姓氏字卡与三张活动照片交替漂移"
-          />
-          <p className="members__wall-caption" aria-hidden="true">
-            The Wall · 字卡为序，更多同路人持续生长
-          </p>
-        </div>
-
-        <MembersCarousel
+     <MembersCarousel
           items={MEMBERS}
           ariaLabel="协会成员介绍"
           renderItem={member => (
@@ -148,6 +135,21 @@ function Members() {
             />
           )}
         />
+        
+        <div className="members__wall">
+          <DriftWall
+            items={WALL_ITEMS}
+            lanes={5}
+            speed={26}
+            grayscale
+            ariaLabel="成员墙：六张姓氏字卡与三张活动照片交替漂移"
+          />
+          <p className="members__wall-caption" aria-hidden="true">
+            The Wall · 字卡为序，更多同路人持续生长
+          </p>
+        </div>
+
+   
       </ScrollMask>
     </section>
   );

@@ -15,6 +15,11 @@
 
 .studios {
   padding: var(--space-3xl) clamp(var(--space-md), 4vw, var(--space-2xl));
+  /* 黑-绿交替节奏：本节夜绿底。点阵 + 顶部 eco 微光作图案修饰（克制，不抢卡片） */
+  background:
+    radial-gradient(color-mix(in oklch, var(--color-eco-bright) 5%, transparent) 1px, transparent 1.6px) 0 0 / 26px 26px,
+    radial-gradient(ellipse 55% 38% at 88% 0%, color-mix(in oklch, var(--color-eco) 9%, transparent), transparent 70%) no-repeat,
+    var(--color-paper-green);
   color: var(--color-photo-ink);
   font-family: var(--font-body);
   text-align: left;
