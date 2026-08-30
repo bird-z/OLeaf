@@ -5,6 +5,10 @@ import DriftWall from '../DriftWall.jsx';
 import pscImg from '../../assets/psc.jpg';
 import hackathonImg from '../../assets/hackathon.jpg';
 import lifeImg from '../../assets/生命.jpeg';
+import wallAward from '../../assets/wall-hackathon-award.webp';
+import wallKids from '../../assets/wall-science-kids.webp';
+import wallHall from '../../assets/wall-hackathon-hall.webp';
+import wallCode from '../../assets/wall-hackathon-code.webp';
 import './Members.css';
 
 /* 数据驱动·可扩展：新增成员只需在数组末尾加一项。
@@ -86,18 +90,23 @@ const MEMBERS = [
   }
 ];
 
-/* 成员墙瓷砖：6 张行楷姓氏字卡 × 3 张活动照混排（决策：字卡+照片混排）。
- * 交错排序让各列/各行字卡与照片均匀分布；DriftWall 内部无限复制，重复天然成立。 */
+/* 成员墙瓷砖：6 张行楷姓氏字卡 × 7 张活动照混排（决策：字卡+照片混排）。
+ * 交错排序让各列/各行字卡与照片均匀分布；DriftWall 内部无限复制，重复天然成立。
+ * 变更：+4 张活动实拍（pic3 与 pic5 为同一张，已去重）。 */
 const WALL_ITEMS = [
   { kind: 'char', char: '林', accent: 'eco', title: '林沛然' },
   { kind: 'image', image: pscImg, title: '第一次全体（扩大）会议合影' },
   { kind: 'char', char: '苏', accent: 'accent', title: '苏晚晴' },
+  { kind: 'image', image: wallAward, title: '第一届「黑客松」AI 创作大赛颁奖合影' },
   { kind: 'char', char: '叶', accent: 'eco', title: '叶蓁蓁' },
-  { kind: 'image', image: hackathonImg, title: '第一届「黑客松」AI 创作大赛合影' },
+  { kind: 'image', image: wallKids, title: '公益科普课堂 · 与孩子们合影' },
   { kind: 'char', char: '陈', accent: 'accent', title: '陈屿舟' },
+  { kind: 'image', image: hackathonImg, title: '第一届「黑客松」AI 创作大赛合影' },
   { kind: 'char', char: '何', accent: 'eco', title: '何田田' },
-  { kind: 'image', image: lifeImg, title: '校园星轨夜景' },
-  { kind: 'char', char: '高', accent: 'accent', title: '高蕴哲' }
+  { kind: 'image', image: wallHall, title: '黑客松现场 · 聆听分享' },
+  { kind: 'char', char: '高', accent: 'accent', title: '高蕴哲' },
+  { kind: 'image', image: wallCode, title: '黑客松现场 · 代码创作' },
+  { kind: 'image', image: lifeImg, title: '校园星轨夜景' }
 ];
 
 function Members() {
@@ -146,7 +155,7 @@ function Members() {
             gap={12}
             dim={0.9}
             grayscale={false}
-            ariaLabel="成员墙：六张姓氏字卡与三张活动照片交替漂移"
+            ariaLabel="成员墙：六张姓氏字卡与七张活动照片交替漂移"
           />
           <p className="members__wall-caption" aria-hidden="true">
             The Wall · 字卡为序，更多同路人持续生长
