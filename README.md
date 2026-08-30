@@ -1,16 +1,31 @@
-# React + Vite
+# OLeaf · 生物启扉协会官网
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+江西农业大学生物启扉协会（EcoRem）官网 —— 启迪生命，扉向未来。
 
-Currently, two official plugins are available:
+## 技术栈
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+React 19 · Vite 8 · Tailwind CSS 4 · GSAP · motion · react-router（HashRouter）
 
-## React Compiler
+## 常用命令
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+pnpm dev        # 开发
+pnpm build      # 构建 → dist/
+pnpm preview    # 预览构建产物
+pnpm lint       # oxlint
+pnpm server     # json-server（Mapp 资讯页演示数据，端口 3001）
+```
 
-## Expanding the Oxlint configuration
+## 部署（GitHub Pages）
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+站点发布于 `https://bird-z.github.io/OLeaf/`：
+
+1. `vite.config.js` 已设 `base: '/OLeaf/'`，资源路径自带子路径前缀
+2. 部署方式：`dist/` 推送到 `gh-pages` 干净分支，Pages 源选该分支 `/(root)`
+3. 前端路由为 HashRouter（`/#/science`），规避 Pages 无 SPA 回退的 404
+
+## 设计体系
+
+- `tokens.css` 是全站唯一设计令牌源（Cobalt 骨架 + 品牌紫交互 + 叶绿 eco 语义）
+- 字体：行楷（display 标题，子集化 woff2 于 `src/assets/fonts/`）· Geist（正文）· Geist Mono（数据/标签）
+- 新增 display 文案需更新行楷子集字形
