@@ -14,6 +14,8 @@
   position: relative;
   height: var(--mc-stage-h);
   cursor: grab;
+  touch-action: pan-y; /* 横滑交给轮播，纵滑继续交给页面/全页滚动 */
+  user-select: none;
 }
 
 .mc-stage:active {

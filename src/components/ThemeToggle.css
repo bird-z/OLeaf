@@ -1,0 +1,91 @@
+/* ThemeToggle · 导航栏主题切换按钮
+ *
+ * 图标字体：阿里巴巴 iconfont 导出包（src/assets/font_f3y78zakpcq），
+ * 该包含单个字形「主题切换」= U+E6E8。这里只取字体文件本身，
+ * 不引入包内 iconfont.css —— 它的 .iconfont 带 font-size:16px !important，
+ * 会与项目的字体与尺寸令牌体系打架。
+ */
+
+@font-face {
+  font-family: 'shnda-theme-icon';
+  src: url('../assets/font_f3y78zakpcq/iconfont.ttf') format('truetype');
+  font-display: block;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid color-mix(in oklch, var(--color-photo-ink) 24%, transparent);
+  border-radius: 50%;
+  background: color-mix(in oklch, var(--color-photo-ink) 7%, transparent);
+  color: var(--color-photo-warm);
+  cursor: pointer;
+  transition:
+    border-color var(--dur-short) var(--ease-out),
+    background-color var(--dur-short) var(--ease-out),
+    color var(--dur-short) var(--ease-out),
+    transform var(--dur-micro) var(--ease-out);
+}
+
+.theme-toggle:hover {
+  border-color: color-mix(in oklch, var(--color-eco-bright) 60%, transparent);
+  background: color-mix(in oklch, var(--color-eco-bright) 12%, transparent);
+  color: var(--color-eco-bright);
+  transform: translateY(-1.5px);
+}
+
+.theme-toggle:active {
+  transform: translateY(1px);
+  transition-duration: var(--dur-micro);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--color-focus-on-dark);
+  outline-offset: 3px;
+}
+
+/* iconfont 字形：字体本身带 baseline，微调 1px 令其在圆内视觉居中 */
+.theme-toggle__icon {
+  font-family: 'shnda-theme-icon';
+  font-size: 18px;
+  font-style: normal;
+  line-height: 1;
+  font-variant: normal;
+  text-transform: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translateY(-0.5px);
+}
+
+.theme-toggle__icon::before {
+  content: '\e6e8';
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle {
+    transition-duration: 150ms;
+    transition-timing-function: linear;
+  }
+
+  .theme-toggle:hover,
+  .theme-toggle:active {
+    transform: none;
+  }
+}
+
+/* 跟随系统时留一个不易察觉的标记：环内细点，不打扰但可辨识 */
+.theme-toggle[data-follow]::after {
+  content: '';
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.55;
+  transform: translateY(13px);
+}

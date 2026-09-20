@@ -65,3 +65,62 @@
   --radius-card: 6px;
   --radius-pill: 999px;
 }
+
+/* ════════════════════════════════════════════════════════════════
+ * 主题层 —— 昼间 · 图鉴纸本  /  夜间 · 星轨暗场
+ *
+ * 机制：不改组件，只翻转「暗底系」令牌的值。组件里的 var() 引用保持不动，
+ *       切换主题因此是零组件改动的（影像区例外，见下）。
+ *
+ * 注意 --color-ink 与 --color-paper 的方向：
+ *   ink   = 墨（深）—— 两个主题下都深，用于「反色块底」与照片 scrim。
+ *   paper = 纸（浅）—— 夜间是亮块，昼间翻成墨成为反色块，形成对比反转。
+ * ════════════════════════════════════════════════════════════════ */
+[data-theme='light'] {
+  /* ── 标本册的纸纤维纹理（全局背景材质） ──
+   * fractalNoise 生成的深色纤维，作为纸张质感叠在所有纸面节上。
+   * 用户要求「清晰的纹理」——可见但服从内容，不干扰文字。 */
+  --texture-paper: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27260%27%20height%3D%27260%27%3E%3Cfilter%20id%3D%27f%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.95%27%20numOctaves%3D%272%27%20stitchTiles%3D%27stitch%27/%3E%3CfeColorMatrix%20type%3D%27matrix%27%20values%3D%270%200%200%200%200.13%200%200%200%200%200.13%200%200%200%200%200.16%200%200%200%200.18%200%27/%3E%3C/filter%3E%3Crect%20width%3D%27260%27%20height%3D%27260%27%20filter%3D%27url%28%23f%29%27/%3E%3C/svg%3E");
+
+  /* 表面：夜空黑 / 夜绿 → 纸面 / 标本纸绿（同一 hue，只换明度） */
+  --color-paper-dark:    oklch(98.5% 0.004 290); /* 纸面（冷白微紫，与品牌紫同 hue） */
+  --color-paper-green:   oklch(96.5% 0.018 152); /* 标本纸绿：保留「黑-绿交替」的节奏 */
+  --color-paper-2:       oklch(93% 0.008 290);   /* 次级表面，在纸面上可见 */
+  --color-rule:          oklch(76% 0.01 290);    /* 细规则线：浅底需加深才可见 */
+
+  /* 文字：亮字 → 墨字 */
+  --color-photo-ink:     oklch(21% 0.02 290);    /* = ink，主文字 */
+  --color-photo-muted:   oklch(42% 0.014 290);   /* = muted，次文字 */
+  --color-photo-warm:    oklch(30% 0.035 72);    /* 行楷暖标题 → 植物志褐墨，保留「暖」语义 */
+
+  /* 强调：提亮版 → 加深版（对比方向反转） */
+  --color-eco-bright:    oklch(50% 0.15 152);
+  --color-accent-bright: oklch(48% 0.21 290);
+  --color-focus-on-dark: oklch(48% 0.21 290);    /* 浅底焦点环 */
+  --color-brass:         oklch(46% 0.09 80);     /* 黄铜 → 赭金 */
+
+  /* 注意：--color-paper 不翻转 —— 它永远是纸白（98.5%）。「反色块」（hero/导航/内页尾部
+   * CTA）已在各组件的浅色覆盖里显式用 --color-ink 作底，不依赖翻转 paper；一旦翻转，
+   * paper 会在昼间变成墨色，把像 ProfileCard 这样按"纸白"引用的组件直接变黑底。 */
+}
+
+/* ── 影像恒定组 ──
+ * 这些区块的影像是夜景/活动照，在浅色模式下保持暗底：被"洗白"会失真，
+ * 且它们本身就是「夜空窗口」，于是页面形成「深 - 浅 - 深」的呼吸节奏。
+ * 首屏 Hero 不在此列 —— 它有昼夜双图（星轨 / 白昼校园），随主题切换。 */
+.scroll-expand,
+.members__wall,
+.drift-wall,
+.depth-carousel {
+  --color-paper:         oklch(98.5% 0.004 290);
+  --color-paper-2:       oklch(96% 0.006 290);
+  --color-rule:          oklch(87% 0.008 290);
+  --color-ink:           oklch(21% 0.02 290);
+  --color-photo-ink:     oklch(96% 0.005 290);
+  --color-photo-warm:    oklch(94% 0.014 85);
+  --color-photo-muted:   oklch(80% 0.012 290);
+  --color-paper-dark:    oklch(16% 0.012 290);
+  --color-eco-bright:    oklch(74% 0.17 152);
+  --color-accent-bright: oklch(68% 0.19 290);
+  --color-focus-on-dark: oklch(82% 0.1 290);
+}

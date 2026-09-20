@@ -40,7 +40,7 @@
 
   font: 18px/145% var(--font-body);
   letter-spacing: 0.18px;
-  color-scheme: dark;
+  color-scheme: dark; /* 默认暗；html[data-theme='light'] 会覆盖（见下方主题段） */
   color: var(--text);
   background: var(--bg);
   font-synthesis: none;
@@ -393,6 +393,40 @@ body {
   color: var(--color-eco-ink);
 }
 
+/* ── 主题 ──
+ * html[data-theme] 的值由 index.html 内联脚本 / useTheme 落定。
+ * color-scheme 跟随主题，确保滚动条、表单控件、自动填充同调。 */
+html[data-theme='light'] {
+  color-scheme: light;
+}
+
+html[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+/* ── 主题切换过渡 ──
+ * 优先 View Transitions（见 src/lib/theme.js）：整页在合成器层交叉淡入，
+ * 不触发 paint，页面再重也不掉帧。下面这组仅供不支持该 API 的浏览器回退，
+ * 由脚本在切换期间临时加 .theme-switching 类，切换结束即移除。 */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 340ms;
+  animation-timing-function: var(--ease-in-out);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html.theme-switching,
+  html.theme-switching *,
+  html.theme-switching *::before,
+  html.theme-switching *::after {
+    transition:
+      background-color 260ms var(--ease-in-out),
+      border-color 260ms var(--ease-in-out),
+      color 260ms var(--ease-in-out),
+      box-shadow 260ms var(--ease-in-out) !important;
+  }
+}
+
 :focus-visible {
   outline: 2px solid var(--color-focus-on-dark);
   outline-offset: 2px;
@@ -405,4 +439,34 @@ html {
 }
 ::-webkit-scrollbar {
   display: none; /* Chrome / Safari / 新 Edge */
+}
+/* ── 昼间 · 标本采集编号（signature） ──
+ * 节序本是真实的内容序列（About 01 → Studios 02 → Members 03 → Join 04），
+ * 昼间升级为标本册的采集编号语言：№ 前缀 + 毫米刻度尺（5 条等距短竖线）。
+ * 全站唯一新增装饰，其余保持安静。深色模式不受影响。 */
+[data-theme='light'] .about__index::before,
+[data-theme='light'] .studios__index::before,
+[data-theme='light'] .members__index::before,
+[data-theme='light'] .join__index::before {
+  content: '№ ';
+  color: var(--color-eco);
+}
+
+[data-theme='light'] .about__index::after,
+[data-theme='light'] .studios__index::after,
+[data-theme='light'] .members__index::after,
+[data-theme='light'] .join__index::after {
+  content: '';
+  display: inline-block;
+  margin-left: var(--space-sm);
+  width: 26px;
+  height: 9px;
+  vertical-align: baseline;
+  background: repeating-linear-gradient(
+    90deg,
+    color-mix(in oklch, var(--color-photo-ink) 45%, transparent) 0 1px,
+    transparent 1px 5.5px
+  );
+  opacity: 0.6;
+  transform: translateY(-1px);
 }

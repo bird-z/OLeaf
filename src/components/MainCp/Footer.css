@@ -198,3 +198,11 @@
     align-items: flex-start;
   }
 }
+
+
+/* ── 昼间 · 标本册纸：纸白底上叠纸纤维纹理（Layer 1） ── */
+[data-theme='light'] .footer {
+  background-color: var(--color-paper-dark);
+  background-image: var(--texture-paper);
+  background-size: 280px;
+}

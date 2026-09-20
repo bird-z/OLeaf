@@ -1,4 +1,5 @@
 import CardNav from "../CardNav";
+import ThemeToggle from "../ThemeToggle.jsx";
 import logo from "../../assets/logo2.png";
 
 function Nav() {
@@ -6,6 +7,7 @@ function Nav() {
     <CardNav
       logo={logo}
       logoAlt="EcoRem · 江农学生协会"
+      actions={<ThemeToggle />}
       items={[
         { label: 'Academic', links: [
           { label: 'API', href: 'http://localhost:3000', ariaLabel: 'EcoRem API 中转站控制台' },

@@ -51,7 +51,14 @@ const ProfileCardComponent = ({
       window.matchMedia?.('(prefers-reduced-motion: reduce)').matches,
     []
   );
-  const tiltOn = enableTilt && !reduceMotion;
+  /* 仅精确指针设备（鼠标）启用 tilt：触摸端 pointermove 驱动的 rAF 是移动端主要开销之一 */
+  const finePointer = useMemo(
+    () =>
+      typeof window !== 'undefined' &&
+      window.matchMedia?.('(any-hover: hover) and (any-pointer: fine)').matches,
+    []
+  );
+  const tiltOn = enableTilt && !reduceMotion && (finePointer || enableMobileTilt);
 
   const tiltEngine = useMemo(() => {
     if (!tiltOn) return null;

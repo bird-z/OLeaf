@@ -142,3 +142,11 @@
     transition: none;
   }
 }
+
+
+/* ── 昼间 · 标本册纸：星点是夜空语言，昼间退场，由纸纤维接管 ── */
+[data-theme='light'] .members {
+  background-color: var(--color-paper-dark);
+  background-image: var(--texture-paper);
+  background-size: 280px;
+}

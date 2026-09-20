@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useAnchorScroll } from '../../lib/scrollTo.js';
+import groundLight from '../../assets/ground1.jpg';
 import './Slogan.css';
 
 const SUBTITLE = '一粒因热爱播种的种子 在江农的土壤里生根发芽';
@@ -40,28 +41,30 @@ function Slogan() {
 
   return (
     <section className="hero" ref={heroRef} aria-labelledby="hero-title">
-      {/* 第一幕背景：星轨下的校园（LCP · AVIF/WebP 多尺寸，JPEG 兜底，直引不懒加载） */}
-      <picture>
-        <source
-          type="image/avif"
-          srcSet={HERO_SRCSET('avif')}
-          sizes="100vw"
-        />
-        <source
-          type="image/webp"
-          srcSet={HERO_SRCSET('webp')}
-          sizes="100vw"
-        />
+      {/* 第一幕背景（LCP）—— 两幕叠层，由 [data-theme] 用 opacity 交叉溶解。
+          两层图片都常驻 DOM：切主题只是透明度变化，不重新请求/解码，因此无白闪。
+          夜间 = 星轨校园（AVIF/WebP 多尺寸 + JPEG 兜底）；昼间 = 白昼校园。 */}
+      <div className="hero__media" aria-hidden="true">
+        <picture className="hero__layer hero__layer--night">
+          <source type="image/avif" srcSet={HERO_SRCSET('avif')} sizes="100vw" />
+          <source type="image/webp" srcSet={HERO_SRCSET('webp')} sizes="100vw" />
+          <img
+            className="hero__bg"
+            src={`${BASE}hero/life-2048.jpg`}
+            alt=""
+            fetchPriority="high"
+            width="2048"
+            height="1367"
+          />
+        </picture>
         <img
-          className="hero__bg"
-          src={`${BASE}hero/life-2048.jpg`}
+          className="hero__bg hero__layer hero__layer--day"
+          src={groundLight}
           alt=""
-          aria-hidden="true"
-          fetchPriority="high"
-          width="2048"
-          height="1367"
+          width="666"
+          height="424"
         />
-      </picture>
+      </div>
 
       <div className="hero__meta" data-reveal style={{ '--i': 0 }}>
         <span>JXAU · EcoRem</span>

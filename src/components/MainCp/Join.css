@@ -491,3 +491,23 @@
     animation: none;
   }
 }
+
+/* ══ 昼间 · 图鉴纸本（与 Studios 同一语言） ══ */
+[data-theme='light'] .join {
+  background:
+    var(--texture-paper) 0 0 / 280px,
+    radial-gradient(color-mix(in oklch, var(--color-eco) 14%, transparent) 1px, transparent 1.6px) 0 0 / 26px 26px,
+    radial-gradient(ellipse 60% 42% at 85% 0%, color-mix(in oklch, var(--color-eco) 10%, transparent), transparent 70%) no-repeat,
+    linear-gradient(
+      180deg,
+      var(--color-paper-dark),
+      var(--color-paper-green) 38%,
+      color-mix(in oklch, var(--color-paper-green) 94%, var(--color-eco) 6%)
+    );
+}
+
+/* 招新面板：原为「暗底之上更深」，昼间反转为「纸绿之上更亮的纸卡」 */
+[data-theme='light'] .join__panel {
+  background: var(--color-paper-dark);
+  border-color: color-mix(in oklch, var(--color-eco) 22%, transparent);
+}

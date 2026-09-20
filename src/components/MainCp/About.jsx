@@ -1,19 +1,45 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import ScrollMask from './ScrollMask.jsx';
 import DepthCarousel from '../DepthCarousel.jsx';
+import { useTheme } from '../../lib/useTheme.js';
 import pscImg from '../../assets/psc.jpg';
 import hackathonImg from '../../assets/hackathon.jpg';
 import lifeImg from '../../assets/生命.jpeg';
+import groundImg from '../../assets/ground1.jpg';
 import './About.css';
 
-const GALLERY = [
+/* 前两张是活动合影，无昼夜属性，两个主题下不变。
+ * 第三张是「校园」主题影像，承担昼夜切换：
+ *   夜间 = 星轨夜景（生命.jpeg） · 昼间 = 白昼校园广场（ground1.jpg）
+ * 与首屏星轨、成员墙同一逻辑：夜空归夜，白昼归昼。 */
+const GALLERY_BASE = [
   { image: pscImg, alt: '生物启扉协会第一次全体（扩大）会议合影', caption: '第一次全体（扩大）会议' },
-  { image: hackathonImg, alt: '第一届「黑客松」AI 创作大赛合影', caption: '第六届科技文化节 · 第一届「黑客松」AI 创作大赛' },
-  { image: lifeImg, alt: '校园星轨夜景', caption: '校园星轨' }
+  { image: hackathonImg, alt: '第一届「黑客松」AI 创作大赛合影', caption: '第六届科技文化节 · 第一届「黑客松」AI 创作大赛' }
 ];
 
 function About() {
   const [active, setActive] = useState(0);
+  const { resolvedTheme } = useTheme();
+  const isLight = resolvedTheme === 'light';
+
+  /* 两张昼夜替代图预先解码：切换主题时不再现发请求，相册换图瞬时完成。
+   * （ground1 与星轨图都会用到，提前预热浏览器缓存与解码结果） */
+  useEffect(() => {
+    [groundImg, lifeImg].forEach(src => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
+
+  const GALLERY = useMemo(
+    () => [
+      ...GALLERY_BASE,
+      isLight
+        ? { image: groundImg, alt: '白昼的校园广场 · 升旗仪式', caption: '白昼校园' }
+        : { image: lifeImg, alt: '校园星轨夜景', caption: '校园星轨' }
+    ],
+    [isLight]
+  );
 
   return (
     <section className="about" id="about" aria-labelledby="about-title">

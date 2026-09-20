@@ -29,16 +29,39 @@
   text-align: left;
 }
 
-/* picture 仅作格式协商容器，不参与布局（img 绝对定位铺满） */
-.hero picture {
+/* 背景媒体容器：两层叠放（夜间星轨 / 昼间白昼校园），由 opacity 交叉溶解。
+  两层均常驻 DOM 且已解码，切换主题因此只是一次透明度变化 —— 无重新请求、无白闪。 */
+.hero__media {
   position: absolute;
   inset: 0;
   z-index: -2;
   pointer-events: none;
 }
 
+.hero__layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  /* 两幕相互溶解：时长略长于配色过渡，读起来像「光线变化」而非「切换开关」 */
+  transition: opacity 560ms var(--ease-in-out);
+}
+
+/* 默认（含夜间）显示星轨；昼间反相 */
+.hero__layer--night {
+  opacity: 1;
+}
+
+[data-theme='light'] .hero__layer--night {
+  opacity: 0;
+}
+
+[data-theme='light'] .hero__layer--day {
+  opacity: 1;
+}
+
 /* ── E8 背景照片：星轨校园（LCP）· 视差：随 --hero-p 放大并下移，滞后感 ── */
 .hero__bg {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -334,5 +357,91 @@
   .hero__cta:hover,
   .hero__cta:active {
     transform: none;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+ * 昼间 · 图鉴纸本
+ *
+ * 两幕背景切换后：星轨（暗、单色）→ 白昼校园（亮、多彩）。
+ * scrim 因此从「墨色压暗」反转为「纸色晕开」：纸面自左上晕开、右下留出照片，
+ * 文字由令牌翻转自动变墨字，这里只需修正「分离影」与 CTA 的方向。
+ * ══════════════════════════════════════════════════════════════ */
+[data-theme='light'] .hero::before {
+  background:
+    linear-gradient(
+      to top,
+      color-mix(in oklch, var(--color-paper-dark) 88%, transparent),
+      transparent 46%
+    ),
+    linear-gradient(
+      160deg,
+      color-mix(in oklch, var(--color-paper-dark) 94%, transparent),
+      color-mix(in oklch, var(--color-paper-dark) 52%, transparent) 46%,
+      color-mix(in oklch, var(--color-paper-dark) 86%, transparent)
+    );
+}
+
+/* ground1 源图仅 666×424，全屏铺开本就有放大；把视差基础缩放从 1.10 收到 1.02，
+ * 少一层重采样，并轻加饱和/对比，让它读起来像「印刷品」而非被拉糊的像素。
+ * 只作用于昼间图层（夜间图层在浅色下已透明）。 */
+[data-theme='light'] .hero__layer--day {
+  transform: translate3d(0, calc(var(--hero-p, 0) * 5%), 0)
+    scale(calc(1.02 + var(--hero-p, 0) * 0.03));
+  filter: saturate(1.06) contrast(1.04);
+}
+
+/* 行楷标题：原为「亮字 + 深影」，昼间反转为「墨字 + 浅影」，否则深字叠深影会发糊 */
+[data-theme='light'] .hero__title {
+  text-shadow: 0 1px 16px color-mix(in oklch, var(--color-paper-dark) 90%, transparent);
+}
+
+/* CTA：--color-paper 昼间已翻为墨色，沿用会得到墨底墨字；
+ * 显式改为墨底纸字，与夜间的纸底墨字互为对照。 */
+[data-theme='light'] .hero__cta {
+  background: var(--color-ink);
+  color: var(--color-paper-dark);
+}
+
+[data-theme='light'] .hero__cta:hover {
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+}
+
+/* 顶部标签行的分隔线：纸底上需略深一档才立得住 */
+[data-theme='light'] .hero__meta {
+  border-bottom-color: color-mix(in oklch, var(--color-photo-ink) 22%, transparent);
+}
+
+/* ══════════════════════════════════════════════════════════════
+ * 矮视口（笔记本 768 / 小窗浏览器）
+ *
+ * 首屏是 min-height:100svh + 内容自适应：内容一多，hero 就会被撑高到超过一屏，
+ * 于是底部的 SCROLL 提示与副标语被推出视口 —— 看起来像「展示不完全」。
+ * 这里按可用高度收紧纵向节奏，并把行楷标题的字号同时绑定到 vh，
+ * 保证任何视口下首屏信息都完整落在一屏内。
+ * ══════════════════════════════════════════════════════════════ */
+@media (max-height: 820px) {
+  .hero {
+    padding-top: calc(72px + var(--space-sm));
+    padding-bottom: var(--space-lg);
+  }
+
+  .hero__brand {
+    margin-top: var(--space-lg);
+  }
+
+  .hero__title {
+    padding: var(--space-lg) 0;
+    /* 同时受宽与高约束：矮屏不再吃满 7rem，避免两行标题独占半屏 */
+    font-size: clamp(2.25rem, min(11vw, 12.5vh), 7rem);
+  }
+
+  .hero__foot {
+    padding-top: var(--space-md);
+  }
+
+  .hero__cue-line {
+    height: 26px;
   }
 }

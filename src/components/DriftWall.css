@@ -41,6 +41,8 @@
   cursor: pointer;
   transform-origin: 50% 50%;
   will-change: transform;
+  /* 默认居中：桌面由 rAF 每帧覆写（含视差旋转）；小屏 JS 不写 plane，靠这里定位 */
+  transform: translate(-50%, -50%) scale(1.18);
 }
 
 .drift-wall__lane {
@@ -175,4 +177,110 @@
   .drift-wall__tile.is-active .drift-wall__inner {
     transform: none;
   }
+}
+
+/* ── 小屏性能降级：去 3D 透视 / 单层遮罩 / 关过渡与 hover 抬升 ──
+ * 触屏无 hover，3D 透视与双 mask 复合在这个尺寸几乎看不出，却是合成开销大头。 */
+@media (max-width: 60rem) {
+  .drift-wall {
+    perspective: none;
+    -webkit-mask-image: radial-gradient(
+      ellipse 80% 88% at 50% 50%,
+      #000 var(--dw-edge),
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      ellipse 80% 88% at 50% 50%,
+      #000 var(--dw-edge),
+      transparent 100%
+    );
+    -webkit-mask-composite: source-over;
+    mask-composite: add;
+  }
+
+  .drift-wall__plane,
+  .drift-wall__lane,
+  .drift-wall__track,
+  .drift-wall__tile {
+    transform-style: flat;
+  }
+
+  .drift-wall__plane {
+    will-change: auto;
+    cursor: default;
+  }
+
+  /* 横向轨道从左侧锚定：两种动画方向都在重复副本区域内往返，
+   * 避免中心定位时位移一个 copyLen 后在边缘露白。仅小屏生效。 */
+  .drift-wall--horizontal .drift-wall__plane {
+    left: 0;
+    transform: translateY(-50%) scale(1.18);
+    transform-origin: 0 50%;
+  }
+
+  .drift-wall__inner,
+  .drift-wall__tile img,
+  .drift-wall__overlay {
+    transition: none;
+  }
+
+  /* 触屏不提供 hover 抬升，避免 sticky hover 造成额外合成 */
+  .drift-wall__tile.is-active .drift-wall__inner {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .drift-wall__tile.is-active img {
+    filter: grayscale(var(--dw-gray)) saturate(1.05);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+ * 昼间 · 图鉴纸本 —— 照片墙从「漂浮入夜」改为「相片贴片」
+ *
+ * 深色的语言是"照片融入夜空"：无边界 + 四边渐隐 + 深色压暗。
+ * 这套语言搬到纸白底上立即失效 —— 没有边界的暗色物体只会读作污渍与烟雾：
+ *   · 四边渐隐在亮底上变成一圈灰雾（"诡异模糊"的主因）
+ *   · tile 之间的缝隙露出纸白，把照片切成漂浮的碎块
+ *   · 深色压暗罩让照片更沉，与白底反差更大，愈发像污点
+ *
+ * 昼间换一种真实存在的东西：贴在纸本上的相片。
+ * 白边衬底 + 细边框 + 分层投影 + 硬边界（由容器裁切），
+ * 与页面纸面、成员卡片纸同属"纸"的家族，配色因此自然统一。
+ * ══════════════════════════════════════════════════════════════ */
+[data-theme='light'] .drift-wall {
+  /* 关掉暗场专属的四边渐隐；相片由容器硬裁切，如同贴到页面之外 */
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+/* 相纸：比页面纸面更白一档的衬底，四周留出 6px 白边 */
+[data-theme='light'] .drift-wall__inner {
+  inset: calc(var(--dw-gap) / 2);
+  padding: 6px;
+  background: color-mix(in oklch, var(--color-paper) 94%, white);
+  border: 1px solid color-mix(in oklch, var(--color-ink) 9%, transparent);
+  border-radius: 2px;
+  box-shadow:
+    0 1px 1px color-mix(in oklch, var(--color-ink) 8%, transparent),
+    0 12px 26px -18px color-mix(in oklch, var(--color-ink) 38%, transparent);
+  opacity: 1; /* 不再做 dim 衰减：相片是实物，不该半透明 */
+}
+
+[data-theme='light'] .drift-wall__tile img {
+  border-radius: 1px;
+  filter: grayscale(0) saturate(1);
+}
+
+/* 压暗罩是夜空语言，昼间取消 */
+[data-theme='light'] .drift-wall__overlay {
+  display: none;
+}
+
+/* 抬升改为"被拈起的相片"：位移 + 投影加深，而非朝观察者拉近 */
+[data-theme='light'] .drift-wall__tile.is-active .drift-wall__inner {
+  transform: translateY(-5px);
+  box-shadow:
+    0 2px 3px color-mix(in oklch, var(--color-ink) 10%, transparent),
+    0 22px 40px -20px color-mix(in oklch, var(--color-ink) 46%, transparent);
 }

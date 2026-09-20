@@ -332,3 +332,18 @@
     animation: none;
   }
 }
+
+/* ══ 昼间 · 图鉴纸本：夜绿 → 标本纸绿。末段 mix(..., black) 在浅色下会变浊灰，
+ *    改为「顶纸白 → 中纸绿 → 底略深纸绿」，保留原有顶亮底暗的层次 ══ */
+[data-theme='light'] .studios {
+  background:
+    var(--texture-paper) 0 0 / 280px,
+    radial-gradient(color-mix(in oklch, var(--color-eco) 14%, transparent) 1px, transparent 1.6px) 0 0 / 26px 26px,
+    radial-gradient(ellipse 60% 42% at 85% 0%, color-mix(in oklch, var(--color-eco) 10%, transparent), transparent 70%) no-repeat,
+    linear-gradient(
+      180deg,
+      var(--color-paper-dark),
+      var(--color-paper-green) 38%,
+      color-mix(in oklch, var(--color-paper-green) 94%, var(--color-eco) 6%)
+    );
+}

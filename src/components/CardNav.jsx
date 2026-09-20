@@ -14,7 +14,8 @@ const CardNav = ({
   baseColor,
   menuColor,
   buttonBgColor,
-  buttonTextColor
+  buttonTextColor,
+  actions // 可选：导航右侧的自定义动作（如主题切换），渲染在 CTA 之前
 }) => {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -186,14 +187,17 @@ const CardNav = ({
             </span>
           </div>
 
-          <a
-            className="card-nav-cta-button"
-            href="#join"
-            onClick={anchorScroll('join')}
-            style={buttonBgColor ? { backgroundColor: buttonBgColor, color: buttonTextColor } : undefined}
-          >
-            Join Us
-          </a>
+          <div className="card-nav-actions">
+            {actions}
+            <a
+              className="card-nav-cta-button"
+              href="#join"
+              onClick={anchorScroll('join')}
+              style={buttonBgColor ? { backgroundColor: buttonBgColor, color: buttonTextColor } : undefined}
+            >
+              Join Us
+            </a>
+          </div>
         </div>
 
         <div className="card-nav-content" id="card-nav-content" aria-hidden={!isExpanded}>

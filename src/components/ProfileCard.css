@@ -50,7 +50,7 @@
   perspective: 500px;
   transform: translate3d(0, 0, 0.1px);
   position: relative;
-  touch-action: none;
+  touch-action: auto;
 }
 
 .pc-card-wrapper[data-accent='eco'] {
@@ -504,4 +504,101 @@
     transition-duration: 150ms;
     transition-timing-function: linear;
   }
+}
+
+/* ── 小屏性能降级：关重光效 ──
+ * 1. .pc-behind 的 blur(50px) 是移动端 GPU 大头
+ * 2. .pc-shine / .pc-glare 带多层 mix-blend-mode + 18s 无限动画 + 大面积混合
+ * 移动端屏幕小，这些光效几乎不可辨，但合成成本极高。 */
+@media (max-width: 60rem) {
+  .pc-behind,
+  .pc-shine,
+  .pc-glare {
+    display: none;
+  }
+
+  .pc-card {
+    background-blend-mode: normal;
+    transition: none;
+  }
+
+  /* 触屏没有真实 hover，避免 sticky hover 触发 3D 变换 */
+  .pc-card:hover,
+  .pc-card.active {
+    transform: translateZ(0);
+  }
+
+  .pc-content {
+    transform: none;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+ * 昼间 · 图鉴纸本 —— 成员卡从「珠光玻璃」改为「卡片纸」
+ *
+ * 珠光是暗场现象：光叠加在黑暗之上。纸白底上不存在珠光，只存在"印上去的颜色"。
+ * 把 holo 的加色混合（color-dodge / luminosity）改成减色混合（multiply）并不能
+ * "翻译"它 —— 两者保留的是渐变相反的两端（dodge 留亮端=高光，multiply 留暗端=阴影），
+ * 显色出来必然脏：大面积的紫绿斜纹，像浸了水的纸。
+ *
+ * 所以昼间直接关掉光效层，改由纸的物理属性承担精致感：
+ * 纸白底 + 细边框 + 分层投影 + 一处极淡的套色。
+ * ══════════════════════════════════════════════════════════════ */
+[data-theme='light'] .pc-behind,
+[data-theme='light'] .pc-shine,
+[data-theme='light'] .pc-glare {
+  display: none;
+}
+
+/* 卡片纸：与节面同族的纸白，靠投影浮起，而不是靠把自己调暗 */
+[data-theme='light'] .pc-card {
+  background: var(--color-paper);
+  border: 1px solid color-mix(in oklch, var(--color-ink) 10%, transparent);
+  box-shadow:
+    0 1px 2px color-mix(in oklch, var(--color-ink) 7%, transparent),
+    0 20px 44px -26px color-mix(in oklch, var(--color-ink) 42%, transparent);
+}
+
+/* 内层：只留一处极淡的套色，读作"印刷的墨"而非"绿纸" */
+[data-theme='light'] .pc-inside {
+  background-color: var(--color-paper);
+  background-image: linear-gradient(
+    150deg,
+    color-mix(in oklch, var(--_accent) 7%, transparent) 0%,
+    transparent 46%
+  );
+}
+
+/* ── 双 accent 收敛为 eco 单色 ──
+ * 深色下 eco(74%) 与 accent(68%) 在暗底上都很亮，交替排布是节奏；
+ * 浅色下两者明度几乎相同（50% / 48%），交替只会读作杂色。
+ * 统一为 eco，仅把「部门」徽章留给品牌紫，作为唯一的紫色点缀。 */
+[data-theme='light'] .pc-card-wrapper[data-accent] {
+  --_accent: var(--color-eco);
+}
+
+[data-theme='light'] .pc-member-dept {
+  --_accent: var(--color-accent);
+}
+
+/* 职务徽章：底色是纯 --_accent（50% 亮度），无论配白字还是墨字都只有 3.5:1；
+ * 小字需 4.5:1，把底色压深一档以保住对比。混 black 而非 --color-ink：后者带 290 紫调，
+ * 会把生态绿的色相向蓝紫偏移。 */
+[data-theme='light'] .pc-member-role {
+  background: color-mix(in oklch, var(--_accent) 70%, black);
+  color: var(--color-paper);
+}
+
+[data-theme='light'] .pc-member-honor {
+  background: color-mix(in oklch, var(--_accent) 12%, transparent);
+}
+
+/* 头像：行楷姓氏圆。底色压深以保证白字对比；混 black 保持生态绿的色相，
+ * 避免像混 ink 那样偏成蓝紫。 */
+[data-theme='light'] .pc-member-avatar {
+  background: linear-gradient(
+    145deg,
+    color-mix(in oklch, var(--_accent) 82%, black),
+    color-mix(in oklch, var(--_accent) 38%, black)
+  );
 }

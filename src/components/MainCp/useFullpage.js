@@ -29,7 +29,7 @@ export function useFullpage() {
     let raf = 0;
     let animating = false;
     let cooldownUntil = 0;
-    let touchStartY = null;
+    let touchStart = null;
 
     const computeStops = () => {
       const y = window.scrollY;
@@ -102,7 +102,7 @@ export function useFullpage() {
     };
 
     const onWheel = e => {
-      if (e.target.closest?.('.depth-carousel, .members-carousel')) return; // 轮播内部滚轮归轮播，不翻页
+      if (e.target.closest?.('.depth-carousel')) return; // 图片轮播内部滚轮归轮播
       if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return; // 横向滚动不接管
       if (animating || performance.now() < cooldownUntil) {
         e.preventDefault(); // 动画与冷却期间吞掉惯性尾流
@@ -113,7 +113,8 @@ export function useFullpage() {
     };
 
     const onTouchStart = e => {
-      touchStartY = e.touches[0].clientY;
+      const touch = e.touches[0];
+      touchStart = { x: touch.clientX, y: touch.clientY };
     };
 
     const onTouchMove = e => {
@@ -121,17 +122,27 @@ export function useFullpage() {
     };
 
     const onTouchEnd = e => {
-      if (touchStartY === null || animating) return;
-      const delta = touchStartY - e.changedTouches[0].clientY;
-      touchStartY = null;
-      if (Math.abs(delta) < SWIPE_MIN) return;
-      go(delta > 0 ? 1 : -1);
+      if (!touchStart) return;
+      const touch = e.changedTouches[0];
+      const deltaX = touchStart.x - touch.clientX;
+      const deltaY = touchStart.y - touch.clientY;
+      touchStart = null;
+
+      if (animating) return;
+      if (Math.abs(deltaX) > Math.abs(deltaY)) return; // 横滑交给成员/图片轮播，不触发整页翻页
+      if (Math.abs(deltaY) < SWIPE_MIN) return;
+      go(deltaY > 0 ? 1 : -1);
+    };
+
+    const onTouchCancel = () => {
+      touchStart = null;
     };
 
     window.addEventListener('wheel', onWheel, { passive: false });
     window.addEventListener('touchstart', onTouchStart, { passive: true });
     window.addEventListener('touchmove', onTouchMove, { passive: false });
     window.addEventListener('touchend', onTouchEnd, { passive: true });
+    window.addEventListener('touchcancel', onTouchCancel, { passive: true });
 
     return () => {
       if (raf) cancelAnimationFrame(raf);
@@ -139,6 +150,7 @@ export function useFullpage() {
       window.removeEventListener('touchstart', onTouchStart);
       window.removeEventListener('touchmove', onTouchMove);
       window.removeEventListener('touchend', onTouchEnd);
+      window.removeEventListener('touchcancel', onTouchCancel);
     };
   }, []);
 }

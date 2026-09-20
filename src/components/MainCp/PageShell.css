@@ -133,3 +133,19 @@
     transform: none;
   }
 }
+
+/* ══ 昼间 · 图鉴纸本：尾部 CTA 原为纸底墨字，昼间 paper 翻为墨色即成墨底墨字 ══ */
+[data-theme='light'] .page-shell__tail-cta {
+  background: var(--color-ink);
+  color: var(--color-paper-dark);
+}
+
+[data-theme='light'] .page-shell__tail-cta:hover {
+  background: var(--color-eco);
+  color: var(--color-eco-ink);
+}
+
+[data-theme='light'] .page-shell--accent .page-shell__tail-cta:hover {
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+}

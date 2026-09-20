@@ -6,7 +6,8 @@ import './DriftWall.css';
  * 改造:
  *   1. 瓷砖双形态 —— image（活动照）| char（行楷姓氏字卡，无真人照片决策的延伸）
  *   2. 轴切换 —— 桌面竖向列漂移；小屏（≤60rem）自动改横向行漂移
- *   3. 性能 —— IntersectionObserver 滚出视口暂停 rAF
+ *   3. 性能 —— 桌面 rAF + IO 滚出视口暂停；小屏改 WAAPI（合成器线程，主线程零开销）
+ *             + 关闭指针视差与 elementFromPoint 命中检测（触屏无 hover）
  *   4. 无障碍 —— 无限复制副本 aria-hidden；瓷砖无 href 目标，不作 tab 停靠
  *   5. 令牌化 —— 遮罩/圆角/缓动走 tokens（见 DriftWall.css）
  */
@@ -84,7 +85,8 @@ const DriftWall = ({
     return () => mq.removeEventListener('change', onChange);
   }, [axis]);
 
-  const laneCount = horizontal ? Math.max(3, lanes - 2) : lanes;
+  /* 小屏 lane 数收得更紧（性能）：横向时最多 4 条，直接减少同时动画的 tile 数 */
+  const laneCount = horizontal ? Math.min(4, Math.max(3, lanes - 2)) : lanes;
 
   const laneItems = useMemo(() => {
     const ls = Array.from({ length: laneCount }, () => []);
@@ -151,6 +153,8 @@ const DriftWall = ({
   );
 
   useEffect(() => {
+    if (horizontal) return; // 小屏改由下方 WAAPI effect 驱动，主线程不跑 rAF
+
     const animate = ts => {
       rafRef.current = null;
       if (!visibleRef.current) return; // 视口外：停表，IO 再次可见时由下方 watcher 重启
@@ -212,6 +216,63 @@ const DriftWall = ({
     };
   }, [baseVelocities, laneMeta, pauseOnHover, parallax, reduced, horizontal, applyPlaneTransform]);
 
+  /* 小屏：用 Web Animations API 驱动轨道位移。
+   * transform 动画跑在合成器线程，主线程完全不参与 → 滚动/触摸时不再掉帧。
+   * 桌面仍走上面的 rAF（需要指针视差与逐轨缓动）。 */
+  useEffect(() => {
+    if (!horizontal) return;
+
+    /* 重置桌面 rAF 残留的 inline transform：
+     * plane 交回 CSS 默认（居中），track 交回 WAAPI/静止状态，
+     * 否则带 3D 旋转的旧值会让小屏平面歪斜。 */
+    if (planeRef.current) planeRef.current.style.transform = '';
+    trackRefs.current.forEach(el => {
+      if (el) el.style.transform = '';
+    });
+    activeIdRef.current = null;
+    hoveredLaneRef.current = -1;
+    setActiveId(null);
+
+    if (reduced) return; // 无障碍：小屏也保持静态墙
+
+    const anims = [];
+    trackRefs.current.forEach((el, c) => {
+      const meta = laneMeta[c];
+      if (!el || !meta) return;
+
+      const speedPx = baseVelocities[c] ?? 0;
+      if (!speedPx || typeof el.animate !== 'function') return;
+
+      const duration = Math.max(4000, (meta.copyLen / Math.abs(speedPx)) * 1000);
+      /* 正向：0 → -copyLen；反向：-copyLen → 0。
+       * 两种方向都始终从重复副本区域取景，避免反向轨道右移时左侧露白。 */
+      const fromX = speedPx >= 0 ? 0 : -meta.copyLen;
+      const toX = speedPx >= 0 ? -meta.copyLen : 0;
+
+      anims.push(
+        el.animate(
+          [
+            { transform: `translate3d(${fromX}px, 0, 0)` },
+            { transform: `translate3d(${toX}px, 0, 0)` }
+          ],
+          { duration, iterations: Infinity, easing: 'linear' }
+        )
+      );
+    });
+
+    /* WAAPI 虽不占主线程，滚出视口仍暂停，减少移动设备 GPU 与电量消耗。 */
+    const el = containerRef.current;
+    const io = new IntersectionObserver(([entry]) => {
+      anims.forEach(anim => (entry.isIntersecting ? anim.play() : anim.pause()));
+    });
+    if (el) io.observe(el);
+
+    return () => {
+      io.disconnect();
+      anims.forEach(anim => anim.cancel());
+    };
+  }, [horizontal, reduced, laneMeta, baseVelocities]);
+
   const release = useCallback(() => {
     activeIdRef.current = null;
     hoveredLaneRef.current = -1;
@@ -220,6 +281,9 @@ const DriftWall = ({
 
   const handlePointerMove = useCallback(
     e => {
+      /* 小屏关闭视差与 hover 命中：elementFromPoint 每次移动都强制布局，是触屏主要开销 */
+      if (horizontal) return;
+
       const rect = containerRef.current?.getBoundingClientRect();
       if (!rect) return;
       if (parallax > 0 && !reduced) {
@@ -237,7 +301,7 @@ const DriftWall = ({
       hoveredLaneRef.current = Number(tile.dataset.lane);
       setActiveId(id);
     },
-    [parallax, reduced]
+    [horizontal, parallax, reduced]
   );
 
   const handlePointerLeaveWall = useCallback(() => {
