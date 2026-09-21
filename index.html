@@ -2,21 +2,49 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#0b0b12" />
+    <link rel="icon" type="image/webp" href="/logo2.webp" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- LCP：hero 星轨背景（AVIF srcset，浏览器按 DPR/视口选尺寸；不支持 AVIF 则跳过不预载） -->
-    <link
-      rel="preload"
-      as="image"
-      type="image/avif"
-      imagesrcset="/hero/life-768.avif 768w, /hero/life-1536.avif 1536w, /hero/life-2048.avif 2048w"
-      imagesizes="100vw"
-      fetchpriority="high"
-    />
+    <!-- 主题防闪 + 首屏图预载：必须在任何样式之前落 data-theme，
+         否则浅色用户会看到一帧夜空底色。与 src/lib/theme.js 共用 'shnda-theme' 键。 -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('shnda-theme');
+          var dark =
+            stored === 'dark' ||
+            (stored !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          var root = document.documentElement;
+          root.dataset.theme = dark ? 'dark' : 'light';
+          root.classList.toggle('dark', dark);
+          root.style.colorScheme = dark ? 'dark' : 'light';
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', dark ? '#0b0b12' : '#fbfafd');
+
+          /* 首屏图按主题预载，只预载真正会充当 LCP 的那一张（照夜景 / 白昼校园）。
+           * 用 JS 拼路径而不写在 HTML 属性上：dev 模式下 Vite 会对 imagesrcset
+           * 再补一次 base，拼出 /OLeaf/OLeaf/ 双前缀而让预载落空。 */
+          var base = '/';
+          if (dark) {
+            var link = document.createElement('link');
+            link.rel = 'preload';
+            link.as = 'image';
+            link.type = 'image/avif';
+            link.fetchPriority = 'high';
+            link.imageSrcset =
+              base + 'hero/life-768.avif 768w, ' +
+              base + 'hero/life-1536.avif 1536w, ' +
+              base + 'hero/life-2048.avif 2048w';
+            link.imageSizes = '100vw';
+            document.head.appendChild(link);
+          }
+        } catch (e) {}
+      })();
+    </script>
     <!-- 行楷 display 子集字体已随打包管线引入（src/assets/fonts），无需预载 -->
     <title>生物启扉协会 EcoRem · 启迪生命 扉向未来</title>
-    <script type="module" crossorigin src="/assets/index-D6PbQQRQ.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-BJF6AcFC.css">
+    <script type="module" crossorigin src="/assets/index-Cu_xEDnf.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-C1v_J_7J.css">
   </head>
   <body>
     <div id="root"></div>
