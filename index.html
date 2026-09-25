@@ -5,6 +5,11 @@
     <meta name="theme-color" content="#0b0b12" />
     <link rel="icon" type="image/webp" href="%BASE_URL%logo2.webp" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- CMS/媒体域名预连接：首页第一屏是新闻轮播，封面图直接来自远端 -->
+    <link rel="preconnect" href="https://cms.bioqif.com" crossorigin />
+    <link rel="dns-prefetch" href="https://cms.bioqif.com" />
+    <link rel="preconnect" href="https://manage.bioqif.com" />
+    <link rel="dns-prefetch" href="https://manage.bioqif.com" />
     <!-- 主题防闪 + 首屏图预载：必须在任何样式之前落 data-theme，
          否则浅色用户会看到一帧夜空底色。与 src/lib/theme.js 共用 'shnda-theme' 键。 -->
     <script>
@@ -21,7 +26,8 @@
           var meta = document.querySelector('meta[name="theme-color"]');
           if (meta) meta.setAttribute('content', dark ? '#0b0b12' : '#fbfafd');
 
-          /* 首屏图按主题预载，只预载真正会充当 LCP 的那一张（照夜景 / 白昼校园）。
+          /* Slogan 背景已降到第二屏（首屏改为 BANNER 新闻轮播），
+           * 这里降为低优先级预载，不再抢占首屏 LCP 的带宽。 */
            * 用 JS 拼路径而不写在 HTML 属性上：dev 模式下 Vite 会对 imagesrcset
            * 再补一次 base，拼出 /OLeaf/OLeaf/ 双前缀而让预载落空。 */
           var base = '%BASE_URL%';
@@ -30,7 +36,7 @@
             link.rel = 'preload';
             link.as = 'image';
             link.type = 'image/avif';
-            link.fetchPriority = 'high';
+            link.fetchPriority = 'low';
             link.imageSrcset =
               base + 'hero/life-768.avif 768w, ' +
               base + 'hero/life-1536.avif 1536w, ' +

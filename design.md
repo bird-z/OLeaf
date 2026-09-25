@@ -114,7 +114,23 @@
 改设计 = 先改本文件与 `tokens.css`,再改实现。Hallmark 项目记忆见 `.hallmark/log.json`,
 连续两次构建的宏观结构 / 主题 / nav / footer 原型不得重复。
 
-## 12.AGENT>
+## 12. 变更记录（Change log）
+
+- 2026-09-25 · 首页顶部新增「启扉快讯」全屏新闻轮播（`MainCp/NewsCarousel.jsx`）：
+  - 置于 `Slogan` 首屏之上（首屏=轮播，第二屏=Slogan），两节均为 100svh 叠放。
+  - 数据 = `public-articles` 的 `BANNER` 栏目（接口冻结：纯客户端筛选、不新增请求、
+    图片走 `payload.js` 归一化后的 `article.image`）；最多 5 张。
+  - 动态标题不用行楷（CMS 标题字符不在字体子集内），一律 `--font-body`/`--font-mono`。
+  - 归入 `tokens.css`「影像恒定组」：昼夜恒暗场、白字；新增令牌 `--dur-carousel`(6s) 作
+    自动播放/缩放/进度的唯一时长源，JS 侧经 `getComputedStyle` 读取，失败回退 6s。
+  - 交互：自动播放（悬停/聚焦/离开视口暂停）+ 箭头 + mono 计数进度；点击字幕滚到 `#news`。
+  - 失败/0 条 BANNER → 整节卸载，Slogan 回到第一屏；加载中为满屏暗底占位。
+  - 联动：`useFullpage` 增 `.hero`/`.qif-news` 停靠点；`Slogan` 的 `--hero-p` 与 `QifSiteNav`
+    的 nav1⇄nav2 进度改以 `.hero` 顶边为起点；浅色主题下轮播期间头部加
+    `qif-site-nav--over-media` 强制白字；挂载 `QifNewsSection`（OBS-02，About 后），
+    `Studios/Members/Join` 序号为 03/04/05；`App.jsx` 接 `/news/:id` 路由（详情页已存在）。
+
+## 13.AGENT>
 Agent:
 默认不调用视觉模型检查:compile是例外，允许对可视
 绘图板的离线栅格化结果做视觉检查和选代。则试:compile 以外的视觉效果可以默认正确，人发现问题会让你修复。不要调用任何浏览器工具。功能性的东西应该直接用API可能有并行的任务-但没有冲突。提交时留意它们即可。实现时小步提交，英文一行commit message。保持线性提交历史，远端有提交时 rebase。
