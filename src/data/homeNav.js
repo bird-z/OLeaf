@@ -18,18 +18,18 @@ export const ARCHIVE_LINKS = [
 
 export const JOIN_LINK = { key: 'join', label: '加入我们', anchor: 'join' };
 
-/* 两行头部（slogan 态）第二行的平铺导航项。
- * home: 'home' 特殊键 —— 平滑滚动回页顶，无 href/to；
- * anchor 项走 useAnchorScroll；to 项走 <Link>。 */
+/* 两行头部（slogan 态）第二行的平铺导航项（9 项横排，参考 bioqif 原版）。
+ * home 键 —— 平滑滚动回页顶；anchor 项走 useAnchorScroll；to 项走 <Link>；
+ * 无独立页面的栏目锚到承载其内容的最近区块（组织机构→概况，校园墙→成员照片墙）。 */
 export const HERO_LINKS = [
   { key: 'home', label: '首页', home: 'top' },
-  { key: 'about', label: '概况', anchor: 'about' },
-  { key: 'news', label: '快讯', anchor: 'news' },
-  { key: 'studios', label: '特色工作室', anchor: 'studios' },
-  { key: 'science', label: '科学与工程', to: '/science' },
-  { key: 'popular', label: '知识普及', to: '/popular' },
-  { key: 'events', label: '教育活动', to: '/events' },
-  { key: 'members', label: '成员', anchor: 'members' },
+  { key: 'about', label: '协会概况', anchor: 'about' },
+  { key: 'org', label: '组织机构', anchor: 'about' },
+  { key: 'science', label: '学术科创', to: '/science' },
+  { key: 'events', label: '品牌活动', to: '/events' },
+  { key: 'members', label: '会员风采', anchor: 'members' },
+  { key: 'wall', label: '校园墙', anchor: 'members' },
+  { key: 'popular', label: '资源共享', to: '/popular' },
   JOIN_LINK,
 ];
 
