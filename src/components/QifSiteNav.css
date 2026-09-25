@@ -1,0 +1,373 @@
+/* QifSiteNav —— 首页融合导航
+ * 页顶态 = bioqif 原版两行头部（排版/色彩/款式迁移，全部令牌化）
+ * 滚动态 = CardNav 玻璃胶囊（nav2 简约态）
+ * 交叉溶解由 --nav-p 驱动（rAF 逐帧写在外层容器），无 transition 以免与滚动联动双重缓动。
+ * 颜色/字体/间距/圆角一律引用 tokens.css；bioqif 的 sky/emerald/gold 映射为 eco/brass 令牌族。
+ */
+
+@import '../../tokens.css';
+
+/* --nav1-height 由 QifSiteNav.jsx 的 ResizeObserver 写实测值到 :root，
+ * tokens.css 中的默认值仅作首帧 fallback —— 不再需要断点估算。 */
+
+.qif-site-nav {
+  --nav-p: 0;
+}
+
+/* ── nav1：页顶两行头部 ── */
+.qif-hero-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 98;
+  /* 毛玻璃实底：半透明 paper-dark（随主题翻转）+ backdrop 模糊。
+   * 压在其下的 Hero 照片/meta 行被虚化，物理隔离两层，杜绝与导航行叠字；
+   * 模糊档位与 nav2 CardNav 胶囊一致（blur 14px），两种导航态观感同源。 */
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklch, var(--color-paper-dark) 80%, transparent),
+      color-mix(in oklch, var(--color-paper-dark) 62%, transparent)
+    );
+  backdrop-filter: blur(14px) saturate(1.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  border-bottom: 1px solid color-mix(in oklch, var(--color-photo-muted) 18%, transparent);
+  opacity: calc(1 - var(--nav-p));
+  transform: translateY(calc(var(--nav-p) * -18px));
+}
+
+.qif-hero-header__inner {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 clamp(var(--space-md), 4vw, var(--space-2xl));
+}
+
+/* ── 品牌行 ── */
+.qif-hero-header__brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  padding-top: var(--space-sm);
+  padding-bottom: var(--space-sm);
+}
+
+.qif-hero-header__identity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  min-width: 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+.qif-hero-header__logo {
+  height: 36px;
+  width: 36px;
+  flex: none;
+  object-fit: contain;
+  border-radius: 9999px;
+}
+
+.qif-hero-header__divider {
+  width: 1px;
+  height: 28px;
+  background: color-mix(in oklch, var(--color-photo-muted) 45%, transparent);
+}
+
+.qif-hero-header__names {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.2;
+}
+
+.qif-hero-header__school {
+  font-size: var(--text-xs);
+  letter-spacing: 0.22em;
+  color: var(--color-photo-muted);
+  white-space: nowrap;
+}
+
+.qif-hero-header__cn {
+  font-size: var(--text-md);
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  color: var(--color-photo-ink);
+  white-space: nowrap;
+}
+
+.qif-hero-header__en {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--color-brass);
+  white-space: nowrap;
+}
+
+.qif-hero-header__slogan {
+  display: none;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-2xs);
+}
+
+.qif-hero-header__slogan-cn {
+  font-size: var(--text-sm);
+  letter-spacing: 0.3em;
+  color: var(--color-photo-muted);
+  white-space: nowrap;
+}
+
+.qif-hero-header__slogan-en {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--color-brass);
+  white-space: nowrap;
+}
+
+/* ── 桌面导航行 ── */
+.qif-hero-header__nav {
+  display: none;
+  align-items: center;
+  gap: var(--space-xl);
+  padding-top: var(--space-sm);
+  padding-bottom: var(--space-sm);
+  border-top: 1px solid color-mix(in oklch, var(--color-photo-muted) 22%, transparent);
+}
+
+.qif-hero-header__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--color-photo-ink);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color var(--dur-short) var(--ease-out);
+}
+
+.qif-hero-header__link::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 0;
+  height: 2px;
+  background: var(--color-eco-bright);
+  transform: translateX(-50%);
+  transition: width var(--dur-short) var(--ease-out);
+}
+
+.qif-hero-header__link:hover,
+.qif-hero-header__link.is-open {
+  color: var(--color-eco-bright);
+}
+
+.qif-hero-header__link:hover::after,
+.qif-hero-header__link.is-open::after {
+  width: 70%;
+}
+
+/* ── 档案下拉 ── */
+.qif-hero-header__archive {
+  position: relative;
+}
+
+.qif-hero-header__menu {
+  position: absolute;
+  top: calc(100% + 14px);
+  right: 0;
+  min-width: 11rem;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-xs);
+  background: var(--color-paper-dark);
+  border: 1px solid var(--color-rule);
+  box-shadow: 0 18px 40px -18px color-mix(in oklch, var(--color-ink) 60%, transparent);
+}
+
+.qif-hero-header__menu-item {
+  padding: 0.55rem 0.75rem;
+  font-size: var(--text-sm);
+  letter-spacing: 0.08em;
+  color: var(--color-photo-ink);
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    color var(--dur-short) var(--ease-out),
+    background var(--dur-short) var(--ease-out);
+}
+
+.qif-hero-header__menu-item:hover {
+  color: var(--color-eco-bright);
+  background: color-mix(in oklch, var(--color-eco) 12%, transparent);
+}
+
+/* ── CTA（加入我们） ── */
+.qif-hero-header__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  padding: 0.6rem 1.25rem;
+  background: var(--color-eco-bright);
+  color: var(--color-paper-dark);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background var(--dur-short) var(--ease-out);
+}
+
+.qif-hero-header__cta:hover {
+  background: color-mix(in oklch, var(--color-eco-bright) 85%, white);
+}
+
+.qif-hero-header__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+/* ── 移动端行 ── */
+.qif-hero-header__mobile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid color-mix(in oklch, var(--color-photo-muted) 22%, transparent);
+  padding: var(--space-sm) 0;
+}
+
+.qif-hero-header__mobile-name {
+  font-size: var(--text-sm);
+  letter-spacing: 0.15em;
+  color: var(--color-photo-ink);
+  white-space: nowrap;
+}
+
+.qif-hero-header__mobile-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.qif-hero-header__toggle {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: none;
+  color: var(--color-photo-ink);
+  cursor: pointer;
+}
+
+.qif-hero-header__burger {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.qif-hero-header__burger span {
+  width: 22px;
+  height: 2px;
+  background: currentColor;
+  transition:
+    transform var(--dur-short) var(--ease-out),
+    opacity var(--dur-short) var(--ease-out);
+}
+
+.qif-hero-header__burger.is-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.qif-hero-header__burger.is-open span:nth-child(2) {
+  opacity: 0;
+}
+
+.qif-hero-header__burger.is-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ── 移动端双列面板 ── */
+.qif-hero-header__panel {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: var(--space-sm) clamp(var(--space-md), 4vw, var(--space-2xl)) var(--space-lg);
+  background: var(--color-paper-dark);
+  border-top: 1px solid color-mix(in oklch, var(--color-photo-muted) 16%, transparent);
+}
+
+.qif-hero-header__panel-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.7rem 0.5rem;
+  border-bottom: 1px solid color-mix(in oklch, var(--color-photo-muted) 14%, transparent);
+  font-size: var(--text-sm);
+  letter-spacing: 0.15em;
+  color: var(--color-photo-ink);
+  text-decoration: none;
+}
+
+.qif-hero-header__panel-link:hover {
+  color: var(--color-eco-bright);
+}
+
+/* backdrop-filter 不支持时兜底：近实色底，保证两层物理隔离不串层 */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .qif-hero-header {
+    background: color-mix(in oklch, var(--color-paper-dark) 92%, transparent);
+  }
+}
+
+/* ── nav2：CardNav 胶囊交叉溶解 ── */
+.qif-site-nav .card-nav-container {
+  opacity: var(--nav-p);
+  transform: translateY(calc((1 - var(--nav-p)) * -14px));
+}
+
+/* ── 焦点环 ── */
+.qif-hero-header__link:focus-visible,
+.qif-hero-header__cta:focus-visible,
+.qif-hero-header__menu-item:focus-visible,
+.qif-hero-header__toggle:focus-visible,
+.qif-hero-header__panel-link:focus-visible {
+  outline: 2px solid var(--color-focus-on-dark);
+  outline-offset: 2px;
+}
+
+/* ── 桌面断点 ── */
+@media (min-width: 1024px) {
+  .qif-hero-header__slogan {
+    display: flex;
+  }
+  .qif-hero-header__nav {
+    display: flex;
+  }
+  .qif-hero-header__mobile,
+  .qif-hero-header__panel {
+    display: none;
+  }
+}
+
+/* ── Reduced motion：--nav-p 由 JS 直接吸附 0/1，无过渡即可 ── */
+@media (prefers-reduced-motion: reduce) {
+  .qif-hero-header,
+  .qif-site-nav .card-nav-container {
+    transition: none;
+  }
+}

@@ -1,0 +1,149 @@
+/* 器物原语：比例尺 / 标本签 / 栏目头 / 滚动显现 / 视野遮罩 / 空态
+ * 令牌全部来自 tokens.css；类名 qif- 前缀避免与 shnda 全局样式冲突。
+ * 由 qifObs.jsx 统一引入，新闻区块与详情页共用。 */
+
+/* ── 视野遮罩（目镜渐晕） ── */
+.qif-field-mask {
+  position: relative;
+  overflow: hidden;
+}
+
+.qif-field-mask::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(8, 20, 16, 0.32) 100%);
+}
+
+/* ── 空态 / 错误态 ── */
+.qif-empty {
+  border: 1px dashed color-mix(in oklch, var(--color-photo-muted) 40%, transparent);
+  background: color-mix(in oklch, var(--color-paper-dark) 60%, transparent);
+  padding: var(--space-2xl) var(--space-lg);
+  text-align: center;
+}
+
+.qif-empty h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  color: var(--color-photo-ink);
+}
+
+.qif-empty p {
+  margin: var(--space-xs) 0 0;
+  font-size: var(--text-sm);
+  color: var(--color-photo-muted);
+}
+
+/* ── 比例尺 ── */
+.qif-scale-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: color-mix(in oklch, var(--color-photo-muted) 85%, transparent);
+}
+
+.qif-scale-bar::before,
+.qif-scale-bar::after {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 8px;
+  background: color-mix(in oklch, var(--color-photo-muted) 70%, transparent);
+}
+
+.qif-scale-bar__line {
+  flex: 1;
+  height: 1px;
+  background: color-mix(in oklch, var(--color-photo-muted) 50%, transparent);
+}
+
+/* ── 标本签 ── */
+.qif-specimen {
+  display: inline-block;
+  border: 1px solid var(--color-rule);
+  background: var(--color-paper-2);
+  padding: var(--space-sm) var(--space-md);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.6;
+  letter-spacing: 0.14em;
+  color: var(--color-photo-muted);
+  box-shadow: 2px 2px 0 color-mix(in oklch, var(--color-eco) 8%, transparent);
+}
+
+/* ── 栏目头 ── */
+.qif-obs-kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.65em;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: 0.3em;
+}
+
+.qif-obs-kicker::before {
+  content: '';
+  display: block;
+  width: 8px;
+  height: 8px;
+  background: currentColor;
+}
+
+.qif-obs__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-md) var(--space-2xl);
+}
+
+.qif-obs-title {
+  margin: 0.75rem 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 3.5vw + 1rem, 3.8rem);
+  line-height: 1.15;
+  color: var(--color-photo-ink);
+}
+
+.qif-obs-desc {
+  margin: 0;
+  max-width: 38rem;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--color-photo-muted);
+}
+
+.qif-obs__scale {
+  margin-top: var(--space-lg);
+}
+
+/* ── 滚动显现 ── */
+.qif-reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.qif-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qif-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

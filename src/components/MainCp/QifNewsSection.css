@@ -1,0 +1,38 @@
+/* 首页新闻区块：夜绿交替节，插在 Hero（暗）与 About（暗）之间。 */
+
+.qif-news {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  scroll-margin-top: 72px;
+  background:
+    radial-gradient(color-mix(in oklch, var(--color-eco-bright) 8%, transparent) 1px, transparent 1.6px) 0 0 / 26px 26px,
+    radial-gradient(ellipse 60% 42% at 85% 0%, color-mix(in oklch, var(--color-eco) 14%, transparent), transparent 70%) no-repeat,
+    linear-gradient(
+      180deg,
+      color-mix(in oklch, var(--color-paper-green) 90%, var(--color-eco-bright) 10%),
+      var(--color-paper-green) 40%,
+      color-mix(in oklch, var(--color-paper-green) 80%, black)
+    );
+}
+
+.qif-news__inner {
+  width: 100%;
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: clamp(var(--space-2xl), 8vh, var(--space-3xl)) clamp(var(--space-md), 4vw, var(--space-2xl));
+}
+
+.qif-news__grid {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+@media (min-width: 1024px) {
+  .qif-news__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* 空态 / 错误态 .qif-empty 定义在 qifObs.css（与详情页共用）。 */

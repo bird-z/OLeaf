@@ -1,0 +1,83 @@
+/* 加载界面遮罩：令牌全部来自 tokens.css */
+
+.qif-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-lg);
+  margin: 0;
+  background: var(--color-paper-dark);
+  animation: qif-loader-out 0.35s ease 0.95s forwards;
+}
+
+.qif-loader__icon {
+  display: block;
+  width: 96px;
+  height: 96px;
+  animation: qif-focus-pull 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.qif-loader__icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.qif-loader__caption {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.35em;
+  color: var(--color-photo-muted);
+  animation: qif-focus-pull 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+
+/* 内容区入场：与 loader 同步的一次调焦 */
+.qif-page-focus-in {
+  animation: qif-page-focus-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes qif-focus-pull {
+  from {
+    opacity: 0;
+    filter: blur(14px);
+    transform: scale(1.04);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+}
+
+@keyframes qif-loader-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes qif-page-focus-in {
+  from {
+    filter: blur(10px);
+    opacity: 0.4;
+  }
+  to {
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qif-loader {
+    display: none;
+  }
+  .qif-loader__icon,
+  .qif-loader__caption,
+  .qif-page-focus-in {
+    animation: none !important;
+  }
+}

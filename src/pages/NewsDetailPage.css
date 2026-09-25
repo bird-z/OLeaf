@@ -1,0 +1,269 @@
+/* 新闻详情页：单栏阅读，令牌来自 tokens.css。 */
+
+.qif-news-detail {
+  min-height: 100svh;
+  padding-top: 60px; /* 固定 SiteHeader 让位 */
+  background: var(--color-paper-dark);
+}
+
+.qif-news-detail__breadcrumb {
+  border-bottom: 1px solid var(--color-rule);
+  padding: var(--space-sm) 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--color-photo-muted);
+}
+
+.qif-news-detail__breadcrumb-inner {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 clamp(var(--space-md), 4vw, var(--space-2xl));
+}
+
+.qif-news-detail__breadcrumb a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--dur-short) var(--ease-out);
+}
+
+.qif-news-detail__breadcrumb a:hover {
+  color: var(--color-eco-bright);
+}
+
+.qif-news-detail__breadcrumb i {
+  margin: 0 var(--space-xs);
+  font-style: normal;
+  color: color-mix(in oklch, var(--color-photo-muted) 55%, transparent);
+}
+
+.qif-news-detail__main {
+  padding: var(--space-2xl) clamp(var(--space-md), 4vw, var(--space-2xl)) var(--space-3xl);
+}
+
+.qif-news-detail__state {
+  max-width: 42rem;
+  margin: var(--space-3xl) auto;
+}
+
+.qif-news-detail__missing {
+  max-width: 42rem;
+  margin: var(--space-3xl) auto;
+  text-align: center;
+}
+
+.qif-news-detail__missing-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-display-s);
+  color: var(--color-photo-ink);
+}
+
+.qif-news-detail__missing-text {
+  margin: var(--space-sm) 0 0;
+  color: var(--color-photo-muted);
+}
+
+.qif-news-detail__back {
+  display: inline-flex;
+  margin-top: var(--space-xl);
+  padding: 0.7rem 1.4rem;
+  border: 1px solid var(--color-rule);
+  color: var(--color-photo-ink);
+  font-size: var(--text-sm);
+  letter-spacing: 0.18em;
+  text-decoration: none;
+  transition:
+    border-color var(--dur-short) var(--ease-out),
+    color var(--dur-short) var(--ease-out);
+}
+
+.qif-news-detail__back:hover {
+  border-color: var(--color-eco-bright);
+  color: var(--color-eco-bright);
+}
+
+/* ── 正文骨架 ── */
+.qif-news-detail__article {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding-top: var(--space-2xl);
+}
+
+.qif-news-detail__kicker {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.25em;
+}
+
+.qif-news-detail__title {
+  margin: var(--space-md) 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 3vw + 1rem, 3rem);
+  line-height: 1.25;
+  color: var(--color-photo-ink);
+}
+
+.qif-news-detail__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.5rem;
+  margin: var(--space-md) 0 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--color-photo-muted);
+}
+
+.qif-news-detail__scale {
+  margin-top: var(--space-lg);
+}
+
+.qif-news-detail__summary {
+  margin-top: var(--space-xl);
+  border: 1px solid var(--color-rule);
+  background: var(--color-paper-2);
+  padding: var(--space-md) var(--space-lg);
+}
+
+.qif-news-detail__summary-label {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: color-mix(in oklch, var(--color-photo-muted) 80%, transparent);
+}
+
+.qif-news-detail__summary-text {
+  margin: var(--space-xs) 0 0;
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  color: color-mix(in oklch, var(--color-photo-ink) 85%, transparent);
+}
+
+.qif-news-detail__figure {
+  margin: var(--space-xl) 0 0;
+}
+
+.qif-news-detail__cover {
+  border: 1px solid var(--color-rule);
+  background: var(--color-paper-2);
+  padding: var(--space-2xs);
+}
+
+.qif-news-detail__cover img {
+  display: block;
+  width: 100%;
+  object-fit: cover;
+}
+
+.qif-news-detail__figure figcaption {
+  margin-top: var(--space-xs);
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: color-mix(in oklch, var(--color-photo-muted) 70%, transparent);
+}
+
+.qif-news-detail__credit {
+  margin-top: var(--space-2xl);
+}
+
+/* ── CMS 正文排版 ── */
+.qif-article-body {
+  margin-top: var(--space-xl);
+  font-size: 16px;
+  line-height: 1.9;
+  color: color-mix(in oklch, var(--color-photo-ink) 86%, transparent);
+}
+
+.qif-article-body p {
+  margin: var(--space-md) 0;
+}
+
+.qif-article-body h2,
+.qif-article-body h3 {
+  margin: var(--space-xl) 0 var(--space-sm);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  color: var(--color-photo-ink);
+}
+
+.qif-article-body img {
+  display: block;
+  max-width: 100%;
+  margin: var(--space-xl) auto;
+}
+
+.qif-article-body a {
+  color: var(--color-eco-bright);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.qif-article-body ul,
+.qif-article-body ol {
+  margin: var(--space-md) 0;
+  padding-left: 1.5rem;
+}
+
+.qif-article-body blockquote {
+  margin: var(--space-lg) 0;
+  border-left: 2px solid var(--color-eco-bright);
+  padding-left: var(--space-lg);
+  color: var(--color-photo-muted);
+}
+
+/* ── 上一篇 / 下一篇 ── */
+.qif-news-detail__pager {
+  display: grid;
+  gap: var(--space-md);
+  margin-top: var(--space-2xl);
+  padding-top: var(--space-xl);
+  border-top: 1px solid var(--color-rule);
+}
+
+.qif-news-detail__pager-link {
+  display: block;
+  border: 1px solid var(--color-rule);
+  background: var(--color-paper-2);
+  padding: var(--space-md);
+  text-decoration: none;
+  transition: border-color var(--dur-short) var(--ease-out);
+}
+
+.qif-news-detail__pager-link:hover {
+  border-color: var(--color-eco-bright);
+}
+
+.qif-news-detail__pager-link small {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: color-mix(in oklch, var(--color-photo-muted) 80%, transparent);
+}
+
+.qif-news-detail__pager-link p {
+  margin: var(--space-2xs) 0 0;
+  font-size: var(--text-sm);
+  color: color-mix(in oklch, var(--color-photo-ink) 85%, transparent);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.qif-news-detail__pager-link:hover p {
+  color: var(--color-eco-bright);
+}
+
+.qif-news-detail__pager-link--next {
+  text-align: right;
+}
+
+@media (min-width: 640px) {
+  .qif-news-detail__pager {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
