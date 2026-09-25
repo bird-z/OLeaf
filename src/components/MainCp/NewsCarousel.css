@@ -15,6 +15,7 @@
   background: var(--color-paper-dark);
   color: var(--color-photo-ink);
   font-family: var(--font-body);
+  text-align: left; /* #root 全局 text-align:center 的纠偏 */
 }
 
 /* ── 背景轨道：交叉淡入 ── */
