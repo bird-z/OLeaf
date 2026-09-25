@@ -34,10 +34,12 @@ function QifSiteNav() {
 
     const update = () => {
       raf = 0;
-      // hero 实测高度做分母，首屏未渲染到时回退视口高
+      // 首页第一屏是新闻轮播：切换进度以 Slogan（.hero）顶边为起点，
+      // 轮播停留期间保持 nav1 两行头部。
       const hero = document.querySelector('.hero');
+      const heroTop = hero ? hero.getBoundingClientRect().top + window.scrollY : 0;
       const range = Math.max(1, (hero ? hero.offsetHeight : window.innerHeight) * HERO_EXIT_RATIO);
-      const raw = desktop.matches ? Math.min(1, Math.max(0, window.scrollY / range)) : 1;
+      const raw = desktop.matches ? Math.min(1, Math.max(0, (window.scrollY - heroTop) / range)) : 1;
       const p = reduce ? (raw >= 0.5 ? 1 : 0) : raw;
       el.style.setProperty('--nav-p', p.toFixed(4));
 
@@ -46,6 +48,14 @@ function QifSiteNav() {
         activeRef.current = next;
         setActive(next);
       }
+
+      // 轮播覆盖期间固定暗场令牌（强制白字），避免浅色主题下两行头部
+      // 压在暗色照片上出现深字压暗图。以头部中线为界：中线仍落在轮播上
+      // 则保持白字，越过中线即恢复主题翻转。
+      const carousel = document.querySelector('.news-carousel');
+      const carouselBottom = carousel ? carousel.getBoundingClientRect().bottom : 0;
+      const navMid = (headerRef.current?.offsetHeight || 0) / 2;
+      el.classList.toggle('qif-site-nav--over-media', carouselBottom > navMid);
     };
 
     const onScroll = () => {

@@ -60,6 +60,8 @@
   --dur-micro:   120ms;
   --dur-short:   220ms;
   --dur-long:    420ms;
+  /* 轮播专属：慢速时长，不受普通状态切换令牌约束 */
+  --dur-carousel: 6s;
 
   /* ── Radius ── */
   --radius-card: 6px;
@@ -71,6 +73,9 @@
  *
  * 机制：不改组件，只翻转「暗底系」令牌的值。组件里的 var() 引用保持不动，
  *       切换主题因此是零组件改动的（影像区例外，见下）。
+ *
+ * 新组件若走暗场影像区（如 .news-carousel 满屏轮播），需一并加入下方
+ * 「影像恒定组」选择器，保证昼间模式不洗白照片区。
  *
  * 注意 --color-ink 与 --color-paper 的方向：
  *   ink   = 墨（深）—— 两个主题下都深，用于「反色块底」与照片 scrim。
@@ -111,7 +116,8 @@
 .scroll-expand,
 .members__wall,
 .drift-wall,
-.depth-carousel {
+.depth-carousel,
+.news-carousel {
   --color-paper:         oklch(98.5% 0.004 290);
   --color-paper-2:       oklch(96% 0.006 290);
   --color-rule:          oklch(87% 0.008 290);

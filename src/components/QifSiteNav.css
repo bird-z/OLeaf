@@ -227,6 +227,17 @@
   background: color-mix(in oklch, var(--color-photo-muted) 55%, transparent);
 }
 
+/* ── 压暗场媒体（首页轮播）期间的头部强制白字 ──
+ * 浅色主题下 photo-* 令牌翻成深字，而轮播是暗色照片，必须强制白字；
+ * 覆盖同时把 --color-paper-dark 按暗场语义取回深底，使昼间 scrim/CTA
+ * 上的文字仍落在深色底座上。滚过轮播后自动撤销，恢复既有主题翻转。 */
+[data-theme='light'] .qif-site-nav--over-media {
+  --color-photo-ink:    oklch(96% 0.005 290);
+  --color-photo-muted:  oklch(80% 0.012 290);
+  --color-paper-dark:   oklch(16% 0.012 290);
+  --color-eco-bright:   oklch(74% 0.17 152);
+}
+
 /* ── nav2：CardNav 胶囊交叉溶解；<1024px 恒显 ── */
 .qif-site-nav .card-nav-container {
   opacity: var(--nav-p);

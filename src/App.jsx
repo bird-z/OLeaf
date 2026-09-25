@@ -4,6 +4,7 @@ import SciencePage from './pages/SciencePage.jsx'
 import EventsPage from './pages/EventsPage.jsx'
 import PopularPage from './pages/PopularPage.jsx'
 import ArticlePage from './pages/ArticlePage.jsx'
+import NewsDetailPage from './pages/NewsDetailPage.jsx'
 import './App.css'
 import './components/CardNav.css'
 
@@ -19,6 +20,8 @@ function App() {
         <Route path="/events" element={<EventsPage />} />
         <Route path="/popular" element={<PopularPage />} />
         <Route path="/popular/:category/:title" element={<ArticlePage />} />
+        {/* CMS 新闻详情：QifSlideCard / NewsCarousel 的链接落点（文章 id 或 slug） */}
+        <Route path="/news/:id" element={<NewsDetailPage />} />
       </Routes>
     </HashRouter>
   )

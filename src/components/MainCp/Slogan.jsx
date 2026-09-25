@@ -24,7 +24,13 @@ function Slogan() {
     let raf = 0;
     const update = () => {
       raf = 0;
-      const p = Math.min(1, Math.max(0, window.scrollY / window.innerHeight));
+      // 首页第一屏现在是新闻轮播：视差进度以 Slogan 自身顶边为起点，
+      // 避免被上方轮播的高度偏移（heroTop 会随轮播挂载/卸载变化）。
+      const heroTop = el.getBoundingClientRect().top + window.scrollY;
+      const p = Math.min(
+        1,
+        Math.max(0, (window.scrollY - heroTop) / window.innerHeight)
+      );
       el.style.setProperty('--hero-p', p.toFixed(4));
     };
     const onScroll = () => {

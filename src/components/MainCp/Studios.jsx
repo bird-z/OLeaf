@@ -57,7 +57,7 @@ function Studios() {
             特色工作室
           </h2>
           <div className="studios__head-side">
-            <span className="studios__index" aria-hidden="true">02 · Studios</span>
+            <span className="studios__index" aria-hidden="true">03 · Studios</span>
             <p className="studios__gloss">
               工作室由会员自发发起、自由生长——把共同的兴趣，做成看得见的作品。
             </p>

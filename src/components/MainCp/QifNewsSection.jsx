@@ -13,7 +13,7 @@ function QifNewsSection() {
     <section id="news" className="news qif-news" aria-label="启扉快讯">
       <div className="qif-news__inner">
         <QifObsHeader
-          no="05"
+          no="02"
           en="NEWS & EVENTS"
           title="启扉快讯"
           desc="记录启扉的每一次探索、实践与成长。"

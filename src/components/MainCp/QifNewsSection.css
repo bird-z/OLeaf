@@ -1,4 +1,5 @@
-/* 首页新闻区块：夜绿交替节，插在 Hero（暗）与 About（暗）之间。 */
+/* 首页新闻区块「启扉快讯」：夜绿交替节，接在 About 后（节序 OBS-02）；
+ * 是顶部 NewsCarousel 点击与导航「快讯」的 #news 落点。 */
 
 .qif-news {
   position: relative;

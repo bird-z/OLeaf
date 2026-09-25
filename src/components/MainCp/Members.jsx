@@ -111,7 +111,7 @@ function Members() {
             繁花
           </h2>
           <div className="members__head-side">
-            <span className="members__index" aria-hidden="true">03 · Members</span>
+            <span className="members__index" aria-hidden="true">04 · Members</span>
             <p className="members__gloss">
               每一份好奇，都值得被看见——他们来自不同学院与专业，因为同一份对生命的好奇相聚在启扉。
             </p>

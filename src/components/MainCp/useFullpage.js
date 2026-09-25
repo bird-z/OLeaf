@@ -6,7 +6,8 @@ import { useEffect } from 'react';
  * 不劫持滚动位置：把每次滑动/轻扫转换成一次带弹性缓动的
  * 平滑滚动到下一个停靠点，ScrollExpand 等滚动驱动组件完全兼容。
  *
- * 停靠点：Hero → ScrollExpand 闭合 → ScrollExpand 全开 → About → 文档底部
+ * 停靠点：NewsCarousel(页顶0) → Hero(Slogan) → [ScrollExpand 闭合 → 全开] →
+ *         About → News(.qif-news) → Studios → Members → Join → 文档底部
  * 无障碍逃生：prefers-reduced-motion 下不接管，保持原生滚动。
  */
 
@@ -45,8 +46,14 @@ export function useFullpage() {
         stops.push(top + stageH * 1.2); // 转场全开（scrollDistance = 1.2）
       }
 
+      const hero = document.querySelector('.hero'); // Slogan（第二屏，页顶 0 是新闻轮播）
+      if (hero) stops.push(hero.getBoundingClientRect().top + y);
+
       const about = document.querySelector('.about');
       if (about) stops.push(about.getBoundingClientRect().top + y);
+
+      const news = document.querySelector('.qif-news'); // 启扉快讯节（About 后）
+      if (news) stops.push(news.getBoundingClientRect().top + y);
 
       const studios = document.querySelector('.studios'); // 第三节：特色工作室
       if (studios) stops.push(studios.getBoundingClientRect().top + y);
