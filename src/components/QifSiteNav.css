@@ -1,49 +1,53 @@
 /* QifSiteNav —— 首页融合导航
- * 页顶态 = bioqif 原版两行头部（排版/色彩/款式迁移，全部令牌化）
- * 滚动态 = CardNav 玻璃胶囊（nav2 简约态）
+ * slogan 态 = nav1 透明两行头部（参考 bioqif：双徽 + 校会名堆栈 / 右标语，发丝线下横排链接）
+ * 滚动态 = nav2 CardNav 玻璃胶囊
  * 交叉溶解由 --nav-p 驱动（rAF 逐帧写在外层容器），无 transition 以免与滚动联动双重缓动。
- * 颜色/字体/间距/圆角一律引用 tokens.css；bioqif 的 sky/emerald/gold 映射为 eco/brass 令牌族。
+ * <1024px：nav1 整体不渲染，nav2 胶囊恒显（JS 同步强制 p=1）。
+ * 颜色/字体/间距/圆角一律引用 tokens.css。
  */
 
 @import '../../tokens.css';
 
-/* --nav1-height 由 QifSiteNav.jsx 的 ResizeObserver 写实测值到 :root，
- * tokens.css 中的默认值仅作首帧 fallback —— 不再需要断点估算。 */
+/* --nav1-height 由 QifSiteNav.jsx 的 ResizeObserver 写实测值到 :root（仅桌面），
+ * Slogan.css 的 hero padding 以 var(--nav1-height, 72px) 引用。 */
 
 .qif-site-nav {
   --nav-p: 0;
 }
 
-/* ── nav1：页顶两行头部 ── */
+/* ── nav1：slogan 态两行头部（透明底压 Hero） ── */
 .qif-hero-header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 98;
-  /* 毛玻璃实底：半透明 paper-dark（随主题翻转）+ backdrop 模糊。
-   * 压在其下的 Hero 照片/meta 行被虚化，物理隔离两层，杜绝与导航行叠字；
-   * 模糊档位与 nav2 CardNav 胶囊一致（blur 14px），两种导航态观感同源。 */
+  display: none; /* 默认隐藏，≥1024px 断点开启 */
+  /* 透明压图：仅一层极轻顶部 scrim 保证文字可读，Hero 星空完整透出 */
   background:
     linear-gradient(
       180deg,
-      color-mix(in oklch, var(--color-paper-dark) 80%, transparent),
-      color-mix(in oklch, var(--color-paper-dark) 62%, transparent)
+      color-mix(in oklch, var(--color-ink) 34%, transparent),
+      transparent 72%
     );
-  backdrop-filter: blur(14px) saturate(1.1);
-  -webkit-backdrop-filter: blur(14px) saturate(1.1);
-  border-bottom: 1px solid color-mix(in oklch, var(--color-photo-muted) 18%, transparent);
   opacity: calc(1 - var(--nav-p));
   transform: translateY(calc(var(--nav-p) * -18px));
+  pointer-events: none; /* 透明区点击穿透；行内元素各自恢复 */
 }
 
 .qif-hero-header__inner {
-  max-width: 80rem;
-  margin: 0 auto;
+  max-width: none;
+  margin: 0;
   padding: 0 clamp(var(--space-md), 4vw, var(--space-2xl));
 }
 
-/* ── 品牌行 ── */
+.qif-hero-header a,
+.qif-hero-header button,
+.qif-hero-header .qif-hero-header__actions {
+  pointer-events: auto;
+}
+
+/* ── 第一行：双徽 + 校会名堆栈 ⇄ 右标语 ── */
 .qif-hero-header__brand {
   display: flex;
   align-items: center;
@@ -63,8 +67,8 @@
 }
 
 .qif-hero-header__logo {
-  height: 36px;
-  width: 36px;
+  height: 40px;
+  width: 40px;
   flex: none;
   object-fit: contain;
   border-radius: 9999px;
@@ -72,7 +76,7 @@
 
 .qif-hero-header__divider {
   width: 1px;
-  height: 28px;
+  height: 30px;
   background: color-mix(in oklch, var(--color-photo-muted) 45%, transparent);
 }
 
@@ -107,7 +111,7 @@
 }
 
 .qif-hero-header__slogan {
-  display: none;
+  display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: var(--space-2xs);
@@ -116,7 +120,7 @@
 .qif-hero-header__slogan-cn {
   font-size: var(--text-sm);
   letter-spacing: 0.3em;
-  color: var(--color-photo-muted);
+  color: var(--color-photo-ink);
   white-space: nowrap;
 }
 
@@ -128,28 +132,28 @@
   white-space: nowrap;
 }
 
-/* ── 桌面导航行 ── */
+/* ── 第二行：发丝线下横排链接，按宽度均布 ── */
 .qif-hero-header__nav {
-  display: none;
+  display: flex;
   align-items: center;
-  gap: var(--space-xl);
+  justify-content: space-between;
+  gap: var(--space-md);
   padding-top: var(--space-sm);
   padding-bottom: var(--space-sm);
-  border-top: 1px solid color-mix(in oklch, var(--color-photo-muted) 22%, transparent);
+  border-top: 1px solid color-mix(in oklch, var(--color-photo-muted) 24%, transparent);
 }
 
 .qif-hero-header__link {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.35em;
   padding: 0;
   border: 0;
   background: none;
   font-family: var(--font-body);
   font-size: var(--text-base);
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   color: var(--color-photo-ink);
   text-decoration: none;
   white-space: nowrap;
@@ -169,57 +173,19 @@
   transition: width var(--dur-short) var(--ease-out);
 }
 
-.qif-hero-header__link:hover,
-.qif-hero-header__link.is-open {
+.qif-hero-header__link:hover {
   color: var(--color-eco-bright);
 }
 
-.qif-hero-header__link:hover::after,
-.qif-hero-header__link.is-open::after {
+.qif-hero-header__link:hover::after {
   width: 70%;
 }
 
-/* ── 档案下拉 ── */
-.qif-hero-header__archive {
-  position: relative;
-}
-
-.qif-hero-header__menu {
-  position: absolute;
-  top: calc(100% + 14px);
-  right: 0;
-  min-width: 11rem;
-  display: flex;
-  flex-direction: column;
-  padding: var(--space-xs);
-  background: var(--color-paper-dark);
-  border: 1px solid var(--color-rule);
-  box-shadow: 0 18px 40px -18px color-mix(in oklch, var(--color-ink) 60%, transparent);
-}
-
-.qif-hero-header__menu-item {
-  padding: 0.55rem 0.75rem;
-  font-size: var(--text-sm);
-  letter-spacing: 0.08em;
-  color: var(--color-photo-ink);
-  text-decoration: none;
-  white-space: nowrap;
-  transition:
-    color var(--dur-short) var(--ease-out),
-    background var(--dur-short) var(--ease-out);
-}
-
-.qif-hero-header__menu-item:hover {
-  color: var(--color-eco-bright);
-  background: color-mix(in oklch, var(--color-eco) 12%, transparent);
-}
-
-/* ── CTA（加入我们） ── */
+/* ── CTA（加入我们）：行尾亮色块 ── */
 .qif-hero-header__cta {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-left: auto;
   padding: 0.6rem 1.25rem;
   background: var(--color-eco-bright);
   color: var(--color-paper-dark);
@@ -241,126 +207,51 @@
   gap: var(--space-sm);
 }
 
-/* ── 移动端行 ── */
-.qif-hero-header__mobile {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-top: 1px solid color-mix(in oklch, var(--color-photo-muted) 22%, transparent);
-  padding: var(--space-sm) 0;
+/* ── 昼间：亮 scrim 换白 —— --color-ink 不随主题翻转，昼间压图会把白昼校园
+ * 压暗又配深字（双重低对比）。paper-dark 昼间翻为纸白，scrim 换浅保读。 ── */
+[data-theme='light'] .qif-hero-header {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklch, var(--color-paper-dark) 62%, transparent),
+      color-mix(in oklch, var(--color-paper-dark) 38%, transparent) 55%,
+      transparent
+    );
 }
 
-.qif-hero-header__mobile-name {
-  font-size: var(--text-sm);
-  letter-spacing: 0.15em;
-  color: var(--color-photo-ink);
-  white-space: nowrap;
+[data-theme='light'] .qif-hero-header__nav {
+  border-top-color: color-mix(in oklch, var(--color-photo-muted) 34%, transparent);
 }
 
-.qif-hero-header__mobile-actions {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
+[data-theme='light'] .qif-hero-header__divider {
+  background: color-mix(in oklch, var(--color-photo-muted) 55%, transparent);
 }
 
-.qif-hero-header__toggle {
-  display: flex;
-  width: 40px;
-  height: 40px;
-  align-items: center;
-  justify-content: center;
-  border: 0;
-  background: none;
-  color: var(--color-photo-ink);
-  cursor: pointer;
-}
-
-.qif-hero-header__burger {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.qif-hero-header__burger span {
-  width: 22px;
-  height: 2px;
-  background: currentColor;
-  transition:
-    transform var(--dur-short) var(--ease-out),
-    opacity var(--dur-short) var(--ease-out);
-}
-
-.qif-hero-header__burger.is-open span:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
-}
-
-.qif-hero-header__burger.is-open span:nth-child(2) {
-  opacity: 0;
-}
-
-.qif-hero-header__burger.is-open span:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
-}
-
-/* ── 移动端双列面板 ── */
-.qif-hero-header__panel {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  padding: var(--space-sm) clamp(var(--space-md), 4vw, var(--space-2xl)) var(--space-lg);
-  background: var(--color-paper-dark);
-  border-top: 1px solid color-mix(in oklch, var(--color-photo-muted) 16%, transparent);
-}
-
-.qif-hero-header__panel-link {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.7rem 0.5rem;
-  border-bottom: 1px solid color-mix(in oklch, var(--color-photo-muted) 14%, transparent);
-  font-size: var(--text-sm);
-  letter-spacing: 0.15em;
-  color: var(--color-photo-ink);
-  text-decoration: none;
-}
-
-.qif-hero-header__panel-link:hover {
-  color: var(--color-eco-bright);
-}
-
-/* backdrop-filter 不支持时兜底：近实色底，保证两层物理隔离不串层 */
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .qif-hero-header {
-    background: color-mix(in oklch, var(--color-paper-dark) 92%, transparent);
-  }
-}
-
-/* ── nav2：CardNav 胶囊交叉溶解 ── */
+/* ── nav2：CardNav 胶囊交叉溶解；<1024px 恒显 ── */
 .qif-site-nav .card-nav-container {
   opacity: var(--nav-p);
   transform: translateY(calc((1 - var(--nav-p)) * -14px));
 }
 
+@media (max-width: 1023px) {
+  .qif-site-nav .card-nav-container {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* ── 焦点环 ── */
 .qif-hero-header__link:focus-visible,
 .qif-hero-header__cta:focus-visible,
-.qif-hero-header__menu-item:focus-visible,
-.qif-hero-header__toggle:focus-visible,
-.qif-hero-header__panel-link:focus-visible {
+.qif-hero-header__identity:focus-visible {
   outline: 2px solid var(--color-focus-on-dark);
   outline-offset: 2px;
 }
 
-/* ── 桌面断点 ── */
+/* ── 桌面断点：两行头部登场 ── */
 @media (min-width: 1024px) {
-  .qif-hero-header__slogan {
-    display: flex;
-  }
-  .qif-hero-header__nav {
-    display: flex;
-  }
-  .qif-hero-header__mobile,
-  .qif-hero-header__panel {
-    display: none;
+  .qif-hero-header {
+    display: block;
   }
 }
 

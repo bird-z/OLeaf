@@ -18,6 +18,21 @@ export const ARCHIVE_LINKS = [
 
 export const JOIN_LINK = { key: 'join', label: '加入我们', anchor: 'join' };
 
+/* 两行头部（slogan 态）第二行的平铺导航项。
+ * home: 'home' 特殊键 —— 平滑滚动回页顶，无 href/to；
+ * anchor 项走 useAnchorScroll；to 项走 <Link>。 */
+export const HERO_LINKS = [
+  { key: 'home', label: '首页', home: 'top' },
+  { key: 'about', label: '概况', anchor: 'about' },
+  { key: 'news', label: '快讯', anchor: 'news' },
+  { key: 'studios', label: '特色工作室', anchor: 'studios' },
+  { key: 'science', label: '科学与工程', to: '/science' },
+  { key: 'popular', label: '知识普及', to: '/popular' },
+  { key: 'events', label: '教育活动', to: '/events' },
+  { key: 'members', label: '成员', anchor: 'members' },
+  JOIN_LINK,
+];
+
 /* CardNav 的 items 结构：{ label, links: [{ label, href, ariaLabel }] }。
  * 锚点 href 以 # 开头，由 CardNav 内部走 useAnchorScroll 的 JS 滚动。 */
 export const CARD_GROUPS = [

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useAnchorScroll } from '../../lib/scrollTo.js';
-import groundLight from '../../assets/ground1.jpg';
+import groundLight from '../../assets/gate.jpg';
 import './Slogan.css';
 
 const SUBTITLE = '一粒因热爱播种的种子 在江农的土壤里生根发芽';
@@ -61,8 +61,8 @@ function Slogan() {
           className="hero__bg hero__layer hero__layer--day"
           src={groundLight}
           alt=""
-          width="666"
-          height="424"
+          width="1000"
+          height="677"
         />
       </div>
 

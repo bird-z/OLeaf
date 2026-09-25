@@ -1,4 +1,4 @@
-import Nav from '../components/MainCp/Nav.jsx'
+import QifSiteNav from '../components/QifSiteNav.jsx'
 import Slogan from '../components/MainCp/Slogan.jsx'
 import About from '../components/MainCp/About.jsx'
 import Studios from '../components/MainCp/Studios.jsx'
@@ -12,7 +12,7 @@ function Home() {
   return (
     <ClickSpark sparkSize={9} sparkRadius={26} sparkCount={10}>
       <div className="App">
-        <Nav />
+        <QifSiteNav />
         <Slogan />
         <About />
         <Studios />

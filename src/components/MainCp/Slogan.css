@@ -22,8 +22,9 @@
   min-height: 100svh;
   display: flex;
   flex-direction: column;
-  /* 顶部 padding = 72px（fixed CardNav：12 容器间距 + 60 条高）+ 原间距，避免 meta 行被 nav 遮住 */
-  padding: calc(72px + var(--space-md)) clamp(var(--space-md), 4vw, var(--space-2xl)) var(--space-xl);
+  /* 顶部 padding：桌面 = nav1 两行头部实测高（QifSiteNav 写 --nav1-height）；
+     移动端回退 72px（CardNav 胶囊：12 容器间距 + 60 条高），避免 meta 行被 nav 遮住 */
+  padding: calc(var(--nav1-height, 72px) + var(--space-md)) clamp(var(--space-md), 4vw, var(--space-2xl)) var(--space-xl);
   color: var(--color-photo-ink); /* 暗底：文字整体翻白 */
   font-family: var(--font-body);
   text-align: left;
@@ -371,24 +372,24 @@
   background:
     linear-gradient(
       to top,
-      color-mix(in oklch, var(--color-paper-dark) 88%, transparent),
-      transparent 46%
+      color-mix(in oklch, var(--color-paper-dark) 55%, transparent),
+      transparent 42%
     ),
     linear-gradient(
       160deg,
-      color-mix(in oklch, var(--color-paper-dark) 94%, transparent),
-      color-mix(in oklch, var(--color-paper-dark) 52%, transparent) 46%,
-      color-mix(in oklch, var(--color-paper-dark) 86%, transparent)
+      color-mix(in oklch, var(--color-paper-dark) 58%, transparent),
+      color-mix(in oklch, var(--color-paper-dark) 14%, transparent) 46%,
+      color-mix(in oklch, var(--color-paper-dark) 48%, transparent)
     );
 }
 
-/* ground1 源图仅 666×424，全屏铺开本就有放大；把视差基础缩放从 1.10 收到 1.02，
+/* gate 源图为 1000×677，全屏铺开有放大；把视差基础缩放从 1.10 收到 1.02，
  * 少一层重采样，并轻加饱和/对比，让它读起来像「印刷品」而非被拉糊的像素。
  * 只作用于昼间图层（夜间图层在浅色下已透明）。 */
 [data-theme='light'] .hero__layer--day {
   transform: translate3d(0, calc(var(--hero-p, 0) * 5%), 0)
     scale(calc(1.02 + var(--hero-p, 0) * 0.03));
-  filter: saturate(1.06) contrast(1.04);
+  filter: saturate(1.12) contrast(1.05);
 }
 
 /* 行楷标题：原为「亮字 + 深影」，昼间反转为「墨字 + 浅影」，否则深字叠深影会发糊 */

@@ -5,39 +5,41 @@ import ThemeToggle from './ThemeToggle.jsx';
 import CardNav from './CardNav.jsx';
 import schoolLogo from '../assets/logo.png';
 import qifLogo from '../assets/logo2.png';
-import { PRIMARY_LINKS, ARCHIVE_LINKS, JOIN_LINK, CARD_GROUPS } from '../data/homeNav.js';
+import { HERO_LINKS, CARD_GROUPS } from '../data/homeNav.js';
 import './QifSiteNav.css';
 
-/* 首页融合导航：页顶 = nav1（bioqif 原版两行头部，令牌化）⇄ 滚动后 = nav2（CardNav 玻璃胶囊）。
- * - 滚动进度 --nav-p = clamp(scrollY / 140, 0, 1)，rAF 节流写在外层容器上；
+/* 首页融合导航：slogan 态 = nav1（透明两行头部，参考 bioqif 排版）⇄ 滑出 Hero = nav2（CardNav 玻璃胶囊）。
+ * - 触发点：p = clamp(scrollY / (0.7 × hero 实测高度), 0, 1)，rAF 节流写 --nav-p 在外层容器；
  * - data-active 在 p 0.5 处切换，用于 inert / aria-hidden 门控（避免两个导航同级可聚焦）；
- * - 页内锚点一律走 useAnchorScroll（HashRouter 下原生 # 会覆盖 hash 路由）；
- * - 仅首页使用；子页继续各自现有导航。 */
+ * - 页内锚点一律走 useAnchorScroll（HashRouter 下原生 # 会覆盖 hash 路由）；「首页」= 回页顶；
+ * - 仅首页使用且仅桌面展示两行头部；<1024px 恒为 nav2 胶囊（子页继续 MainCp/Nav）。 */
 
-const NAV_TRIGGER = 140;
+const HERO_EXIT_RATIO = 0.7; // Hero 滚出 70% 完成模式切换
+const DESKTOP_MQ = '(min-width: 1024px)';
 
 function QifSiteNav() {
   const [active, setActive] = useState('hero'); // 'hero' | 'card'
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [archiveOpen, setArchiveOpen] = useState(false);
   const wrapRef = useRef(null);
   const headerRef = useRef(null);
-  const archiveRef = useRef(null);
   const activeRef = useRef('hero');
   const anchorScroll = useAnchorScroll();
 
-  /* 滚动进度驱动 nav1 ⇄ nav2 丝滑转化 */
+  /* 滚动进度驱动 nav1 ⇄ nav2 丝滑转化；<1024px 强制 nav2 胶囊 */
   useEffect(() => {
     const el = wrapRef.current;
     if (!el) return;
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const desktop = window.matchMedia(DESKTOP_MQ);
     let raf = 0;
 
     const update = () => {
       raf = 0;
-      const y = window.scrollY;
-      const p = Math.min(1, Math.max(0, y / NAV_TRIGGER));
-      el.style.setProperty('--nav-p', (reduce ? (p >= 0.5 ? 1 : 0) : p).toFixed(4));
+      // hero 实测高度做分母，首屏未渲染到时回退视口高
+      const hero = document.querySelector('.hero');
+      const range = Math.max(1, (hero ? hero.offsetHeight : window.innerHeight) * HERO_EXIT_RATIO);
+      const raw = desktop.matches ? Math.min(1, Math.max(0, window.scrollY / range)) : 1;
+      const p = reduce ? (raw >= 0.5 ? 1 : 0) : raw;
+      el.style.setProperty('--nav-p', p.toFixed(4));
 
       const next = p >= 0.5 ? 'card' : 'hero';
       if (next !== activeRef.current) {
@@ -53,66 +55,89 @@ function QifSiteNav() {
     update();
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
+    desktop.addEventListener('change', onScroll);
     return () => {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
+      desktop.removeEventListener('change', onScroll);
       if (raf) cancelAnimationFrame(raf);
     };
   }, []);
 
   /* 头部实测高度 → --nav1-height：Hero 顶部 padding 引用该令牌让位。
    * 写死值会小于真实渲染高度，导致 hero__meta 行透到导航行上叠层；
-   * ResizeObserver 捕获字体加载 / 断点切换 / 移动端行显隐等一切高度变化。 */
+   * ResizeObserver 捕获字体加载 / 断点切换 / 行显隐等一切高度变化。
+   * 仅桌面写入：移动端两行头部 display:none（offsetHeight=0），
+   * 写入 0 会让 hero padding 坍缩 —— 移动端交给 CSS 的 72px 兜底。 */
   useEffect(() => {
     const header = headerRef.current;
     if (!header) return;
     const root = document.documentElement;
+    const desktop = window.matchMedia(DESKTOP_MQ);
     const apply = () => {
-      root.style.setProperty('--nav1-height', `${header.offsetHeight}px`);
+      if (desktop.matches) {
+        root.style.setProperty('--nav1-height', `${header.offsetHeight}px`);
+      } else {
+        root.style.removeProperty('--nav1-height');
+      }
     };
     apply();
     const observer = new ResizeObserver(apply);
     observer.observe(header);
+    desktop.addEventListener('change', apply);
     return () => {
       observer.disconnect();
+      desktop.removeEventListener('change', apply);
       root.style.removeProperty('--nav1-height');
     };
   }, []);
 
-  /* 档案下拉：点击外部 / Esc 关闭 */
-  useEffect(() => {
-    if (!archiveOpen) return;
-    const onDocClick = (event) => {
-      if (archiveRef.current && !archiveRef.current.contains(event.target)) setArchiveOpen(false);
-    };
-    const onKey = (event) => {
-      if (event.key === 'Escape') setArchiveOpen(false);
-    };
-    document.addEventListener('mousedown', onDocClick);
-    document.addEventListener('keydown', onKey);
-    return () => {
-      document.removeEventListener('mousedown', onDocClick);
-      document.removeEventListener('keydown', onKey);
-    };
-  }, [archiveOpen]);
+  const scrollTop = event => {
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
-  const anchorProps = (anchor, close) => ({
+  const anchorProps = anchor => ({
     href: `#${anchor}`,
-    onClick: (event) => {
-      if (close) close();
-      anchorScroll(anchor)(event);
-    },
+    onClick: anchorScroll(anchor),
   });
 
-  const mobileItems = [...PRIMARY_LINKS, ...ARCHIVE_LINKS, JOIN_LINK];
+  const renderLink = item => {
+    if (item.home) {
+      return (
+        <a key={item.key} className="qif-hero-header__link" href="#" onClick={scrollTop}>
+          {item.label}
+        </a>
+      );
+    }
+    if (item.to) {
+      return (
+        <Link key={item.key} className="qif-hero-header__link" to={item.to}>
+          {item.label}
+        </Link>
+      );
+    }
+    if (item.key === 'join') {
+      return (
+        <a key={item.key} className="qif-hero-header__cta" {...anchorProps(item.anchor)}>
+          {item.label}
+        </a>
+      );
+    }
+    return (
+      <a key={item.key} className="qif-hero-header__link" {...anchorProps(item.anchor)}>
+        {item.label}
+      </a>
+    );
+  };
 
   return (
     <div ref={wrapRef} className="qif-site-nav" data-active={active}>
-      {/* nav1：页顶两行头部（bioqif 原版排版 / 色彩 / 款式，令牌化） */}
+      {/* nav1：slogan 态两行头部（透明底压 Hero，参考 bioqif 排版，令牌化） */}
       <header ref={headerRef} className="qif-hero-header" inert={active !== 'hero' || undefined} aria-hidden={active !== 'hero'}>
         <div className="qif-hero-header__inner">
           <div className="qif-hero-header__brand">
-            <Link to="/" className="qif-hero-header__identity" aria-label="返回首页">
+            <Link to="/" className="qif-hero-header__identity" aria-label="返回首页" onClick={scrollTop}>
               <img src={schoolLogo} alt="江西农业大学校徽" className="qif-hero-header__logo" />
               <span className="qif-hero-header__divider" aria-hidden="true" />
               <img src={qifLogo} alt="生物启扉协会会徽" className="qif-hero-header__logo" />
@@ -129,99 +154,15 @@ function QifSiteNav() {
           </div>
 
           <nav className="qif-hero-header__nav" aria-label="主导航">
-            {PRIMARY_LINKS.map((item) => (
-              <a key={item.key} className="qif-hero-header__link" {...anchorProps(item.anchor)}>
-                {item.label}
-              </a>
-            ))}
-
-            <div className="qif-hero-header__archive" ref={archiveRef}>
-              <button
-                type="button"
-                className={`qif-hero-header__link qif-hero-header__archive-btn${archiveOpen ? ' is-open' : ''}`}
-                aria-expanded={archiveOpen}
-                aria-haspopup="true"
-                onClick={() => setArchiveOpen((value) => !value)}
-              >
-                档案 <span aria-hidden="true">▾</span>
-              </button>
-              {archiveOpen && (
-                <div className="qif-hero-header__menu" role="menu">
-                  {ARCHIVE_LINKS.map((item) =>
-                    item.to ? (
-                      <Link
-                        key={item.key}
-                        to={item.to}
-                        role="menuitem"
-                        className="qif-hero-header__menu-item"
-                        onClick={() => setArchiveOpen(false)}
-                      >
-                        {item.label}
-                      </Link>
-                    ) : (
-                      <a key={item.key} role="menuitem" className="qif-hero-header__menu-item" {...anchorProps(item.anchor, () => setArchiveOpen(false))}>
-                        {item.label}
-                      </a>
-                    ),
-                  )}
-                </div>
-              )}
-            </div>
-
-            <a className="qif-hero-header__cta" {...anchorProps(JOIN_LINK.anchor)}>
-              {JOIN_LINK.label}
-            </a>
-
+            {HERO_LINKS.map(renderLink)}
             <div className="qif-hero-header__actions">
               <ThemeToggle />
             </div>
           </nav>
-
-          {/* 移动端行：协会名 + 主题切换 + 汉堡 */}
-          <div className="qif-hero-header__mobile">
-            <span className="qif-hero-header__mobile-name">生物启扉协会</span>
-            <div className="qif-hero-header__mobile-actions">
-              <ThemeToggle />
-              <button
-                type="button"
-                className="qif-hero-header__toggle"
-                aria-expanded={mobileOpen}
-                aria-label={mobileOpen ? '关闭菜单' : '打开菜单'}
-                onClick={() => setMobileOpen((value) => !value)}
-              >
-                <span className={`qif-hero-header__burger${mobileOpen ? ' is-open' : ''}`}>
-                  <span />
-                  <span />
-                  <span />
-                </span>
-              </button>
-            </div>
-          </div>
         </div>
-
-        {mobileOpen && (
-          <div className="qif-hero-header__panel">
-            {mobileItems.map((item) =>
-              item.to ? (
-                <Link
-                  key={item.key}
-                  to={item.to}
-                  className="qif-hero-header__panel-link"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              ) : (
-                <a key={item.key} className="qif-hero-header__panel-link" {...anchorProps(item.anchor, () => setMobileOpen(false))}>
-                  {item.label}
-                </a>
-              ),
-            )}
-          </div>
-        )}
       </header>
 
-      {/* nav2：CardNav 玻璃胶囊（滚动后显现） */}
+      {/* nav2：CardNav 玻璃胶囊（滚动后显现；<1024px 恒显） */}
       <div className="qif-site-nav__pill" inert={active !== 'card' || undefined} aria-hidden={active !== 'card'}>
         <CardNav
           logo={qifLogo}
