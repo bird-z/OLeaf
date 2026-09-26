@@ -23,7 +23,7 @@ function Home() {
         <NewsCarousel />
         <Slogan />
         <About />
-        {/* <QifNewsSection /> */}
+        <QifNewsSection />
         <Studios />
         <Members />
         <Join />
