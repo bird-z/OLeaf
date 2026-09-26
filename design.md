@@ -58,6 +58,67 @@
 根字号 18px(≤1024px 降 16px),行高 145%,字距 0.18px。新尺寸必须落在刻度上,
 禁止 `font-size: 17px` 之类的刻度外值。
 
+### 4.1 文字分级(Type Roles)
+
+与字阶并列的**第二套一致性**:同一「角色」跨页必须同字族、同字重、同字距、同颜色。
+尺寸只是其中一列——**选角色,不是只选字号**。共六级,从「展示」到「仪器」:
+
+| 级 | 语义角色 | 字族 | 尺寸 | 字重 | 字距 / 大小写 | 颜色令牌 | 现有锚点 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| **D1** | 展示·首屏主标 | `--font-display`(行楷) | `--text-display` | 400 | 0.04em / 原样 | `--color-photo-warm` | `Slogan .hero__title` |
+| **D2** | 展示·节标 | 行楷 | `--text-display-s` | 400 | 0.04em / 原样 | `--color-photo-warm` | About / Studios / Members / Join `__title`、`PageShell__title`、新闻详情标题 |
+| **D3** | 展示·短句 | 行楷 | `--text-lg` ~ `--text-md` ~ 局部 clamp | 400 | 0.02–0.04em | `--color-photo-warm` / `--color-eco-bright` | 成员引文与姓氏字头像、`QifSlideCard__name`、`DriftWall` 揭示句 |
+| **W** | 品牌字标 | `--font-body` | 导航 `--text-md` · 首屏 clamp(2.25–4.5rem) | 800 | -0.02 ~ -0.035em / 原样 | `--color-eco-bright` + `--color-photo-ink` 两段分色 | `Slogan__wordmark`、`CardNav .logo-wordmark` |
+| **T** | 标题(界面黑体) | `--font-body` | `--text-md` / `--text-lg`(页面 `h1/h2` 待归位,见 §4.2) | 600–800 | -0.01em / 原样 | `--color-photo-ink` | 卡片名 / 部门名 / 面板标题 / `h1,h2` |
+| **L** | 行文 | `--font-body` | L1 导语 `--text-md` · L2 正文 `--text-base` · L3 次级 `--text-sm` | 400(强调 700) | 0 / 原样 | 主 `--color-photo-ink`,次 `--color-photo-muted` | `About__copy`、文章 body、卡片 desc |
+| **U** | 界面 | `--font-body` | CTA `--text-base` · 导航 `--text-sm`~`--text-base` · 标签 `--text-xs` | 400–600 | 0.04–0.08em(中文标签) | 交互色 `--color-accent-bright` / `--color-photo-ink` | `hero__cta`、导航、筛选标签 |
+| **M** | 仪器·元数据 | `--font-mono` | M1 结构 caps `--text-xs` · M2 编号/计数/时间戳 `--text-xs` · M3 微型 caps 10–11px(待引入 `--text-2xs`) | 400–500 | 0.12–0.2em / **uppercase** | `--color-photo-muted`(编号可 `--color-eco-bright`) | 节序 `__index`、`__gloss`、`__no`、`__cue`、时间戳 |
+
+**级间纪律**:
+- **D 只承载短文本(≤12 字)**,同屏不超过两级;D1 全站仅首屏一处。
+- **W 是唯一允许 body 字体升到展示级体量的特例**(品牌英文名),靠 800 字重 + 负字距成立,
+  不得复制到其他文案。
+- **T / L / U 同族**,靠**尺寸 + 字重 + 颜色**分层,不靠换字体。
+- **M 一律 mono**,是「科学仪器」记忆点的一半;无序列语义不得编号(见 §10.6)。
+- 行高按级固定:D 1.05–1.15 / T 1.2–1.4 / L 1.65–1.9 / U 1.4–1.5 / M 1.6–1.7。
+
+### 4.2 现状缺口(全站字体规划的输入)
+
+> 本节是**待归位债务清单**,不是许可。新增样式必须走 §4 / §4.1 的令牌,
+> 不得照抄下列字面量。
+
+- **未定义令牌**:`ArticlePage.css .article__body h1` 引用 `var(--text-xl)` → 该令牌不存在,
+  回退继承值(≈1rem)。字阶在 `--text-lg`(1.5625rem) 与 `--text-display-s`(2.25rem) 之间
+  **比值为 1.44**,已断出 1.25 主三度,缺少 `--text-xl` / `--text-2xl` 中间档。
+- **刻度外字面量(34 处 `font-size`)**:`10px`×6、`11px`×8、`12px`×2、`13px`×1、
+  `15px`×4、`16px`×7、`18px`×2,以及 `20px`/`24px`/`36px`/`56px` 各 1;另有
+  `ArticlePage` 的 `0.88em`。集中在 NewsDetail / QifSiteNav / SiteHeader / QifSlideCard / qifObs。
+- **临时 clamp(5 处)**:`Slogan__wordmark`(2.25–4.5rem)、`DriftWall`(2.5–3.5rem)、
+  `NewsDetail__title`(1.9–3rem)、`qifObs`(2.25–3.8rem,与 `--text-display-s` 重复)、
+  `Slogan` 移动端(2.25–7rem)。应各自收敛为令牌。
+- **字距未令牌化**:全站 105 处 `letter-spacing`,20+ 个离散值(0.02–0.35em);
+  至少 M 级 caps 应统一为一档。
+- **遗留模板样式**:`index.css` / `App.css` 的 `h1/h2`(56/36/24/20px) 与
+  `#center` / `#next-steps` / `#docs` / `.counter` 来自 Vite 模板,与站点令牌体系并行;
+  `h1/h2` 全局生效,可能覆盖组件级标题。
+- **未引用的字体资产**:`src/assets/fonts/` 下 `AlimamaShuHeiTi-Bold.woff2`、
+  `IBMPlexMono-400/500.woff2`、`lemie-qiuxu.woff2` 全站无人引用;
+  `iconfont.ttf` 仅 `ThemeToggle.css` 经 `@font-face` 取字形。
+
+### 4.3 后续:全站字体规划(待排期)
+
+1. **补齐字阶**:定 `--text-xl`(≈1.953rem) / `--text-2xl`,让面板标题与 `--text-display-s`
+   之间连续;加 `--text-2xs`(10px) 收纳 M3 微型 caps。
+2. **收编 34 处刻度外值**:逐一映射到新刻度,或明确标注为「图形化尺寸」并集中注释。
+3. **字距 / 行高入令牌**:为 D/T/L/U/M 每级各定一档 `--tracking-*` 与 `--leading-*`,
+   消灭 20+ 离散字距。
+4. **裁决未引用字体资产**:Alimama 黑体(中文标题候选) / IBM Plex Mono(mono 候选) /
+   lemie-qiuxu(display 候选) —— 决定引入或删除;若引入需同行楷一样做子集化。
+5. **子集化流程固化**:display 文案新增即需重生成子集(见 §3);规划应给出脚本或
+   构建期缺字校验。
+6. **中文字重纪律**:`font-synthesis: none` 已全局生效,中文仅 `Noto Sans SC Variable`
+   一档可变字重;需确认 700/800 与英文 Geist 的字重对齐。
+
 ## 5. 间距与版式
 
 - **4pt 制**:`--space-3xs(2px)` 到 `--space-3xl(96px)`,共 9 档,禁止刻度外值。
@@ -168,6 +229,14 @@
   - Slogan / CardNav wordmark 沿用两段式分色：Bio 叶绿（`--color-eco-bright`）+ Qif 照片白；
     gloss 改为「Bio · 生命 — Qif · 启扉」。
   - `--color-eco*` 令牌与 `*-wordmark-eco` 类名中的 eco 为「叶绿」色彩语义，不随品牌改名。
+
+- 2026-09-26 · 新增文字/字体分级（design.md §4.1–§4.3，纯文档，未改实现）：
+  - §4.1 定义六级语义角色 D1/D2/D3/W/T/L/U/M（字族 + 尺寸令牌 + 字重 + 字距 + 大小写 + 颜色），
+    把「选字号」升级为「选角色」；锚点取自现有组件（Slogan/About/Studios/Members/Join/ProfileCard 等）。
+  - §4.2 盘点现状缺口：`--text-xl` 引用但未定义、34 处刻度外 `font-size`、5 处临时 clamp、
+    105 处未令牌化字距、`index.css` 遗留 Vite 模板 `h1/h2`、4 个未引用字体资产。
+  - §4.3 登记「全站字体规划」待办（补字阶 / 收编离群值 / 字距行高令牌化 / 裁决字体资产 /
+    子集化校验 / 中文字重对齐）。本次只落文档，实现改动另行排期。
 
 ## 13.AGENT>
 Agent:
