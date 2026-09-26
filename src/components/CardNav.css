@@ -115,7 +115,7 @@
   transform: translateY(-4px) rotate(-45deg);
 }
 
-/* ── Logo 区：竖线 eco 亮绿 + EcoRem wordmark（暗底提亮版，与 Hero wordmark 同源） ── */
+/* ── Logo 区：竖线 eco 亮绿 + BioQif wordmark（暗底提亮版，与 Hero wordmark 同源） ── */
 .logo-container {
   display: flex;
   align-items: center;

@@ -183,7 +183,7 @@ const CardNav = ({
             <img src={logo} alt={logoAlt} className="logo" />
             <span className="logo-divider" aria-hidden="true" />
             <span className="logo-wordmark">
-              <span className="logo-wordmark-eco">Eco</span>Rem
+              <span className="logo-wordmark-eco">Bio</span>Qif
             </span>
           </div>
 

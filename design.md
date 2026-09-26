@@ -1,4 +1,4 @@
-# 生物启扉协会 EcoRem · 设计体系(design.md)
+# 生物启扉协会 BioQif · 设计体系(design.md)
 
 > 本文件是全站**唯一设计系统事实来源**。任何页面、组件、动效的新建与修改,必须引用
 > `tokens.css` 中的令牌,禁止内联原始色值 / 字体栈 / 随意时长。
@@ -11,7 +11,7 @@
 ## 1. 设计主张(Point of View)
 
 - **主题**:夜空下的生命观测。暗底星轨摄影 + 行楷书法标题 + 精确的数据排版,
-  是「生物 × 修护(Eco × Rem)」这一双重身份的直接表达。
+  是「生命 × 启扉(Bio × Qif)」这一双重身份的直接表达。
 - **签名元素(Signature)**:行楷手写标题压在星轨 / 生态摄影之上,配 Geist Mono 的
   英文小字标签——「古典笔墨 × 现代科学仪器」的并置是全站记忆点,其他装饰为之让路。
 - **语气**:沉静的、田野笔记式的科学叙事。不卖弄、不吆喝;用事实和影像说话。
@@ -28,7 +28,7 @@
 | `--color-ink` / `--color-neutral` / `--color-muted` | 亮底上的三级文字 |
 | `--color-photo-ink` / `--color-photo-muted` | **摄影 / 暗底上的**主文字 / 次级文字 |
 | `--color-accent` | 品牌紫(≈ #7c3aed),**交互语义专用**:链接、按钮、焦点 |
-| `--color-eco` / `--color-eco-bright` | 叶绿,**生态语义专用**(EcoRem 相关、亮 / 暗底) |
+| `--color-eco` / `--color-eco-bright` | 叶绿,**生态语义专用**(BioQif 相关、亮 / 暗底) |
 | `--color-photo-warm` | 照片上的暖纸白,行楷标题专用(呼应夜景立柱暖光) |
 | `--color-brass` | 黄铜金,仅用于页底英文 caps 与联系标题短划 |
 | `--color-focus` / `--color-focus-on-dark` | 焦点环(亮底 / 暗底) |
@@ -162,6 +162,12 @@
     改为 IntersectionObserver `threshold: 0.4` 触发 `.is-live`（只播一次），修复入场被提前播完；
     reduced-motion 塌缩为直接终态（不依赖 is-live）。
   - 不新增令牌（暗纱系数非令牌类）；缝接处不加装饰线。
+
+- 2026-09-26 · 协会英文名全站改名 EcoRem → BioQif：
+  - 词源：Bio · 生命 + Qif · 启扉（与 Footer `Biology Qif Association`、bioqif.com 域名一致）。
+  - Slogan / CardNav wordmark 沿用两段式分色：Bio 叶绿（`--color-eco-bright`）+ Qif 照片白；
+    gloss 改为「Bio · 生命 — Qif · 启扉」。
+  - `--color-eco*` 令牌与 `*-wordmark-eco` 类名中的 eco 为「叶绿」色彩语义，不随品牌改名。
 
 ## 13.AGENT>
 Agent:

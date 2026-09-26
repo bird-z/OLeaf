@@ -7,7 +7,7 @@
 
 ## 1. 项目速览
 
-- 站点：江西农业大学生物启扉协会官网（OLeaf / EcoRem）
+- 站点：江西农业大学生物启扉协会官网（OLeaf / BioQif）
 - 栈：React 19 · Vite 8 · Tailwind 4 · GSAP · motion · HashRouter
 - 命令：`pnpm dev` / `pnpm build` / `pnpm lint`（oxlint）/ `pnpm server`（mock :3001）
 - 设计规范：`tokens.css` 是全站唯一令牌源；`design.md` 记录设计决策与变更；`PLAN.md` 是当前任务计划

@@ -6,11 +6,11 @@ function Nav() {
   return (
     <CardNav
       logo={logo}
-      logoAlt="EcoRem · 江农学生协会"
+      logoAlt="BioQif · 江农学生协会"
       actions={<ThemeToggle />}
       items={[
         { label: 'Academic', links: [
-          { label: 'API', href: 'http://localhost:3000', ariaLabel: 'EcoRem API 中转站控制台' },
+          { label: 'API', href: 'http://localhost:3000', ariaLabel: 'BioQif API 中转站控制台' },
           { label: 'Research', href: '#', ariaLabel: 'View activity' },
           { label: 'Publications', href: '#', ariaLabel: 'View activity' },
         ]},

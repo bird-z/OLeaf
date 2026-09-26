@@ -14,7 +14,7 @@
   --color-accent:     oklch(48% 0.21 290);     /* 品牌紫（≈ #7c3aed）— 交互语义 */
   --color-accent-ink: oklch(98.5% 0.004 290);  /* accent 上的文字 */
   --color-focus:      oklch(48% 0.21 290);     /* 焦点环 */
-  --color-eco:        oklch(52% 0.14 152);     /* 叶绿 — EcoRem 生态语义 */
+  --color-eco:        oklch(52% 0.14 152);     /* 叶绿 — BioQif 生态语义 */
   --color-eco-ink:    oklch(98.5% 0.01 152);   /* eco 上的文字 */
 
   /* ── 暗底（摄影背景）专用 ── */
