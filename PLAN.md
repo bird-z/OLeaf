@@ -1,5 +1,11 @@
 # NewsCarousel → Slogan 覆盖翻页转场
 
+> **状态修订（pi-A · 2026-09-26）**：本计划描述的「滚动 scrub
+> （`--page-turn` / `--page-shift` 连续进度）」**未落地，不要照此实现**。
+> 实际交付的是「`position:sticky` 钉屏 + 瞬时 `scrollTo` + `documentElement.page-covered`
+> 单一事实源」的**离散**覆盖翻页，唯一实现见 `src/components/MainCp/usePageTurn.js`，
+> 设计决策见 `design.md` 的两条 2026-09-26 变更记录。下方原文仅作方案留档。
+
 ## 摘要
 
 在第一屏（BANNER 轮播）与第二屏（Slogan hero）之间实现「覆盖翻页」缝接：滚动过程中轮播被原地钉住并随暗纱渐暗，Slogan 从底部整屏盖上来；回滚时对称反向（拉下揭示）。同时把 Slogan 的入场编排（data-reveal stagger / 逐字 reveal / foot 规则线）从「页面加载即播」改为「进入视口播放一次」——后者顺带修复现存的入场被提前播完的问题。全程滚动驱动、零额外滚动距离，不新增定时器动画。
