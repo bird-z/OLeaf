@@ -45,6 +45,25 @@ function Slogan() {
     };
   }, []);
 
+  /* 入场编排改为「进视口播一次」：hero 约 40% 可见时加 .is-live 并断开。
+   * 此前动画挂在元素本身，页面加载即播，等滚到第二屏早已播完 —— 入场不可见。
+   * 与翻页节奏衔接：Slogan 升至 ~40% 覆盖时开播（总长 ≈1.1s），
+   * 与 useFullpage 的 1.25s 弹性滚动大致同步收束。 */
+  useEffect(() => {
+    const el = heroRef.current;
+    if (!el) return;
+    const ob = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        el.classList.add('is-live');
+        ob.disconnect();
+      },
+      { threshold: 0.4 }
+    );
+    ob.observe(el);
+    return () => ob.disconnect();
+  }, []);
+
   return (
     <section className="hero" ref={heroRef} aria-labelledby="hero-title">
       {/* 第一幕背景（LCP）—— 两幕叠层，由 [data-theme] 用 opacity 交叉溶解。

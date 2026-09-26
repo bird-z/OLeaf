@@ -50,12 +50,19 @@ function QifSiteNav() {
       }
 
       // 轮播覆盖期间固定暗场令牌（强制白字），避免浅色主题下两行头部
-      // 压在暗色照片上出现深字压暗图。以头部中线为界：中线仍落在轮播上
-      // 则保持白字，越过中线即恢复主题翻转。
+      // 压在暗色照片上出现深字压暗图。
+      // 判定分两路：轮播为 sticky 钉屏时 rect 恒在视口顶、bottom 永真，
+      // 须改看 .page-covered（usePageTurn 写的覆盖事实源）；
+      // reduced-motion/卸载时是普通流块，回落为底部边界几何判定。
       const carousel = document.querySelector('.news-carousel');
       const carouselBottom = carousel ? carousel.getBoundingClientRect().bottom : 0;
       const navMid = (headerRef.current?.offsetHeight || 0) / 2;
-      el.classList.toggle('qif-site-nav--over-media', carouselBottom > navMid);
+      const covered =
+        document.documentElement.classList.contains('page-covered');
+      el.classList.toggle(
+        'qif-site-nav--over-media',
+        !!carousel && !covered && carouselBottom > navMid
+      );
     };
 
     const onScroll = () => {

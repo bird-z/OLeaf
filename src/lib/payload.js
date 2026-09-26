@@ -4,6 +4,16 @@ import fallbackCover from '../assets/psc.jpg'
  * 接口冻结：地址/请求方式/参数/归一化规则/防刷机制均不做改动，仅去掉 TS 类型。 */
 export const CMS_URL = 'https://cms.bioqif.com'
 
+/* 本地开发走 Vite 同源代理（vite.config.js：/api → CMS_URL），规避 CMS 的
+ * CORS origin 白名单（只认 127.0.0.1:8000 / www.bioqif.com）；生产环境继续直连
+ * CMS_URL，请求地址/方式/参数/归一化均不变（接口冻结）。
+ * 仅 API 走代理：<img> 跨域加载本就不受 CORS 限制，封面仍用 CMS_URL 绝对地址。 */
+const isLocalDev =
+  import.meta.env.DEV ||
+  (typeof window !== 'undefined' &&
+    ['localhost', '127.0.0.1'].includes(window.location.hostname))
+const API_BASE = isLocalDev ? '' : CMS_URL
+
 /**
  * @typedef {Object} Article
  * @property {string} id
@@ -75,7 +85,7 @@ const pendingViewRequests = new Set()
 /** @returns {Promise<Article[]>} */
 export function getArticles() {
   if (!articlesPromise) {
-    articlesPromise = fetch(`${CMS_URL}/api/public-articles`, {
+    articlesPromise = fetch(`${API_BASE}/api/public-articles`, {
       headers: { Accept: 'application/json' },
     }).then(async (response) => {
       if (!response.ok) throw new Error(`Payload request failed: ${response.status}`)
@@ -97,7 +107,7 @@ export async function incrementArticleView(id) {
 
   pendingViewRequests.add(id)
   try {
-    const response = await fetch(`${CMS_URL}/api/article-view/${id}`, { method: 'POST' })
+    const response = await fetch(`${API_BASE}/api/article-view/${id}`, { method: 'POST' })
     if (!response.ok) throw new Error(`View counter failed: ${response.status}`)
     localStorage.setItem(storageKey, String(Date.now()))
     return true

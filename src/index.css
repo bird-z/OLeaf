@@ -97,6 +97,14 @@ body {
   box-sizing: border-box;
 }
 
+/* 主站单页骨架：列向 flex + 满屏最小高，配合 .footer 的 margin-top:auto
+ * 让页底在任何内容高度下都贴近页面终点，不留底色差带 */
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+}
+
 h1,
 h2 {
   font-family: var(--heading);

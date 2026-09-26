@@ -130,6 +130,39 @@
     `qif-site-nav--over-media` 强制白字；挂载 `QifNewsSection`（OBS-02，About 后），
     `Studios/Members/Join` 序号为 03/04/05；`App.jsx` 接 `/news/:id` 路由（详情页已存在）。
 
+- 2026-09-26 · 修复首页轮播不显示（本地 dev 被 CMS 的 CORS 白名单拦下）：
+  - 根因：CMS 的 CORS 是**固定 origin 白名单**（仅 `http://127.0.0.1:8000`、
+    `https://www.bioqif.com`）；本地跑在 `localhost:5173` 时 `public-articles` 被浏览器
+    拦截 → `getArticles()` 失败 → 轮播走 `error` 分支整节卸载，Slogan 顶到第一屏。
+  - `vite.config.js` 增 `server`/`preview` 代理 `/api → https://cms.bioqif.com`；
+    `payload.js` 仅在 dev / localhost 下改用相对路径走同源代理，生产仍直连 `CMS_URL`，
+    请求地址/方式/参数不变（接口冻结）。
+  - 同时修 `index.html` 内联脚本注释提前闭合导致的 `Uncaught SyntaxError`
+    （防闪与首屏预载脚本此前整段未执行）。
+  - 待办：生产若部署在 GitHub Pages，须先把 `https://bird-z.github.io` 加入 CMS 白名单。
+
+- 2026-09-26 · NewsCarousel → Slogan 离散覆盖翻页 + Slogan 入场时机修正：
+  - 新 hook `MainCp/usePageTurn.js`（Home.jsx 调用）：滚轮向下 / 触摸上滑 /
+    点击轮播非控件区域 → 瞬时 scrollTo 到 heroTop（钉住的轮播遮住位移）+ 轮播淡出，
+    Slogan 直接在场；反向对称。560ms 动画锁吞触控板尾流；不做滚动 scrub
+    （transform 钉屏与合成器抢帧会抖）。滚动条/键盘等原生路径也归一：
+    documentElement `.page-covered` = scrollY ≥ heroTop 的唯一事实源。
+  - NewsCarousel：`position:sticky; top:0; z-index:1` 合成器钉屏，Slogan 滚过其上；
+    `.page-covered` 经 MutationObserver 读回 `covered` 态 → `is-covered`
+    （opacity 淡出，`visibility` 延时淡出结束才切 hidden，回滚方向 0s 即时恢复）
+    + `inert` + 暂停自动播放。加载态 `.news-carousel--loading` 不钉屏。
+    轮播卸载（heroTop ≤ 0）→ 全部放行原生滚动。
+  - 新增令牌 `--dur-turn`(720ms) = 翻页淡出时长（仅作用于轮播自身，不动其他组件）；
+    JS 侧 `LOCK_MS`(900) 与之同步。曾试过的 dip-through-dark（hero 照片门控）已回退：
+    会波及 Slogan 组件的呈现。
+  - 修复 `qif-site-nav--over-media` 永不撤销：轮播改 sticky 后 `getBoundingClientRect().bottom`
+    恒为视口高，几何判定失效 → 浅色主题被强制白字/深令牌全站污染（Join Us 深底深字）。
+    现 sticky 模式下改看 `.page-covered`，reduced-motion/卸载回落原几何判定。
+  - Slogan：入场编排（data-reveal stagger / 逐字 reveal / foot 规则线）从「页面加载即播」
+    改为 IntersectionObserver `threshold: 0.4` 触发 `.is-live`（只播一次），修复入场被提前播完；
+    reduced-motion 塌缩为直接终态（不依赖 is-live）。
+  - 不新增令牌（暗纱系数非令牌类）；缝接处不加装饰线。
+
 ## 13.AGENT>
 Agent:
 默认不调用视觉模型检查:compile是例外，允许对可视

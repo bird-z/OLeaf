@@ -27,7 +27,7 @@
           if (meta) meta.setAttribute('content', dark ? '#0b0b12' : '#fbfafd');
 
           /* Slogan 背景已降到第二屏（首屏改为 BANNER 新闻轮播），
-           * 这里降为低优先级预载，不再抢占首屏 LCP 的带宽。 */
+           * 这里降为低优先级预载，不再抢占首屏 LCP 的带宽。
            * 用 JS 拼路径而不写在 HTML 属性上：dev 模式下 Vite 会对 imagesrcset
            * 再补一次 base，拼出 /OLeaf/OLeaf/ 双前缀而让预载落空。 */
           var base = '%BASE_URL%';

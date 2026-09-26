@@ -8,14 +8,29 @@
 @import '../../../tokens.css';
 
 .news-carousel {
-  position: relative;
+  /* 覆盖翻页：sticky 钉在视口顶（合成器钉屏，无 JS 几何 → 不抖），
+     Slogan 依 DOM 顺序滚过其上；翻页本身是位移跳卷 + 本节淡出。
+     z-index:1 让淡出在 Slogan 之上发生（交叉溶解而不是被瞬间盖掉） */
+  position: sticky;
+  top: 0;
+  z-index: 1;
   min-height: 100svh;
   overflow: hidden;
+  /* 基础态：opacity 用 --dur-turn 过渡，visibility 瞬时变 visible（淡入） */
+  transition:
+    opacity var(--dur-turn, 720ms) var(--ease-out),
+    visibility 0s;
   isolation: isolate; /* 背景照片 + scrim 压在内容下层 */
   background: var(--color-paper-dark);
   color: var(--color-photo-ink);
   font-family: var(--font-body);
   text-align: left; /* #root 全局 text-align:center 的纠偏 */
+}
+
+/* 加载态不钉屏：占位块随文档流滚走，不挡下方内容 */
+.news-carousel--loading {
+  position: relative;
+  z-index: auto;
 }
 
 /* ── 背景轨道：交叉淡入 ── */
@@ -77,6 +92,18 @@
       transparent 42%
     );
   pointer-events: none;
+}
+
+/* 被 Slogan 覆盖：淡出 + 不再命中（inert 已由 JSX 同步，焦点不会落入）。
+ * visibility 延至淡出结束才切 hidden —— 「进 is-covered 方向的过渡队列」
+ * 从本条规则读取，回滚方向用基础态的 0s 即时恢复 */
+.news-carousel.is-covered {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity var(--dur-turn, 720ms) var(--ease-out),
+    visibility 0s var(--dur-turn, 720ms);
 }
 
 /* ── 底部字幕块（链到 #news） ── */
@@ -277,6 +304,12 @@
 
 /* ── Reduced motion：空间动画塌缩，自动播放/缩放/进度全部关闭 ── */
 @media (prefers-reduced-motion: reduce) {
+  /* 不钉屏不覆盖：两屏回到原生文档流顺序滚动 */
+  .news-carousel {
+    position: relative;
+    z-index: auto;
+  }
+
   .news-carousel__slide {
     transition: none;
   }

@@ -62,6 +62,9 @@
   --dur-long:    420ms;
   /* 轮播专属：慢速时长，不受普通状态切换令牌约束 */
   --dur-carousel: 6s;
+  /* 覆盖翻页专属：轮播⇄Slogan 交叉淡出总时长（dip-through-dark 的单边时长），
+     需与 usePageTurn.js 的 LOCK_MS 同步调 */
+  --dur-turn:    720ms;
 
   /* ── Radius ── */
   --radius-card: 6px;

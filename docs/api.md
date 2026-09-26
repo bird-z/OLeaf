@@ -49,15 +49,24 @@
 | 字段命名 | CMS 原始：`snake_case`；前端 `Article` 模型：`camelCase` |
 | 错误约定 | 前端**只判断 HTTP 状态码**，不解析 CMS 错误报文（错误报文结构未纳入契约） |
 
-### 2.1 CORS（2026-09-25 实测）
+### 2.1 CORS（2026-09-26 实测）
 
-| 接口 | `Access-Control-Allow-Origin` | `Access-Control-Allow-Methods` | `Allow-Credentials` |
-|---|---|---|---|
-| `GET /api/public-articles` | 回显请求 `Origin`（实测 `http://127.0.0.1:8000`、`https://www.bioqif.com` 均通过） | `GET, OPTIONS` | 无 |
-| `OPTIONS /api/article-view/{id}`（预检） | 回显请求 `Origin`（两个 Origin 均通过） | `PUT, PATCH, POST, GET, DELETE, OPTIONS` | `true` |
+CMS 端为**固定 origin 白名单**，只回显白名单内的 `Origin`；白名单外的请求一律返回
+`Access-Control-Allow-Origin: https://www.bioqif.com`，浏览器据此拦截。
+
+| 请求 `Origin` | 实际回显 | 结果 |
+|---|---|---|
+| `https://www.bioqif.com` | `https://www.bioqif.com` | ✅ 放行 |
+| `http://127.0.0.1:8000` | `http://127.0.0.1:8000` | ✅ 放行 |
+| `http://localhost:5173`、`https://bird-z.github.io` 等 | `https://www.bioqif.com`（不匹配） | ❌ 被浏览器拦下 |
 
 - 响应带 `Vary: Origin`、`X-Powered-By: Next.js, Payload`、`Server: nginx/1.24.0 (Ubuntu)`
-- 结论：**本地 dev（127.0.0.1:8000）与线上均无需代理即可直连**；`Accept` 属于 CORS safelisted 头，不触发预检
+- `Accept` 属于 CORS safelisted 头，不触发预检；`POST /api/article-view/{id}` 为简单请求
+- **本地 dev**：Vite 默认 `localhost:5173` 不在白名单，故 `vite.config.js` 增设同源代理
+  `/api → https://cms.bioqif.com`，`payload.js` 在 dev/localhost 下改用相对路径请求；
+  生产环境仍直连 `CMS_URL`，请求地址/方式/参数不变（接口冻结）
+- **生产部署**：站点若不在 `www.bioqif.com` 下（如 GitHub Pages `bird-z.github.io`），
+  必须先把该 origin 加入 CMS 白名单，否则首页轮播会因拦下 `public-articles` 而整节卸载
 
 ---
 

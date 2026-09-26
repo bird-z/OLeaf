@@ -47,6 +47,7 @@ function NewsCarousel() {
   const [hoverPaused, setHoverPaused] = useState(false);
   const [focusPaused, setFocusPaused] = useState(false);
   const [inView, setInView] = useState(true);
+  const [covered, setCovered] = useState(false);
   const rootRef = useRef(null);
   const touchStart = useRef(null);
 
@@ -72,8 +73,24 @@ function NewsCarousel() {
     return () => ob.disconnect();
   }, [count]);
 
+  /* 被 Slogan 完全覆盖时休眠：usePageTurn 在进度到 1 时翻 documentElement
+   * 的 .page-covered，这里读回 React 态 → 暂停自动播放 + is-covered/inert */
+  useEffect(() => {
+    const root = document.documentElement;
+    const sync = () => setCovered(root.classList.contains('page-covered'));
+    sync();
+    const ob = new MutationObserver(sync);
+    ob.observe(root, { attributes: true, attributeFilter: ['class'] });
+    return () => ob.disconnect();
+  }, []);
+
   const canPlay =
-    count > 1 && inView && !hoverPaused && !focusPaused && !reduceMotion.current;
+    count > 1 &&
+    inView &&
+    !covered &&
+    !hoverPaused &&
+    !focusPaused &&
+    !reduceMotion.current;
 
   /* 自动播放：每次切换（含手动）重置读秒 */
   useEffect(() => {
@@ -111,7 +128,11 @@ function NewsCarousel() {
   /* 加载态：占位满屏暗底，接口返回前页面结构稳定（不产生跳动） */
   if (loading) {
     return (
-      <section className="news-carousel" aria-busy="true" aria-label="启扉快讯">
+      <section
+        className="news-carousel news-carousel--loading"
+        aria-busy="true"
+        aria-label="启扉快讯"
+      >
         <div className="news-carousel__state">
           <p className="news-carousel__state-label">正在调焦</p>
           <p className="news-carousel__state-sub">Loading</p>
@@ -128,7 +149,8 @@ function NewsCarousel() {
   return (
     <section
       ref={rootRef}
-      className="news-carousel"
+      className={`news-carousel${covered ? ' is-covered' : ''}`}
+      inert={covered || undefined}
       aria-roledescription="carousel"
       aria-label="启扉快讯"
       aria-live={canPlay ? 'off' : 'polite'}

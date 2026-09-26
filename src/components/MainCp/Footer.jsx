@@ -2,6 +2,7 @@ import { MapPin, Mail } from 'lucide-react';
 import ScrollMask from './ScrollMask.jsx';
 import logoJxau from '../../assets/logo.png';
 import logoAssoc from '../../assets/logo2.png';
+import lifeMark from '../../assets/life.png';
 import './Footer.css';
 
 function Footer() {
@@ -53,9 +54,10 @@ function Footer() {
           </div>
         </div>
 
-        {/* ── 底栏：版权 + 行楷格言收尾（与 hero 标题首尾呼应） ── */}
+        {/* ── 底栏：版权 + 中心生命印记 + 行楷格言收尾（与 hero 标题首尾呼应） ── */}
         <div className="footer__bar">
           <p className="footer__copyright">© 2026 江西农业大学生物启扉协会</p>
+          <img className="footer__life" src={lifeMark} alt="" aria-hidden="true" />
           <p className="footer__slogan">启迪生命 · 扉向未来</p>
         </div>
       </ScrollMask>

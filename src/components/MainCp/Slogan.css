@@ -193,6 +193,9 @@
   background: var(--color-photo-ink);
   transform: scaleX(0);
   transform-origin: left;
+}
+
+.hero.is-live .hero__foot::before {
   animation: hero-rule var(--dur-long) var(--ease-out) 320ms forwards;
 }
 
@@ -212,11 +215,15 @@
 }
 
 /* 逐字 reveal：标题落位后（340ms 起）以 24ms 步进播种式浮现，
- * 仅 opacity + 小位移，无 filter —— 合成器可全程托管 */
+ * 仅 opacity + 小位移，无 filter —— 合成器可全程托管。
+ * 动画挂在 .is-live 上：进视口才播一次，而非页面加载即播 */
 .hero__letter {
   display: inline-block;
   opacity: 0;
   transform: translateY(0.5em);
+}
+
+.hero.is-live .hero__letter {
   animation: hero-letter 380ms var(--ease-out) forwards;
   animation-delay: calc(340ms + var(--i, 0) * 24ms);
 }
@@ -302,10 +309,14 @@
   }
 }
 
-/* ── 入场：一次编排好的 stagger（≤450ms），之后页面保持静止 ── */
+/* ── 入场：一次编排好的 stagger（≤450ms），之后页面保持静止。
+ *   初始态无条件隐藏，动画挂在 .is-live（IntersectionObserver 进视口一次）── */
 .hero [data-reveal] {
   opacity: 0;
   transform: translateY(8px);
+}
+
+.hero.is-live [data-reveal] {
   animation: hero-reveal var(--dur-long) var(--ease-out) forwards;
   animation-delay: calc(var(--i, 0) * 90ms);
 }
@@ -336,14 +347,20 @@
     will-change: auto;
   }
 
+  /* 入场不再依赖 is-live：直接终态，覆盖 .is-live 作用域的动画声明 */
   .hero [data-reveal],
-  .hero__letter {
-    animation-duration: 150ms;
+  .hero.is-live [data-reveal],
+  .hero__letter,
+  .hero.is-live .hero__letter {
+    animation: none;
+    opacity: 1;
     transform: none;
   }
 
-  .hero__foot::before {
-    animation-duration: 150ms;
+  .hero__foot::before,
+  .hero.is-live .hero__foot::before {
+    animation: none;
+    transform: scaleX(1);
   }
 
   .hero__cue-line {
