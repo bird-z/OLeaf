@@ -144,7 +144,7 @@
 - 2026-09-26 · NewsCarousel → Slogan 离散覆盖翻页 + Slogan 入场时机修正：
   - 新 hook `MainCp/usePageTurn.js`（Home.jsx 调用）：滚轮向下 / 触摸上滑 /
     点击轮播非控件区域 → 瞬时 scrollTo 到 heroTop（钉住的轮播遮住位移）+ 轮播淡出，
-    Slogan 直接在场；反向对称。560ms 动画锁吞触控板尾流；不做滚动 scrub
+    Slogan 直接在场；反向对称。900ms 动画锁吞触控板尾流；不做滚动 scrub
     （transform 钉屏与合成器抢帧会抖）。滚动条/键盘等原生路径也归一：
     documentElement `.page-covered` = scrollY ≥ heroTop 的唯一事实源。
   - NewsCarousel：`position:sticky; top:0; z-index:1` 合成器钉屏，Slogan 滚过其上；
