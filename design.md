@@ -297,6 +297,25 @@
   - 至此 V7 收尾：`index.css` 曾引用的 `.error-msg`/`.news-*`/`.card-rank`/`.loading-spinner`
     /`.empty-state`/`.animated-list` 死样式与对应 orphan 组件均已一致清除。
 
+- 2026-09-27 · About 节相册：卡片放大 + 贴近正文 + 删除图注：
+  - 根因：文字与图片之间的空白不来自 `column-gap`（原本就是 0），而是 `.about__gallery`
+    作为 `1.1fr` 比例列（≈840px）比卡片（440px）宽得多，卡片又在列内 50% 居中，
+    左侧天然空出约 200px；图注左对齐到列左边缘、卡片却居中，于是图注看似孤悬在图片左下角。
+  - 卡片放大：`About.jsx` 的 `<DepthCarousel>` 由 440×310 改为 520×366（同 1.42:1）；
+    列宽足够时组件 scale 钳在 1，所以这就是卡片的真实像素尺寸（改前 440）。
+  - 贴近正文：`About.css` 作用域内覆盖 `.depth-carousel__card { left: var(--about-media-anchor) }`
+    （默认 34%，组件默认 50%），`perspective-origin` 同步跟随锚点，3D 扇出不变形；
+    列间距参数化 `--about-media-gap`（`clamp(--space-md, 2vw, --space-xl)`）。
+    实测「正文右边缘 → 卡片左边缘」@1700 由 ≈210px 降到 ≈60px，@1440 ≈45px，@1024 ≈32px。
+    调参入口集中在 `About.css` 的 `.about` 规则顶部注释区（本节唯一参数区）。
+  - 删除图注：`03 / 03 + 图片名`（`.about__gallery-caption`）连同其样式与 `caption-in` 关键帧删除，
+    同时移除仅为它服务的 `active` state / `onChange` 回调与数据里的 `caption` 字段。
+    相册拖拽/滚轮/方向键/自动播放/点击切卡均未改动。
+  - 竖直居中：删除 `.about__gallery { min-height: 440px }`（含移动端 340px），
+    改由 `.about__gallery .depth-carousel { min-height: 380px }`（≥ 卡片最高 366px）决定列高，
+    卡片与正文栏竖直居中对齐（改前因图注留位而高约 60px）。
+  - `DepthCarousel.jsx/.css` 与 `tokens.css` 未改，不新增令牌；移动端（≤60rem）堆叠时锚点回 50% 居中。
+
 ## 13.AGENT>
 Agent:
 默认不调用视觉模型检查:compile是例外，允许对可视
