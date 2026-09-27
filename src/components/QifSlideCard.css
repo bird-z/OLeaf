@@ -1,15 +1,19 @@
-/* 载玻片卡：3:1 真实比例（桌面）；移动端上下结构。令牌来自 tokens.css。
- * .qif-field-mask 定义在 qifObs.css（与详情页共用）。 */
+/* 载玻片卡：左标签区（染色条编码内容类型）+ 右视野图（目镜渐晕）。
+ * 令牌来自 tokens.css；.qif-field-mask 定义在 qifObs.css（与详情页共用）。
+ * 染色条/hover 描边统一走 --qif-tone，由 JSX 按 categoryTone 注入。 */
 
 .qif-slide-card {
   display: flex;
   flex-direction: column;
   overflow: hidden;
   border: 1px solid var(--color-rule);
+  border-radius: var(--radius-card);
   background: var(--color-paper-2);
   color: inherit;
   text-decoration: none;
-  box-shadow: 3px 3px 0 color-mix(in oklch, var(--color-eco) 8%, transparent);
+  box-shadow:
+    0 1px 0 color-mix(in oklch, var(--color-rule) 60%, transparent),
+    4px 4px 0 color-mix(in oklch, var(--color-eco) 10%, transparent);
   transition:
     transform var(--dur-short) var(--ease-out),
     box-shadow var(--dur-short) var(--ease-out),
@@ -18,22 +22,29 @@
 
 .qif-slide-card:hover {
   transform: translateY(-4px);
-  border-color: var(--color-eco-bright);
-  box-shadow: 6px 8px 0 color-mix(in oklch, var(--color-eco) 16%, transparent);
+  border-color: var(--qif-tone, var(--color-eco-bright));
+  box-shadow:
+    0 1px 0 color-mix(in oklch, var(--color-rule) 60%, transparent),
+    6px 8px 0 color-mix(in oklch, var(--color-eco) 16%, transparent);
 }
 
+.qif-slide-card:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+/* ── 标签区 ── */
 .qif-slide-card__label {
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 0.4rem;
+  gap: var(--space-xs);
   border-bottom: 1px solid var(--color-rule);
   background: color-mix(in oklch, var(--color-paper-green) 92%, var(--color-eco) 8%);
   padding: var(--space-md) var(--space-lg);
 }
 
-/* 左缘染色条：颜色由 tone 给定 */
+/* 左缘染色条：宽度随 hover 加宽，颜色由 tone 给定 */
 .qif-slide-card__label::before {
   content: '';
   position: absolute;
@@ -42,19 +53,41 @@
   left: 0;
   width: 4px;
   background: var(--qif-tone, var(--color-eco-bright));
+  transition: width var(--dur-short) var(--ease-out);
 }
 
-.qif-slide-card__category {
+.qif-slide-card:hover .qif-slide-card__label::before {
+  width: 6px;
+}
+
+/* meta 仪表行：Nº.编号 + 类别，两端对齐 */
+.qif-slide-card__meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-sm);
   margin: 0;
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.2em;
 }
 
+.qif-slide-card__no {
+  color: var(--color-photo-muted);
+}
+
+.qif-slide-card__category {
+  color: var(--qif-tone, var(--color-eco-bright));
+}
+
+/* 标题走 T 级界面黑体而非行楷：行楷是 116 字形子集，CMS 动态标题
+ * 会逐字回退 Noto Sans 造成混排（design.md §12 轮播同款教训）。 */
 .qif-slide-card__title {
   margin: 0;
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: var(--text-md);
+  font-weight: 700;
+  letter-spacing: -0.01em;
   line-height: 1.35;
   color: var(--color-photo-ink);
   display: -webkit-box;
@@ -68,6 +101,29 @@
   color: var(--color-eco-bright);
 }
 
+/* 摘要：L3 次级行文，2 行截断 */
+.qif-slide-card__excerpt {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.65;
+  color: var(--color-photo-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* hairline 底栏：日期 + 阅读文章，靠 margin-top:auto 沉底 */
+.qif-slide-card__foot {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin: auto 0 0;
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--color-rule);
+}
+
 .qif-slide-card__date {
   font-family: var(--font-mono);
   font-size: 11px;
@@ -76,7 +132,8 @@
 }
 
 .qif-slide-card__more {
-  margin-top: 0.25rem;
+  flex: none;
+  white-space: nowrap;
   font-size: var(--text-xs);
   letter-spacing: 0.25em;
   color: color-mix(in oklch, var(--color-photo-muted) 80%, transparent);
@@ -87,10 +144,10 @@
   color: var(--color-eco-bright);
 }
 
+/* ── 视野图 ── */
 .qif-slide-card__field {
   position: relative;
-  min-height: 10rem;
-  flex: 1;
+  aspect-ratio: 16 / 10;
 }
 
 .qif-slide-card__field img {
@@ -99,11 +156,11 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.7s var(--ease-out);
+  transition: transform var(--dur-long) var(--ease-out);
 }
 
 .qif-slide-card:hover .qif-slide-card__field img {
-  transform: scale(1.03);
+  transform: scale(1.05);
 }
 
 @media (min-width: 768px) {
@@ -111,10 +168,15 @@
     flex-direction: row;
   }
   .qif-slide-card__label {
-    width: 32%;
+    width: 36%;
     flex: none;
     border-right: 1px solid var(--color-rule);
     border-bottom: 0;
     padding: var(--space-lg) var(--space-xl);
+  }
+  .qif-slide-card__field {
+    flex: 1;
+    aspect-ratio: auto;
+    min-height: 12rem;
   }
 }

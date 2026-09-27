@@ -31,9 +31,9 @@ function QifNewsSection() {
           </div>
         ) : articles.length > 0 ? (
           <div className="qif-news__grid">
-            {articles.slice(0, 4).map((article) => (
+            {articles.slice(0, 3).map((article, i) => (
               <QifReveal key={article.id}>
-                <QifSlideCard article={article} />
+                <QifSlideCard article={article} index={i} />
               </QifReveal>
             ))}
           </div>
