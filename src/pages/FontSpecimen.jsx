@@ -7,6 +7,7 @@ import {
   TRACKING_LEADING,
   OFF_SCALE,
   VALIDATION_ITEMS,
+  VALIDATION_STATUS,
   SPECIMEN_COPY
 } from '../data/fontCatalog.js';
 import './FontSpecimen.css';
@@ -20,9 +21,6 @@ import './FontSpecimen.css';
 
 const FONT_CLASS = {
   'zhi-mang-xing': 'fs-zmx',
-  'lemie-qiuxu': 'fs-qiuxu',
-  'alimama-shuhei': 'fs-shuhei',
-  'ibm-plex-mono': 'fs-plex',
   'geist-variable': 'fs-geist',
   'noto-sans-sc': 'fs-noto',
   'geist-mono': 'fs-geistmono',
@@ -234,8 +232,6 @@ export default function FontSpecimen() {
           <div className="fs-grid">
             {[
               { key: 'zhi-mang-xing', name: 'Zhi Mang Xing（现用）' },
-              { key: 'lemie-qiuxu', name: 'Lemie QiuXu（未授权）' },
-              { key: 'alimama-shuhei', name: 'Alimama ShuHeiTi' },
               { key: 'noto-sans-sc', name: 'Noto Sans SC 900', weight: 900 }
             ].map((c) => (
               <article className="fs-spec" key={c.key}>
@@ -264,9 +260,7 @@ export default function FontSpecimen() {
           <div className="fs-grid">
             {[
               { key: 'geist-mono', name: 'Geist Mono（现用）', weight: 400 },
-              { key: 'geist-mono', name: 'Geist Mono 500', weight: 500 },
-              { key: 'ibm-plex-mono', name: 'IBM Plex Mono 400', weight: 400 },
-              { key: 'ibm-plex-mono', name: 'IBM Plex Mono 500', weight: 500 }
+              { key: 'geist-mono', name: 'Geist Mono 500', weight: 500 }
             ].map((c, i) => (
               <article className="fs-spec" key={`${c.key}-${c.weight}-${i}`}>
                 <header className="fs-spec__head">
@@ -457,9 +451,17 @@ export default function FontSpecimen() {
                 <div className="fs-item__top">
                   <span className="fs-item__id">{v.id}</span>
                   <span className="fs-item__title">{v.title}</span>
-                  <span className="fs-badge">待验证</span>
+                  <span className="fs-badge" data-done={!!VALIDATION_STATUS[v.id]}>
+                    {VALIDATION_STATUS[v.id]?.status ?? '待验证'}
+                  </span>
                 </div>
                 <p className="fs-item__q">{v.question}</p>
+                {VALIDATION_STATUS[v.id] && (
+                  <p className="fs-item__q" style={{ color: 'var(--color-eco-bright)' }}>
+                    <strong>已裁：</strong>
+                    {VALIDATION_STATUS[v.id].outcome}
+                  </p>
+                )}
                 <p className="fs-item__rec">
                   <strong>推荐：</strong>
                   {v.recommendation}

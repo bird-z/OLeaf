@@ -20,10 +20,10 @@
 
 | 字体 | 文件 / 来源 | 体积 | 字形 | 字重 | 许可 | 现状 |
 | --- | --- | --- | --- | --- | --- | --- |
-| Zhi Mang Xing（志莽行书） | `src/assets/fonts/zhi-mang-xing-subset.woff2`（自托管子集） | 33 KB | 120 | 400 | OFL-1.1 | 生产在用（display） |
-| LemiQiuXuShouShuTi（乐米秋序手书体） | `src/assets/fonts/lemie-qiuxu.woff2` | 3.05 MB | 7043 | 400 | **版权声明 All rights reserved，仓库无许可文件** | 全站无人引用 |
-| Alimama ShuHeiTi（阿里妈妈数黑体） | `src/assets/fonts/AlimamaShuHeiTi-Bold.woff2` | 663 KB | 6993 | 700（仅 Bold） | 免费商用（随附法律声明） | 全站无人引用 |
-| IBM Plex Mono | `IBMPlexMono-400.woff2` + `IBMPlexMono-500.woff2` | ~15 KB ×2 | 229 | 400 / 500 | OFL-1.1 | 全站无人引用 |
+| Zhi Mang Xing（志莽行书） | `src/assets/fonts/zhi-mang-xing-subset.woff2`（自托管子集） | 54 KB | **232（原 120）** | 400 | OFL-1.1 | 生产在用（display） |
+| LemiQiuXuShouShuTi（乐米秋序手书体） | ~~`src/assets/fonts/lemie-qiuxu.woff2`~~（已删） | 3.05 MB | 7043 | 400 | **All rights reserved，无许可文件** | ~~全站无人引用~~ **V1 未授权→删除** |
+| Alimama ShuHeiTi（阿里妈妈数黑体） | ~~`src/assets/fonts/AlimamaShuHeiTi-Bold.woff2`~~（已删） | 663 KB | 6993 | 700（仅 Bold） | 免费商用 | ~~全站无人引用~~ **V2 删除** |
+| IBM Plex Mono | ~~`IBMPlexMono-400/500.woff2`~~（已删） | ~15 KB ×2 | 229 | 400 / 500 | OFL-1.1 | ~~全站无人引用~~ **V3 删除** |
 | iconfont（主题切换图标） | `src/assets/font_f3y78zakpcq/iconfont.ttf` | 2 KB | 1 | 400 | iconfont 导出 | 生产在用（ThemeToggle U+E6E8） |
 | Geist Variable | `@fontsource-variable/geist` | 按分包 | 拉丁/西里尔 | 100–900 可变 | OFL-1.1 | 生产在用（body 拉丁） |
 | Noto Sans SC Variable | `@fontsource-variable/noto-sans-sc` | 按分包 | 简体中文 | 100–900 可变 | OFL-1.1 | 生产在用（body 中文） |
@@ -50,16 +50,16 @@ All rights reserved」，仓库内无授权文件 —— **默认不接入生产
 
 | 项 | 主题 | 推荐 | 备选 | 状态 |
 | --- | --- | --- | --- | --- |
-| V1 | display 主字体去留（Zhi Mang Xing vs LemiQiuXu） | 保留 Zhi Mang Xing；LemiQiuXu 未授权，不接入 | 取得授权后替换 / 并存为第二 display 角色 | 待验证 |
-| V2 | 阿里妈妈数黑体去留 | 删除（仅 Bold，会引入第三套中文字族） | 仅用于数字/数据（须改 §4.1「M 一律 mono」） | 待验证 |
-| V3 | mono 去留（Geist Mono vs IBM Plex Mono） | 删除 IBM Plex Mono，保持「2+1」 | 替换为 IBM Plex Mono / 并存 | 待验证 |
-| V4 | iconfont 去留 | 保留（ThemeToggle 唯一字形 U+E6E8） | 改用 lucide-react，删 @font-face | 待验证 |
-| V5 | 字阶补齐（--text-2xs / xl / 2xl） | xl 1.953rem、2xl 2.441rem、2xs 0.5625rem | 2xs 严格比例 0.512rem / 归入 --text-xs | 待验证 |
-| V6 | 字距 / 行高令牌（D/T/L/U/M） | D 0.04em/1.1 · T −0.01em/1.3 · L 0/1.8 · U 0.06em/1.45 · M 0.16em/1.65 | 样张微调 / 仅令牌化 M 级 | 待验证 |
-| V7 | 34 处刻度外 font-size 映射 | live 吸附令牌；orphan/template 随死代码删除；clamp 收敛；图标标注图形尺寸 | 全部替换为 rem / 仅集中为组件变量 | 待验证 |
-| V8 | 中文字重对齐 | T=700、W=800、L=400/700 | T=600 / 中文统一 500/700 | 待验证 |
-| V9 | 子集化 + 缺字校验 | Node 原生 subset-font（免 Python，可进 CI） | fontTools/pyftsubset（本机 4.63.0） / 仅缺字校验 | 待验证 |
-| V10 | 未引用资产最终清单 | 按 V1–V3 执行删除或接入 | 保留 Alimama / 全删只用 fontsource | 待验证 |
+| V1 | display 主字体去留（Zhi Mang Xing vs LemiQiuXu） | 保留 Zhi Mang Xing；LemiQiuXu 未授权，不接入 | 取得授权后替换 / 并存为第二 display 角色 | **已实现（保留）** |
+| V2 | 阿里妈妈数黑体去留 | 删除（仅 Bold，会引入第三套中文字族） | 仅用于数字/数据（须改 §4.1「M 一律 mono」） | **已删除** |
+| V3 | mono 去留（Geist Mono vs IBM Plex Mono） | 删除 IBM Plex Mono，保持「2+1」 | 替换为 IBM Plex Mono / 并存 | **已删除** |
+| V4 | iconfont 去留 | 保留（ThemeToggle 唯一字形 U+E6E8） | 改用 lucide-react，删 @font-face | **已实现（保留）** |
+| V5 | 字阶补齐（--text-2xs / xl / 2xl） | xl 1.953rem、2xl 2.441rem、2xs 0.5625rem | 2xs 严格比例 0.512rem / 归入 --text-xs | **已实现** |
+| V6 | 字距 / 行高令牌（D/T/L/U/M） | D 0.04em/1.1 · T −0.01em/1.3 · L 0/1.8 · U 0.06em/1.45 · M 0.16em/1.65 | 样张微调 / 仅令牌化 M 级 | **已实现** |
+| V7 | 34 处刻度外 font-size 映射 | live 吸附令牌；orphan/template 随死代码删除；clamp 收敛；图标标注图形尺寸 | 全部替换为 rem / 仅集中为组件变量 | **已实现（QifSlideCard 遗留）** |
+| V8 | 中文字重对齐 | T=700、W=800、L=400/700 | T=600 / 中文统一 500/700 | **已实现** |
+| V9 | 子集化 + 缺字校验 | Node 原生 subset-font（免 Python，可进 CI） | fontTools/pyftsubset（本机 4.63.0） / 仅缺字校验 | **已实现** |
+| V10 | 未引用资产最终清单 | 按 V1–V3 执行删除或接入 | 保留 Alimama / 全删只用 fontsource | **已实现** |
 
 ## 4. 已知风险与前置条件
 
@@ -71,6 +71,16 @@ All rights reserved」，仓库内无授权文件 —— **默认不接入生产
 
 ## 5. 变更记录
 
+- 2026-09-27 · pi-F · **阶段 3（V1–V10 全项验证后实施）**：
+  - V5/V6：`tokens.css` 新增 `--text-2xs/--text-xl/--text-2xl/--text-wordmark` 与
+    `--tracking-*`/`--leading-*` 两组令牌。
+  - V7：live 刻度外 `font-size` 吸附令牌；删除 Vite/Mapp 死样式与 `App.css`；
+    `NewsDetailPage` 动态 CMS 标题从行楷改回 `--font-body`（修豆腐缺字 bug）；
+    `QifSlideCard` 两处 11px 遗留（他人在途）。
+  - V9：`subset-font`+`fontkit` devDep；新增 `pnpm fonts:build`/`fonts:check`
+    （挂 `prebuild`）；子集重建 120→232 字形（补入快讯/调焦等缺字）。
+  - V1–V4/V10：删除 `lemie-qiuxu`/`Alimama`/`IBM Plex Mono` 共 5 个未引用字体文件；
+    保留 Zhi Mang Xing 子集与 `iconfont.ttf`；样张页同步移除对应 @font-face/对照项。
 - 2026-09-27 · pi-F · 建立字体档案与 dev-only 样张页（阶段 0+1）：新增
   `src/data/fontCatalog.js`（结构化资产表 + V1–V10 待验证项）、`docs/fonts.md`（本文件）、
   `src/pages/FontSpecimen.{jsx,css}`（`/#/specimen`，生产构建不含）；

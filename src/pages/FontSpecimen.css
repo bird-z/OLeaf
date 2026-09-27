@@ -7,49 +7,16 @@
  * 仅本页可见；是否进生产由 V1–V3 验证后决定。
  */
 
-@font-face {
-  font-family: 'Specimen QiuXu';
-  src: url('../assets/fonts/lemie-qiuxu.woff2') format('woff2');
-  font-display: swap;
-  font-weight: 400;
-}
-@font-face {
-  font-family: 'Specimen ShuHei';
-  src: url('../assets/fonts/AlimamaShuHeiTi-Bold.woff2') format('woff2');
-  font-display: swap;
-  font-weight: 700;
-}
-@font-face {
-  font-family: 'Specimen Plex Mono';
-  src: url('../assets/fonts/IBMPlexMono-400.woff2') format('woff2');
-  font-display: swap;
-  font-weight: 400;
-}
-@font-face {
-  font-family: 'Specimen Plex Mono';
-  src: url('../assets/fonts/IBMPlexMono-500.woff2') format('woff2');
-  font-display: swap;
-  font-weight: 500;
-}
+/* 候选对照字体的 @font-face 已随 V1–V4 裁决删除（lemie-qiuxu/Alimama/IBM Plex Mono 未接入）。 */
 @font-face {
   font-family: 'Specimen Icon';
   src: url('../assets/font_f3y78zakpcq/iconfont.ttf') format('truetype');
   font-display: block;
 }
 
-/* ── 字体栈工具类（对照台用） ── */
+/* 对照台工具类（仅剩现用字体；已删除候选已移除） */
 .fs-zmx {
   font-family: 'Zhi Mang Xing', 'Noto Sans SC Variable', serif;
-}
-.fs-qiuxu {
-  font-family: 'Specimen QiuXu', 'Noto Sans SC Variable', serif;
-}
-.fs-shuhei {
-  font-family: 'Specimen ShuHei', 'Noto Sans SC Variable', sans-serif;
-  font-weight: 700;
-}
-.fs-plex {
-  font-family: 'Specimen Plex Mono', 'Geist Mono', monospace;
 }
 .fs-geist {
   font-family: 'Geist Variable', system-ui, sans-serif;
@@ -459,6 +426,9 @@
   border-radius: var(--radius-pill);
   padding: 1px 8px;
   margin-left: auto;
+}
+.fs-badge[data-done='true'] {
+  color: var(--color-eco-bright);
 }
 
 /* ── 宽度档位框 ── */

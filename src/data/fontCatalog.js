@@ -37,86 +37,6 @@ export const FONT_ASSETS = [
     verdict: 'V1'
   },
   {
-    id: 'lemie-qiuxu',
-    family: 'LemiQiuXuShouShuTi',
-    cn: '乐米秋序手书体',
-    kind: 'display',
-    status: 'unreferenced',
-    file: 'src/assets/fonts/lemie-qiuxu.woff2',
-    origin: '来源不明（仓库内无许可文件）',
-    size: '3.05 MB',
-    codepoints: 7043,
-    unitsPerEm: 1000,
-    weight: '400（单字重）',
-    license: '未授权 / All rights reserved（版权声明）',
-    copyright: '©️2026 Hangzhou Lemi Network Technology Co., Ltd., All rights reserved',
-    usedBy: '全站无人引用',
-    style: {
-      skeleton: '硬笔手书，结构比行楷更规整、更现代',
-      contrast: '低，笔画近似等宽',
-      terminals: '圆头/平切，少连带',
-      counter: '字面大、中宫开阔',
-      width: '偏宽，长句可读性优于行楷',
-      mood: '清新、笔记感、偏年轻',
-      mix: '仅中文；拉丁/数字需回退 body'
-    },
-    styleNote: '本仓库无该字体许可文件，版权声明为 All rights reserved —— 默认不接入生产。',
-    verdict: 'V1'
-  },
-  {
-    id: 'alimama-shuhei',
-    family: 'Alimama ShuHeiTi',
-    cn: '阿里妈妈数黑体',
-    kind: 'title',
-    status: 'unreferenced',
-    file: 'src/assets/fonts/AlimamaShuHeiTi-Bold.woff2',
-    origin: '阿里妈妈官方字体，仓库内附法律声明',
-    size: '663 KB',
-    codepoints: 6993,
-    unitsPerEm: 1000,
-    weight: '700（仅 Bold）',
-    license: '免费商用（普通许可，见 AlimamaShuHeiTi-LICENSE.txt）',
-    copyright: 'Copyright (c) 2022-2023 Alibaba (China) Co., Ltd.',
-    usedBy: '全站无人引用',
-    style: {
-      skeleton: '几何数黑，切角方端',
-      contrast: '无对比，笔画等宽',
-      terminals: '平切',
-      counter: '中宫开阔、字面大',
-      width: '偏宽，字距可压缩',
-      mood: '科技、数据、数字仪表',
-      mix: '仅中文 + 数字；拉丁需回退'
-    },
-    styleNote: '仅 700 一档；font-synthesis:none 下不会伪粗，非 700 场景会回退其他字族。',
-    verdict: 'V2'
-  },
-  {
-    id: 'ibm-plex-mono',
-    family: 'IBM Plex Mono',
-    cn: 'IBM Plex 等宽',
-    kind: 'mono',
-    status: 'unreferenced',
-    file: 'src/assets/fonts/IBMPlexMono-400.woff2 + IBMPlexMono-500.woff2',
-    origin: 'IBM 开源字体',
-    size: '约 15 KB ×2',
-    codepoints: 229,
-    unitsPerEm: 1000,
-    weight: '400 / 500',
-    license: 'OFL-1.1',
-    copyright: 'Copyright 2017 IBM Corp.',
-    usedBy: '全站无人引用',
-    style: {
-      skeleton: '人文 + 几何混合等宽',
-      contrast: '低',
-      terminals: '方形端点，带技术细节',
-      counter: '等宽、字面中等',
-      width: '等宽',
-      mood: '技术仪器、终端',
-      mix: '拉丁为主，中文回退 body'
-    },
-    verdict: 'V3'
-  },
-  {
     id: 'iconfont',
     family: 'iconfont',
     cn: '主题切换图标字形',
@@ -370,6 +290,20 @@ export const VALIDATION_ITEMS = [
     alternatives: ['保留 Alimama（未来复用于数字展示）', '全部删除并只用 fontsource']
   }
 ];
+
+/* 逐项裁决结果（V1–V10 已确认并落地）。样张页据此显示状态徽标与结果。 */
+export const VALIDATION_STATUS = {
+  V1: { status: '已实现', outcome: '保留 Zhi Mang Xing；lemie-qiuxu.woff2 已删除（未授权，不接入生产）' },
+  V2: { status: '已删除', outcome: 'AlimamaShuHeiTi-Bold.woff2 与 LICENSE 已删除' },
+  V3: { status: '已删除', outcome: 'IBMPlexMono-400/500.woff2 已删除；--font-mono 仍为 Geist Mono' },
+  V4: { status: '已实现', outcome: '保留 iconfont.ttf（ThemeToggle 唯一字形 U+E6E8）' },
+  V5: { status: '已实现', outcome: 'tokens.css 新增 --text-2xs/--text-xl/--text-2xl/--text-wordmark' },
+  V6: { status: '已实现', outcome: 'tokens.css 新增 --tracking-* 与 --leading-*；既有字距逐一收编留待后续' },
+  V7: { status: '已实现', outcome: 'live 值已吸附令牌；Vite/Mapp 死样式与 App.css 已删除；QifSlideCard 两处 11px 待他人提交后再动' },
+  V8: { status: '已实现', outcome: '维持 §4.1 的 600–800 分层；W=800、CMS 标题补 700；无需改重' },
+  V9: { status: '已实现', outcome: 'subset-font + fontkit devDep；prebuild 挂 fonts:check；子集重建至 232 字形，补入快讯/调焦等缺字' },
+  V10: { status: '已实现', outcome: '保留 Zhi Mang Xing 子集 + iconfont；删除 lemie-qiuxu / Alimama / IBM Plex Mono 共 5 个文件' }
+};
 
 /* ── 七、样张文案（真实站内字符串，避免占位「示例文字」） ───────── */
 export const SPECIMEN_COPY = {
