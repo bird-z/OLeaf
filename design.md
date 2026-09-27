@@ -49,6 +49,8 @@
 - 行楷为**子集化 woff2**(`src/assets/fonts/`,116 字形 / 33KB)。**新增 display 文案
   必须重新生成子集**(fontTools 合并 fontsource 分包后 `pyftsubset`)。
 - 行楷仅用于短标题(≤12 字),长句正文绝不使用 display 字体。
+- 字体资产识别、风格分析与 **V1–V10 逐项裁决记录**见 `docs/fonts.md`；
+  可视化验证用 dev-only 样张页 `/#/specimen`（`pnpm dev`；生产构建不含）。
 
 ## 4. 字阶(1.25 major third)
 
@@ -237,6 +239,16 @@
     105 处未令牌化字距、`index.css` 遗留 Vite 模板 `h1/h2`、4 个未引用字体资产。
   - §4.3 登记「全站字体规划」待办（补字阶 / 收编离群值 / 字距行高令牌化 / 裁决字体资产 /
     子集化校验 / 中文字重对齐）。本次只落文档，实现改动另行排期。
+
+- 2026-09-27 · 建立「全站字体规划」执行文档与 dev-only 样张页（阶段 0+1，未改生产字体）：
+  - 新增 `docs/fonts.md`：字体识别结论（fontTools 读 name/cmap/OS-2）、风格分析、V1–V10
+    逐项裁决记录与风险清单；`design.md §3` 增引用。
+  - 新增 `src/data/fontCatalog.js`：资产表 + 文字角色锚点 + 字阶/字距候选 + 刻度外
+    `font-size` 清单 + V1–V10 验证项（样张与文档共用单一数据源）。
+  - 新增 `src/pages/FontSpecimen.{jsx,css}` + `src/App.jsx` dev-only 动态路由 `/#/specimen`：
+    候选字体用 specimen 专属 `@font-face`，样式收紧在 `.font-specimen`，不改 `tokens.css`。
+  - 关键发现：`lemie-qiuxu.woff2` 版权为 All rights reserved 且仓库无授权文件，默认不接入生产。
+  - 待办：按 V1–V10 逐项人工验证后，才进入阶段 3（改 tokens/组件/删除资产/子集化脚本）。
 
 ## 13.AGENT>
 Agent:
