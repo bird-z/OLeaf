@@ -250,6 +250,13 @@
   - 关键发现：`lemie-qiuxu.woff2` 版权为 All rights reserved 且仓库无授权文件，默认不接入生产。
   - 待办：按 V1–V10 逐项人工验证后，才进入阶段 3（改 tokens/组件/删除资产/子集化脚本）。
 
+- 2026-09-27 · 字体令牌补齐（V5/V6，样张验证后落地）：
+  - `tokens.css` 新增字阶 `--text-2xs`/`--text-xl`/`--text-2xl`/`--text-wordmark`
+    （1.25 主三度；修复 §4.2 的 `--text-xl` 引用未定义与 lg→display-s 断层，
+    `--text-wordmark` 收敛 W 词标的临时 clamp）。
+  - 新增 `--tracking-{display,title,body,ui,mono}` 与 `--leading-{display,title,body,ui,mono}`
+    两组令牌（按 §4.1 角色定档）；既有字距/行高的收编属于 V7 后续。
+
 ## 13.AGENT>
 Agent:
 默认不调用视觉模型检查:compile是例外，允许对可视

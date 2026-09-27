@@ -34,13 +34,29 @@
   --font-mono:    'Geist Mono', 'Noto Sans SC Variable', ui-monospace, monospace;
 
   /* ── Type scale（1.25 major third） ── */
+  --text-2xs:     0.5625rem;  /* M3 微型 caps；18px 根 ≈10.1px，16px 根 9px */
   --text-xs:      0.64rem;
   --text-sm:      0.8rem;
   --text-base:    1rem;
   --text-md:      1.25rem;
   --text-lg:      1.5625rem;
+  --text-xl:      1.953rem;   /* 补上 lg 与 display-s 之间的 1.44 断层 */
+  --text-2xl:     2.441rem;
+  --text-wordmark: clamp(2.25rem, 6vw, 4.5rem); /* W 品牌字标专用（Slogan/CardNav） */
   --text-display-s: clamp(2.25rem, 3.5vw + 1rem, 3.8rem);
   --text-display:   clamp(3rem, 11vw, 7rem); /* Marquee 行楷标题，单行 ≤12ch 放宽至 7rem */
+
+  /* ── Tracking / Leading（D/T/L/U/M 各一档，V6） ── */
+  --tracking-display: 0.04em;
+  --tracking-title:   -0.01em;
+  --tracking-body:    0em;
+  --tracking-ui:      0.06em;
+  --tracking-mono:    0.16em;
+  --leading-display:  1.1;
+  --leading-title:    1.3;
+  --leading-body:     1.8;
+  --leading-ui:       1.45;
+  --leading-mono:     1.65;
 
   /* ── Space（4pt 制） ── */
   --space-3xs: 0.125rem;
