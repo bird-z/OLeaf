@@ -20,10 +20,13 @@
   },
   "scripts": {
     "dev": "vite",
+    "prebuild": "pnpm fonts:check",
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "server": "json-server -p 3001 test.json"
+    "server": "json-server -p 3001 test.json",
+    "fonts:build": "node scripts/build-font-subsets.mjs",
+    "fonts:check": "node scripts/check-font-subsets.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
@@ -52,8 +55,10 @@
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.3",
+    "fontkit": "^2.0.4",
     "json-server": "^1.0.0-beta.15",
     "oxlint": "^1.71.0",
+    "subset-font": "^2.9.0",
     "tailwindcss": "^4.3.3",
     "vite": "^8.1.1"
   }

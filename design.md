@@ -276,6 +276,18 @@
   - 待办：`QifSlideCard.css` 两处 11px（他人在途改动，待其提交后再动）；`Mapp.jsx`/
     `NewsCard.jsx`/`AnimatedList.jsx` 与 `test.json`/`pnpm server` 的死代码删除另开任务。
 
+- 2026-09-27 · 行楷子集化管线（V9）：
+  - 新增 `scripts/build-font-subsets.mjs`（Node 原生 `subset-font`，免 Python）从
+    `@fontsource/zhi-mang-xing` 的 chinese-simplified 分包抽取 `font-subsets.config.json`
+    的 `strings`+`extra` 所需字形；`scripts/check-font-subsets.mjs`（`fontkit` 读 cmap）
+    校验必需字形齐全，缺字即失败。
+  - `pnpm fonts:build`/`fonts:check` 新增；`fonts:check` 挂进 `prebuild`，构建期拦缺字。
+  - 重新生成 `zhi-mang-xing-subset.woff2`（120→232 字形 / 33→53KB）：补入此前实际渲染
+    却缺字的「快/讯」（启扉快讯）、「新/闻/找/到」（新闻未找到）、「正/调/焦」（正在调焦）
+    「标本库暂时不可用」「观察记录尚少」等，修复現存 tofu。
+  - `fontkit`/`subset-font` 两个 devDep 引入 `package.json`/`pnpm-lock.yaml`（高危共享文件，已认领）。
+  - 注：`·`(U+00B7) 源字体本就无此字形，始终走回退字（Noto Sans SC），未纳入必需清单。
+
 ## 13.AGENT>
 Agent:
 默认不调用视觉模型检查:compile是例外，允许对可视
