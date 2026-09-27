@@ -83,7 +83,50 @@ A6 可独立先做（不依赖业务输入，只复用已有数据源）。
 
 ---
 
-## 5. 建议执行顺序
+## 5. 后端接口清单（API Inventory）
+
+> 前端网络出口**唯一收敛在 `src/lib/payload.js`**（内部服务层），组件不直接 `fetch`。
+> 接口契约已冻结（`docs/api.md` §8）：地址/方法/参数/归一化/防刷不可改，新增调用只能消费归一化后的 `Article` 模型。
+
+### 5.1 已连接接口（2 个，全部冻结）
+
+| # | 接口 | 方法 | 出口位置 | 消费方（代码位置） | 用途 |
+|---|---|---|---|---|---|
+| E1 | `{CMS_URL}/api/public-articles` | `GET` | `payload.js` → `getArticles()`（模块级 Promise 缓存） | `useArticles()` hook → ① `NewsCarousel.jsx:29`（筛 `BANNER` 栏目做首屏轮播）② `QifNewsSection.jsx:10`（#news 快讯卡）③ `NewsDetailPage.jsx:17`（列表内查详情，**无详情接口**） | 全站新闻数据唯一来源 |
+| E2 | `{CMS_URL}/api/article-view/{id}` | `POST` | `payload.js` → `incrementArticleView()`（30min localStorage 节流 + 在飞去重） | `NewsDetailPage.jsx:37`（详情页打开后 +1，失败静默） | 浏览量计数 |
+
+环境差异：`payload.js` 的 `API_BASE`——dev/localhost 走 Vite 同源代理（`vite.config.js`：`/api → cms.bioqif.com`），生产直连 `CMS_URL`。
+
+### 5.2 待连接接口 / 外部依赖（尚未接入，按依赖方整理）
+
+| # | 待连位置 | 前端落点 | 需要的后端/外部输入 | 阻塞状态 |
+|---|---|---|---|---|
+| P1 | **在线报名** | `Join.jsx` 「在线报名」button | 报名渠道：表单服务 URL / 报名 API / 或仅 mailto | 🔴 等决策：渠道未定 |
+| P2 | **部门详情** | `Join.jsx` 部门卡「了解部门」 | 部门内容载体：CMS 新集合 / 静态子页 / 外链 | 🔴 等决策 |
+| P3 | **发起工作室** | `Studios.jsx` 招募卡 CTA | 发起入口（建议锚 `#join` 或联系邮箱） | 🔴 等决策 |
+| P4 | **B站账号** | `Footer.jsx` 「B站」span | B站主页 URL（纯外链，无 API） | 🔴 等账号 |
+| P5 | **API 中转站控制台** | `Nav.jsx` `href="http://localhost:3000"` | 中转站**生产地址** | 🔴 运维未给线上 URL |
+| P6 | **CMS CORS 白名单** | `getArticles()` 生产直连 | CMS 白名单加 `https://bird-z.github.io` | 🔴 服务端配置（不修前端代码） |
+
+### 5.3 现为本地数据、未来可能接 CMS 的位置（备查，非待办）
+
+| 位置 | 当前数据源 | 若接后端 |
+|---|---|---|
+| `PopularPage` / `ArticlePage` | 本地 `src/data/articles.json` + `.md`（`sync-articles.mjs` 生成） | 需 CMS 新集合 + 新接口（走变更流程立项） |
+| `SciencePage` `STAGES` | 写死数组（含「（示例）」） | 同上 |
+| `EventsPage` `EVENT_GROUPS` | 写死数组 + 本地图 | 同上 |
+| `Members.jsx` 成员数组 | 写死数组 | 同上 |
+
+### 5.4 接口侧硬性约束（改动红线）
+
+- `payload.js` 是 CMS 唯一通道：禁止组件内 `fetch`、禁止加 query 参数/请求头/分页。
+- CORS 是固定白名单：任何新部署 origin 必须先加白名单，否则首屏轮播静默卸载。
+- `incrementArticleView` 仅接受 `^\d+$` 的 id；CMS 改 UUID 则该功能静默失效（已知约束）。
+- 线上仅 **1 篇文章**（docs/api.md §A.3）：空态/单篇态是常态，任何列表 UI 须在该规模下成立。
+
+---
+
+## 6. 建议执行顺序
 
 ```
 D1（CMS 白名单，外部依赖先行，不阻塞代码）
@@ -103,7 +146,7 @@ B1–B3（等内容供稿，随来随改）
 
 ---
 
-## 6. 已确认完成（不在待办）
+## 7. 已确认完成（不在待办）
 
 - V1–V10 字体规划全项落地（docs/fonts.md §3 全部「已实现」）
 - NewsCarousel→Slogan 离散覆盖翻页、`usePageTurn`、`page-covered` 单一事实源
