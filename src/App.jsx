@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import { HashRouter, Routes, Route } from 'react-router-dom'
 import QifFocusLoader from './components/QifFocusLoader.jsx'
 import Home from './pages/Home.jsx'
@@ -8,6 +9,11 @@ import ArticlePage from './pages/ArticlePage.jsx'
 import NewsDetailPage from './pages/NewsDetailPage.jsx'
 import './App.css'
 import './components/CardNav.css'
+
+/* 字体样张（dev-only）：全站字体规划 V1–V10 的验证载体。
+ * import.meta.env.DEV 为 false 时整段被 Vite 静态消除，生产构建不含该 chunk；
+ * 样张页自身用动态 import，也无导航入口。见 docs/fonts.md。 */
+const FontSpecimen = import.meta.env.DEV ? lazy(() => import('./pages/FontSpecimen.jsx')) : null
 
 /* 路由：主站单页 + 活动档案页族（Science/Events/Popular/Article）。
  * API 中转站为独立服务（localhost:3000），Nav 直链，不经本站路由。
@@ -25,6 +31,16 @@ function App() {
         <Route path="/popular/:category/:title" element={<ArticlePage />} />
         {/* CMS 新闻详情：QifSlideCard / NewsCarousel 的链接落点（文章 id 或 slug） */}
         <Route path="/news/:id" element={<NewsDetailPage />} />
+        {import.meta.env.DEV && (
+          <Route
+            path="/specimen"
+            element={
+              <Suspense fallback={null}>
+                <FontSpecimen />
+              </Suspense>
+            }
+          />
+        )}
       </Routes>
     </HashRouter>
   )

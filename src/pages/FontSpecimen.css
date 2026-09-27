@@ -1,0 +1,488 @@
+/* FontSpecimen · dev-only 字体样张页（生产构建不包含）
+ *
+ * 用途：承载全站字体规划 V1–V10 的「逐项验证」。所有样式命名空间收紧在
+ * .font-specimen 下，不改 tokens.css、不污染现有组件。
+ *
+ * 候选字体（lemie-qiuxu / Alimama / IBM Plex Mono）用 specimen 专属 family 名声明，
+ * 仅本页可见；是否进生产由 V1–V3 验证后决定。
+ */
+
+@font-face {
+  font-family: 'Specimen QiuXu';
+  src: url('../assets/fonts/lemie-qiuxu.woff2') format('woff2');
+  font-display: swap;
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'Specimen ShuHei';
+  src: url('../assets/fonts/AlimamaShuHeiTi-Bold.woff2') format('woff2');
+  font-display: swap;
+  font-weight: 700;
+}
+@font-face {
+  font-family: 'Specimen Plex Mono';
+  src: url('../assets/fonts/IBMPlexMono-400.woff2') format('woff2');
+  font-display: swap;
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'Specimen Plex Mono';
+  src: url('../assets/fonts/IBMPlexMono-500.woff2') format('woff2');
+  font-display: swap;
+  font-weight: 500;
+}
+@font-face {
+  font-family: 'Specimen Icon';
+  src: url('../assets/font_f3y78zakpcq/iconfont.ttf') format('truetype');
+  font-display: block;
+}
+
+/* ── 字体栈工具类（对照台用） ── */
+.fs-zmx {
+  font-family: 'Zhi Mang Xing', 'Noto Sans SC Variable', serif;
+}
+.fs-qiuxu {
+  font-family: 'Specimen QiuXu', 'Noto Sans SC Variable', serif;
+}
+.fs-shuhei {
+  font-family: 'Specimen ShuHei', 'Noto Sans SC Variable', sans-serif;
+  font-weight: 700;
+}
+.fs-plex {
+  font-family: 'Specimen Plex Mono', 'Geist Mono', monospace;
+}
+.fs-geist {
+  font-family: 'Geist Variable', system-ui, sans-serif;
+}
+.fs-noto {
+  font-family: 'Noto Sans SC Variable', system-ui, sans-serif;
+}
+.fs-geistmono {
+  font-family: 'Geist Mono', ui-monospace, monospace;
+}
+.fs-icon {
+  font-family: 'Specimen Icon';
+  font-style: normal;
+  line-height: 1;
+}
+
+/* ── 页面骨架 ── */
+.font-specimen {
+  text-align: left;
+  min-height: 100svh;
+  padding: var(--space-lg) var(--space-lg) var(--space-3xl);
+  background: var(--color-paper-dark);
+  color: var(--color-photo-ink);
+  box-sizing: border-box;
+}
+
+.font-specimen * {
+  box-sizing: border-box;
+}
+
+.font-specimen h1,
+.font-specimen h2,
+.font-specimen h3 {
+  font-family: var(--font-body);
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: var(--color-photo-ink);
+}
+.font-specimen h1 {
+  font-size: var(--text-lg);
+}
+.font-specimen h2 {
+  font-size: var(--text-md);
+}
+
+.fs-devflag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-eco-bright);
+  border: 1px solid color-mix(in oklch, var(--color-eco-bright) 45%, transparent);
+  border-radius: var(--radius-pill);
+  padding: 2px 10px;
+  margin-left: var(--space-sm);
+  vertical-align: middle;
+}
+
+/* ── 顶部控制条 ── */
+.fs-bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  margin: 0 0 var(--space-lg);
+  background: color-mix(in oklch, var(--color-paper-dark) 88%, transparent);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-card);
+}
+
+.fs-bar__group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+}
+
+.fs-bar__label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-photo-muted);
+  margin-right: var(--space-2xs);
+}
+
+.fs-btn {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  padding: 3px 10px;
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-photo-muted);
+  cursor: pointer;
+}
+.fs-btn:hover {
+  border-color: var(--color-accent-bright);
+  color: var(--color-photo-ink);
+}
+.fs-btn[data-active='true'] {
+  background: var(--color-accent-bright);
+  border-color: var(--color-accent-bright);
+  color: var(--color-paper-dark);
+}
+
+.fs-bar__spacer {
+  flex: 1 1 auto;
+}
+
+/* ── 区块 ── */
+.fs-section {
+  margin: 0 0 var(--space-2xl);
+}
+.fs-section__head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  margin: 0 0 var(--space-md);
+  padding-bottom: var(--space-xs);
+  border-bottom: 1px solid var(--color-rule);
+}
+.fs-note {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  color: var(--color-photo-muted);
+  margin: var(--space-xs) 0 var(--space-md);
+  max-width: 72ch;
+}
+.fs-note--warn {
+  color: var(--color-brass);
+}
+
+/* ── 表格 ── */
+.fs-tablewrap {
+  overflow-x: auto;
+}
+.fs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+}
+.fs-table th,
+.fs-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: var(--space-xs) var(--space-sm);
+  border-bottom: 1px solid var(--color-rule);
+}
+.fs-table th {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-photo-muted);
+  white-space: nowrap;
+}
+.fs-table td {
+  line-height: 1.6;
+}
+.fs-table tr[data-kind='template'] td,
+.fs-table tr[data-kind='orphan'] td {
+  color: var(--color-photo-muted);
+}
+.fs-table tr[data-kind='template'] {
+  background: color-mix(in oklch, var(--color-brass) 8%, transparent);
+}
+.fs-table tr[data-kind='orphan'] {
+  background: color-mix(in oklch, var(--color-photo-muted) 6%, transparent);
+}
+.fs-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 1px 6px;
+  border-radius: var(--radius-pill);
+  border: 1px solid currentColor;
+}
+.fs-tag[data-kind='live'] {
+  color: var(--color-eco-bright);
+}
+.fs-tag[data-kind='orphan'] {
+  color: var(--color-photo-muted);
+}
+.fs-tag[data-kind='template'] {
+  color: var(--color-brass);
+}
+.fs-tag[data-kind='root'] {
+  color: var(--color-photo-muted);
+}
+.fs-status {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.fs-status[data-status='in-use'] {
+  color: var(--color-eco-bright);
+}
+.fs-status[data-status='unreferenced'] {
+  color: var(--color-brass);
+}
+
+/* ── 候选对照台 ── */
+.fs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-md);
+}
+.fs-spec {
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-card);
+  padding: var(--space-md);
+  background: color-mix(in oklch, var(--color-photo-ink) 4%, transparent);
+}
+.fs-spec__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-sm);
+}
+.fs-spec__name {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+.fs-spec__meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-photo-muted);
+}
+.fs-spec__sample {
+  font-size: 2rem;
+  line-height: 1.25;
+  color: var(--color-photo-warm);
+  overflow-wrap: anywhere;
+}
+.fs-spec__sample--mono {
+  font-size: 1.5rem;
+}
+.fs-spec__sub {
+  margin-top: var(--space-xs);
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  color: var(--color-photo-muted);
+}
+
+/* ── 真实角色复刻 ── */
+.fs-role {
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-card);
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+.fs-role__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+.fs-role__id {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: var(--color-eco-bright);
+  border: 1px solid currentColor;
+  border-radius: var(--radius-pill);
+  padding: 2px 8px;
+}
+.fs-role__name {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+.fs-role__spec {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--color-photo-muted);
+}
+.fs-surface {
+  border-radius: var(--radius-card);
+  padding: var(--space-md);
+  margin-top: var(--space-xs);
+}
+/* 模拟「影像恒定组」暗场：与 tokens.css 的同名常量保持一致，仅本页内联 */
+.fs-surface--photo {
+  --color-paper-dark: oklch(16% 0.012 290);
+  --color-photo-ink: oklch(96% 0.005 290);
+  --color-photo-warm: oklch(94% 0.014 85);
+  --color-photo-muted: oklch(80% 0.012 290);
+  --color-eco-bright: oklch(74% 0.17 152);
+  --color-accent-bright: oklch(68% 0.19 290);
+  background: var(--color-paper-dark);
+  color: var(--color-photo-ink);
+}
+.fs-surface--paper {
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+/* ── 字阶 / 字距演示 ── */
+.fs-scale {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+.fs-scale__row {
+  display: grid;
+  grid-template-columns: minmax(150px, 220px) 1fr;
+  gap: var(--space-md);
+  align-items: baseline;
+  border-bottom: 1px dashed var(--color-rule);
+  padding-bottom: var(--space-xs);
+}
+.fs-scale__id {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--color-photo-muted);
+}
+.fs-scale__sample {
+  color: var(--color-photo-warm);
+  line-height: 1.15;
+}
+.fs-scale__sample--display {
+  font-family: var(--font-display);
+}
+.fs-scale__sample--mono {
+  font-family: var(--font-mono);
+}
+
+/* ── 验证项卡片 ── */
+.fs-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-md);
+}
+.fs-item {
+  border: 1px solid var(--color-rule);
+  border-left: 3px solid var(--color-accent-bright);
+  border-radius: var(--radius-card);
+  padding: var(--space-md);
+}
+.fs-item__top {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-2xs);
+}
+.fs-item__id {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--color-accent-bright);
+}
+.fs-item__title {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+.fs-item__q {
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  margin: var(--space-2xs) 0;
+}
+.fs-item__rec {
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  color: var(--color-photo-muted);
+}
+.fs-item__rec strong {
+  color: var(--color-eco-bright);
+  font-weight: 600;
+}
+.fs-item__alts {
+  margin: var(--space-xs) 0 0;
+  padding-left: 1.1em;
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: var(--color-photo-muted);
+}
+.fs-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-brass);
+  border: 1px solid currentColor;
+  border-radius: var(--radius-pill);
+  padding: 1px 8px;
+  margin-left: auto;
+}
+
+/* ── 宽度档位框 ── */
+.fs-viewport {
+  border: 1px dashed var(--color-rule);
+  border-radius: var(--radius-card);
+  padding: var(--space-md);
+  transition: max-width var(--dur-short) var(--ease-out);
+}
+.fs-viewport__ruler {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-photo-muted);
+  margin-bottom: var(--space-sm);
+}
+
+@media (max-width: 640px) {
+  .font-specimen {
+    padding: var(--space-md) var(--space-sm) var(--space-2xl);
+  }
+  .fs-scale__row {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xs);
+  }
+}
