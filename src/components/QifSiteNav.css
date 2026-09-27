@@ -104,7 +104,7 @@
 
 .qif-hero-header__en {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--text-2xs);
   letter-spacing: 0.2em;
   color: var(--color-brass);
   white-space: nowrap;
@@ -126,7 +126,7 @@
 
 .qif-hero-header__slogan-en {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--text-2xs);
   letter-spacing: 0.22em;
   color: var(--color-brass);
   white-space: nowrap;

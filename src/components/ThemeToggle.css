@@ -52,7 +52,7 @@
 /* iconfont 字形：字体本身带 baseline，微调 1px 令其在圆内视觉居中 */
 .theme-toggle__icon {
   font-family: 'shnda-theme-icon';
-  font-size: 18px;
+  font-size: 18px; /* 图形化图标尺寸（iconfont 字形），非文字令牌 */
   font-style: normal;
   line-height: 1;
   font-variant: normal;

@@ -257,6 +257,25 @@
   - 新增 `--tracking-{display,title,body,ui,mono}` 与 `--leading-{display,title,body,ui,mono}`
     两组令牌（按 §4.1 角色定档）；既有字距/行高的收编属于 V7 后续。
 
+- 2026-09-27 · 刻度外 font-size 收编 + 死样式删除（V7）：
+  - live 值吸附令牌：NewsDetailPage（11px→`--text-xs`、10px→`--text-2xs`、16px→`--text-base`、
+    标题 clamp→`--text-display-s`）、QifFocusLoader/qifObs（11px/15px→`--text-xs`/`--text-sm`、
+    obs 标题 clamp→`--text-display-s`）、QifSiteNav/SiteHeader（10px→`--text-2xs`）、
+    ArticlePage 行内 code（0.88em→`--text-sm`）。
+  - **Bug 修复**：NewsDetailPage 的 `.qif-news-detail__title` 与 `.qif-article-body h2/h3`
+    是 CMS 动态文本却用 `--font-display`（行楷），字符不在子集内会缺字 →
+    按 §12「动态标题不用行楷」改回 `--font-body`（700）。
+  - 收敛临时 clamp：`hero__wordmark` → 新令牌 `--text-wordmark`；`qif-obs-title` →
+    `--text-display-s`（与令牌重复）。`hero__title` 矮屏 vh 兜底与 `.drift-wall__char`
+    单字瓷砖为**图形尺寸**，有意保留本地 clamp 并注释（不收编）。
+  - 删除死样式：`index.css` 的 Vite 模板 `h1/h2`（56/36/24/20px）与 `code`/`.counter`/
+    `#center`/`.card`/`.news-*`/`.card-rank`/`.loading-spinner`/`.empty-state`/`.animated-list`；
+    `App.css` 整文件删除（`.counter`/`#next-steps`/`#docs`/`#spacer`/`.ticks` 均为 Vite/Mapp
+    遗留），并从 `App.jsx` 移除导入。对应 JS 组件 Mapp/NewsCard/AnimatedList 仍待后续清理。
+  - `ThemeToggle` 图标 18px 标注为图形尺寸（非令牌）。
+  - 待办：`QifSlideCard.css` 两处 11px（他人在途改动，待其提交后再动）；`Mapp.jsx`/
+    `NewsCard.jsx`/`AnimatedList.jsx` 与 `test.json`/`pnpm server` 的死代码删除另开任务。
+
 ## 13.AGENT>
 Agent:
 默认不调用视觉模型检查:compile是例外，允许对可视

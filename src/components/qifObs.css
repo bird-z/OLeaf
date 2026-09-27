@@ -44,7 +44,7 @@
   align-items: center;
   gap: var(--space-sm);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--text-xs);
   letter-spacing: 0.2em;
   color: color-mix(in oklch, var(--color-photo-muted) 85%, transparent);
 }
@@ -71,7 +71,7 @@
   background: var(--color-paper-2);
   padding: var(--space-sm) var(--space-md);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--text-xs);
   line-height: 1.6;
   letter-spacing: 0.14em;
   color: var(--color-photo-muted);
@@ -109,7 +109,7 @@
 .qif-obs-title {
   margin: 0.75rem 0 0;
   font-family: var(--font-display);
-  font-size: clamp(2.25rem, 3.5vw + 1rem, 3.8rem);
+  font-size: var(--text-display-s);
   line-height: 1.15;
   color: var(--color-photo-ink);
 }
@@ -117,7 +117,7 @@
 .qif-obs-desc {
   margin: 0;
   max-width: 38rem;
-  font-size: 15px;
+  font-size: var(--text-sm);
   line-height: 1.7;
   color: var(--color-photo-muted);
 }

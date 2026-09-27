@@ -56,7 +56,7 @@
 
 .qif-header__en {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--text-2xs);
   letter-spacing: 0.22em;
   color: color-mix(in oklch, var(--color-photo-muted) 75%, transparent);
   white-space: nowrap;

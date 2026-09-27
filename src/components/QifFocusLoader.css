@@ -44,7 +44,7 @@
 
 .qif-loader__caption {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--text-xs);
   letter-spacing: 0.35em;
   color: var(--color-photo-muted);
   animation: qif-focus-pull 0.9s var(--ease-out) 0.2s both;

@@ -10,7 +10,7 @@
   border-bottom: 1px solid var(--color-rule);
   padding: var(--space-sm) 0;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--text-xs);
   letter-spacing: 0.14em;
   color: var(--color-photo-muted);
 }
@@ -93,14 +93,16 @@
 .qif-news-detail__kicker {
   margin: 0;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--text-xs);
   letter-spacing: 0.25em;
 }
 
+/* CMS 动态标题：不用行楷（字符不在字体子集内），按 §12 规则用 body 黑体 */
 .qif-news-detail__title {
   margin: var(--space-md) 0 0;
-  font-family: var(--font-display);
-  font-size: clamp(1.9rem, 3vw + 1rem, 3rem);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-display-s);
   line-height: 1.25;
   color: var(--color-photo-ink);
 }
@@ -111,7 +113,7 @@
   gap: 0.35rem 1.5rem;
   margin: var(--space-md) 0 0;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--text-xs);
   letter-spacing: 0.14em;
   color: var(--color-photo-muted);
 }
@@ -130,7 +132,7 @@
 .qif-news-detail__summary-label {
   margin: 0;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--text-2xs);
   letter-spacing: 0.3em;
   color: color-mix(in oklch, var(--color-photo-muted) 80%, transparent);
 }
@@ -162,7 +164,7 @@
   margin-top: var(--space-xs);
   text-align: right;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--text-2xs);
   letter-spacing: 0.2em;
   color: color-mix(in oklch, var(--color-photo-muted) 70%, transparent);
 }
@@ -174,7 +176,7 @@
 /* ── CMS 正文排版 ── */
 .qif-article-body {
   margin-top: var(--space-xl);
-  font-size: 16px;
+  font-size: var(--text-base);
   line-height: 1.9;
   color: color-mix(in oklch, var(--color-photo-ink) 86%, transparent);
 }
@@ -183,10 +185,12 @@
   margin: var(--space-md) 0;
 }
 
+/* CMS 动态小节标题：同样不用行楷，用 body 黑体（避免子集外字符缺字） */
 .qif-article-body h2,
 .qif-article-body h3 {
   margin: var(--space-xl) 0 var(--space-sm);
-  font-family: var(--font-display);
+  font-family: var(--font-body);
+  font-weight: 700;
   font-size: var(--text-lg);
   color: var(--color-photo-ink);
 }
@@ -240,7 +244,7 @@
 
 .qif-news-detail__pager-link small {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--text-2xs);
   letter-spacing: 0.25em;
   color: color-mix(in oklch, var(--color-photo-muted) 80%, transparent);
 }

@@ -119,7 +119,7 @@
 .hero__wordmark {
   font-family: var(--font-body);
   font-weight: 800; /* 与正文 400 拉开极端字重对比 */
-  font-size: clamp(2.25rem, 6vw, 4.5rem);
+  font-size: var(--text-wordmark); /* W 品牌字标专用令牌 */
   letter-spacing: -0.035em;
   line-height: 1;
   overflow-wrap: anywhere;
@@ -451,7 +451,7 @@
 
   .hero__title {
     padding: var(--space-lg) 0;
-    /* 同时受宽与高约束：矮屏不再吃满 7rem，避免两行标题独占半屏 */
+    /* 矮屏约束：宽高双 vh 兜底，行楷 D1 有意保留本地 clamp（非 --text-display） */
     font-size: clamp(2.25rem, min(11vw, 12.5vh), 7rem);
   }
 

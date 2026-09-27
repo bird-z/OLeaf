@@ -7,7 +7,6 @@ import EventsPage from './pages/EventsPage.jsx'
 import PopularPage from './pages/PopularPage.jsx'
 import ArticlePage from './pages/ArticlePage.jsx'
 import NewsDetailPage from './pages/NewsDetailPage.jsx'
-import './App.css'
 import './components/CardNav.css'
 
 /* 字体样张（dev-only）：全站字体规划 V1–V10 的验证载体。
