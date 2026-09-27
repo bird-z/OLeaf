@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import ScrollMask from './ScrollMask.jsx';
 import DepthCarousel from '../DepthCarousel.jsx';
 import { useTheme } from '../../lib/useTheme.js';
@@ -13,12 +13,11 @@ import './About.css';
  *   夜间 = 星轨夜景（生命.jpeg） · 昼间 = 白昼校园广场（ground1.jpg）
  * 与首屏星轨、成员墙同一逻辑：夜空归夜，白昼归昼。 */
 const GALLERY_BASE = [
-  { image: pscImg, alt: '生物启扉协会第一次全体（扩大）会议合影', caption: '第一次全体（扩大）会议' },
-  { image: hackathonImg, alt: '第一届「黑客松」AI 创作大赛合影', caption: '第六届科技文化节 · 第一届「黑客松」AI 创作大赛' }
+  { image: pscImg, alt: '生物启扉协会第一次全体（扩大）会议合影' },
+  { image: hackathonImg, alt: '第一届「黑客松」AI 创作大赛合影' }
 ];
 
 function About() {
-  const [active, setActive] = useState(0);
   const { resolvedTheme } = useTheme();
   const isLight = resolvedTheme === 'light';
 
@@ -35,8 +34,8 @@ function About() {
     () => [
       ...GALLERY_BASE,
       isLight
-        ? { image: groundImg, alt: '白昼的校园广场 · 升旗仪式', caption: '白昼校园' }
-        : { image: lifeImg, alt: '校园星轨夜景', caption: '校园星轨' }
+        ? { image: groundImg, alt: '白昼的校园广场 · 升旗仪式' }
+        : { image: lifeImg, alt: '校园星轨夜景' }
     ],
     [isLight]
   );
@@ -72,20 +71,15 @@ function About() {
         </div>
 
         <div className="about__gallery">
+          {/* 卡片尺寸：改这两个数即可整体放大/缩小相册卡片（比例保持 1.42:1）；
+              相册列宽不够时组件会自动等比缩小，卡片位置/图文间距见 About.css 顶部调参区。 */}
           <DepthCarousel
             items={GALLERY}
-            cardWidth={440}
-            cardHeight={310}
+            cardWidth={520}
+            cardHeight={366}
             tint="var(--color-ink)"
             aria-label="协会活动相册"
-            onChange={i => setActive(i)}
           />
-          <p className="about__gallery-caption" key={active}>
-            <span className="about__gallery-count">
-              {String(active + 1).padStart(2, '0')} / {String(GALLERY.length).padStart(2, '0')}
-            </span>
-            {GALLERY[active].caption}
-          </p>
         </div>
       </div>
       </ScrollMask>

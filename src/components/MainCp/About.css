@@ -7,12 +7,24 @@
  *   [本分支] 挂载 ScrollMask 幕布入场（原备用组件）；head 右侧 mono 节序标记
  *            （01 · About，非 eyebrow——与 hero meta 同一 mono outlier 语言）；
  *            section 加 id="about" 锚点；tags hover 微交互
+ *   [pi-G] 图文排布：卡片由列内居中改为锚点左移（默认 34%）贴近正文，列间距参数化；
+ *          删除相册图注（03 / 03 + 图片名），卡片放大到 520×366 见 About.jsx
  * pre-emit critique: P4 H4 E4 S5 R5 V4
  */
 
 @import '../../../tokens.css';
 
 .about {
+  /* ══ 图文排布调参区（想改「文字 ↔ 相册」的距离，只改下面两个值） ══
+   * --about-media-gap    ：两栏之间的水平空隙。
+   * --about-media-anchor ：卡片在相册列内的横向锚点。
+   *     50% = 列内居中（原来是这个值：相册列比卡片宽得多，卡片左右各空约 200px，
+   *           看起来离正文很远，图注也被挤到图片左下角）。
+   *     调小 = 卡片整体左移、贴近正文；右边空出来的地方正好给扇出的后几张卡片。
+   *     建议范围 28%–45%，数值越小图文越紧。
+   * 卡片自身的尺寸在 About.jsx 的 <DepthCarousel cardWidth / cardHeight>。 */
+  --about-media-gap: clamp(var(--space-md), 2vw, var(--space-xl));
+  --about-media-anchor: 34%;
   position: relative;
   z-index: 2; /* 压过 ScrollExpand 的 sticky stage（定位元素默认画在静态块上层），杜绝图片跨页 */
   padding: var(--space-3xl) clamp(var(--space-md), 4vw, var(--space-2xl)) var(--space-2xl);
@@ -56,49 +68,29 @@
 .about__grid {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); /* 相册栏加宽，配合放大卡片 */
-  gap: var(--space-xl) 0; /* 列间距 0（按你的修改），行间距保留给移动端堆叠 */
+  gap: var(--space-xl) var(--about-media-gap); /* 列间距 = 可调参数；行间距保留给移动端堆叠 */
   align-items: center;
 }
 
 .about__gallery {
   position: relative;
   min-width: 0; /* 允许 grid 收缩，carousel 内部自适应缩放 */
-  min-height: 440px;
 }
 
-/* ── 相册图注：mono 计数 + 当前照片名，切卡同步（key 驱动淡入） ── */
-.about__gallery-caption {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-sm);
-  margin: var(--space-sm) 0 0;
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  letter-spacing: 0.08em;
-  color: var(--color-photo-muted);
-  animation: caption-in var(--dur-short) var(--ease-out);
+/* ── 相册卡片定位：只覆盖本节，DepthCarousel 组件本身与其它调用方不受影响 ── */
+
+/* 卡片横向锚点：把组件默认的「列内居中」（left: 50%）改成贴近正文一侧 */
+.about__gallery .depth-carousel__card {
+  left: var(--about-media-anchor);
 }
 
-.about__gallery-count {
-  color: var(--color-eco-bright);
-  white-space: nowrap;
-}
-
-@keyframes caption-in {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .about__gallery-caption {
-    animation: none;
-  }
+.about__gallery .depth-carousel {
+  /* 透视原点跟着锚点走：否则卡片左移后 3D 扇出会歪向一边 */
+  perspective-origin: var(--about-media-anchor) 50%;
+  /* 列高 ≥ 卡片最大高度，保证卡片竖直居中、不与节头/标签重叠
+     （卡片尺寸见 About.jsx：520×366 等比缩放，最高就是 366px；
+      组件自带 min-height: 320px 不够高，故在本节加高到 380px） */
+  min-height: 380px;
 }
 
 /* ── 单栏正文（照片与收尾句已升格为 ScrollExpand 转场） ── */
@@ -174,14 +166,12 @@
 @media (max-width: 60rem) {
   .about {
     padding-top: var(--space-2xl);
+    /* 单栏堆叠后没有「与正文并排」的问题，相册回到列内居中，避免右侧空一大块 */
+    --about-media-anchor: 50%;
   }
 
   .about__grid {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .about__gallery {
-    min-height: 340px;
   }
 
   .about__head {
