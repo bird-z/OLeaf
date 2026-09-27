@@ -22,6 +22,11 @@ const DepthCarousel = ({
   tint = '#05060a',
   depth = 220,
   spread = 90,
+  /* reserveFan：缩放时的宽度基准是否含两侧扇出。
+   *   true（默认）= 卡片必须连同扇出一起塞进容器，宽列才不缩小 → 窄列里卡片明显变小；
+   *   false      = 只按卡片自身宽度缩放，扇出允许溢出容器左右边缘，
+   *                由调用方在容器两侧留白（About 用：扇出正好落在图片右侧的留白里）。 */
+  reserveFan = true,
   tilt = 22,
   tiltDirection = 'right',
   perspective = 1400,
@@ -65,6 +70,7 @@ const DepthCarousel = ({
     count,
     depth,
     spread,
+    reserveFan,
     tilt,
     tiltDirection,
     visibleCards,
@@ -118,6 +124,18 @@ const DepthCarousel = ({
       const ov = overlayRefs.current[i];
       if (ov) ov.style.opacity = clamp(back * cfg.falloff * 1.25, 0, 0.86).toFixed(3);
     }
+  }, []);
+
+  /* 缩放基准 = 卡片 + 两侧扇出 + 呼吸位。
+   * reserveFan=false 时不把扇出算进基准：扇出允许溢出容器（由调用方留白），
+   * 窄容器里卡片就不会被「预留的扇出位置」挤小。 */
+  const applyScale = useCallback(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    const cfg = cfgRef.current;
+    const fan = cfg.reserveFan ? Math.abs(cfg.spread) * 2 : 0;
+    const needed = cfg.cardWidth + fan + 120;
+    scaleRef.current = clamp(root.clientWidth / needed, 0.4, 1);
   }, []);
 
   const notify = useCallback(
@@ -177,16 +195,13 @@ const DepthCarousel = ({
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-    const ro = new ResizeObserver(entries => {
-      const w = entries[0].contentRect.width;
-      const cfg = cfgRef.current;
-      const needed = cfg.cardWidth + Math.abs(cfg.spread) * 2 + 120;
-      scaleRef.current = clamp(w / needed, 0.4, 1);
+    const ro = new ResizeObserver(() => {
+      applyScale();
       layout(posRef.current);
     });
     ro.observe(root);
     return () => ro.disconnect();
-  }, [layout]);
+  }, [layout, applyScale]);
 
   useEffect(() => {
     const el = rootRef.current;
@@ -327,8 +342,9 @@ const DepthCarousel = ({
   }, [autoplay, autoplayDelay, count, navigateBy]);
 
   useEffect(() => {
+    applyScale();
     layout(posRef.current);
-  }, [layout, depth, spread, tilt, tiltDirection, visibleCards, falloff, blur, cardWidth, cardHeight, radius, count]);
+  }, [layout, applyScale, depth, spread, reserveFan, tilt, tiltDirection, visibleCards, falloff, blur, cardWidth, cardHeight, radius, count]);
 
   useEffect(
     () => () => {
