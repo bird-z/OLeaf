@@ -25,6 +25,8 @@
           root.style.colorScheme = dark ? 'dark' : 'light';
           var meta = document.querySelector('meta[name="theme-color"]');
           if (meta) meta.setAttribute('content', dark ? '#0b0b12' : '#fbfafd');
+          /* React 挂载前铺好底色，避免冷启动先闪一帧白再进加载屏 */;
+          root.style.background = dark ? '#0b0b12' : '#fbfafd';
 
           /* Slogan 背景已降到第二屏（首屏改为 BANNER 新闻轮播），
            * 这里降为低优先级预载，不再抢占首屏 LCP 的带宽。

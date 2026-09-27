@@ -18,7 +18,7 @@ function Home() {
   usePageTurn()
   return (
     <ClickSpark sparkSize={9} sparkRadius={26} sparkCount={10}>
-      <div className="App">
+      <div className="App qif-page-focus-in">
         <QifSiteNav />
         <NewsCarousel />
         <Slogan />

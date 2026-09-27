@@ -1,4 +1,5 @@
 import { HashRouter, Routes, Route } from 'react-router-dom'
+import QifFocusLoader from './components/QifFocusLoader.jsx'
 import Home from './pages/Home.jsx'
 import SciencePage from './pages/SciencePage.jsx'
 import EventsPage from './pages/EventsPage.jsx'
@@ -14,6 +15,8 @@ import './components/CardNav.css'
 function App() {
   return (
     <HashRouter>
+      {/* 冷启动对焦加载屏：挂在路由层，每次打开/刷新全站生效，路由内切换不重播 */}
+      <QifFocusLoader />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/science" element={<SciencePage />} />
