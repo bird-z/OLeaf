@@ -68,7 +68,7 @@
   gap: var(--space-sm);
   margin: 0;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--text-xs);
   letter-spacing: 0.2em;
 }
 
@@ -126,7 +126,7 @@
 
 .qif-slide-card__date {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--text-xs);
   letter-spacing: 0.14em;
   color: var(--color-photo-muted);
 }

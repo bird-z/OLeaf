@@ -273,7 +273,7 @@
     `App.css` 整文件删除（`.counter`/`#next-steps`/`#docs`/`#spacer`/`.ticks` 均为 Vite/Mapp
     遗留），并从 `App.jsx` 移除导入。对应 JS 组件 Mapp/NewsCard/AnimatedList 仍待后续清理。
   - `ThemeToggle` 图标 18px 标注为图形尺寸（非令牌）。
-  - 待办：`QifSlideCard.css` 两处 11px（他人在途改动，待其提交后再动）；`Mapp.jsx`/
+  - 待办：`QifSlideCard.css` 两处 11px 已随该组件提交后收编为 `--text-xs`；`Mapp.jsx`/
     `NewsCard.jsx`/`AnimatedList.jsx` 与 `test.json`/`pnpm server` 的死代码删除另开任务。
 
 - 2026-09-27 · 行楷子集化管线（V9）：

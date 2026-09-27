@@ -299,7 +299,7 @@ export const VALIDATION_STATUS = {
   V4: { status: '已实现', outcome: '保留 iconfont.ttf（ThemeToggle 唯一字形 U+E6E8）' },
   V5: { status: '已实现', outcome: 'tokens.css 新增 --text-2xs/--text-xl/--text-2xl/--text-wordmark' },
   V6: { status: '已实现', outcome: 'tokens.css 新增 --tracking-* 与 --leading-*；既有字距逐一收编留待后续' },
-  V7: { status: '已实现', outcome: 'live 值已吸附令牌；Vite/Mapp 死样式与 App.css 已删除；QifSlideCard 两处 11px 待他人提交后再动' },
+  V7: { status: '已实现', outcome: 'live 值已吸附令牌；Vite/Mapp 死样式与 App.css 已删除；QifSlideCard 两处 11px 已收编 --text-xs' },
   V8: { status: '已实现', outcome: '维持 §4.1 的 600–800 分层；W=800、CMS 标题补 700；无需改重' },
   V9: { status: '已实现', outcome: 'subset-font + fontkit devDep；prebuild 挂 fonts:check；子集重建至 232 字形，补入快讯/调焦等缺字' },
   V10: { status: '已实现', outcome: '保留 Zhi Mang Xing 子集 + iconfont；删除 lemie-qiuxu / Alimama / IBM Plex Mono 共 5 个文件' }

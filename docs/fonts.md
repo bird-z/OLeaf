@@ -56,7 +56,7 @@ All rights reserved」，仓库内无授权文件 —— **默认不接入生产
 | V4 | iconfont 去留 | 保留（ThemeToggle 唯一字形 U+E6E8） | 改用 lucide-react，删 @font-face | **已实现（保留）** |
 | V5 | 字阶补齐（--text-2xs / xl / 2xl） | xl 1.953rem、2xl 2.441rem、2xs 0.5625rem | 2xs 严格比例 0.512rem / 归入 --text-xs | **已实现** |
 | V6 | 字距 / 行高令牌（D/T/L/U/M） | D 0.04em/1.1 · T −0.01em/1.3 · L 0/1.8 · U 0.06em/1.45 · M 0.16em/1.65 | 样张微调 / 仅令牌化 M 级 | **已实现** |
-| V7 | 34 处刻度外 font-size 映射 | live 吸附令牌；orphan/template 随死代码删除；clamp 收敛；图标标注图形尺寸 | 全部替换为 rem / 仅集中为组件变量 | **已实现（QifSlideCard 遗留）** |
+| V7 | 34 处刻度外 font-size 映射 | live 吸附令牌；orphan/template 随死代码删除；clamp 收敛；图标标注图形尺寸 | 全部替换为 rem / 仅集中为组件变量 | **已实现** |
 | V8 | 中文字重对齐 | T=700、W=800、L=400/700 | T=600 / 中文统一 500/700 | **已实现** |
 | V9 | 子集化 + 缺字校验 | Node 原生 subset-font（免 Python，可进 CI） | fontTools/pyftsubset（本机 4.63.0） / 仅缺字校验 | **已实现** |
 | V10 | 未引用资产最终清单 | 按 V1–V3 执行删除或接入 | 保留 Alimama / 全删只用 fontsource | **已实现** |
@@ -76,7 +76,7 @@ All rights reserved」，仓库内无授权文件 —— **默认不接入生产
     `--tracking-*`/`--leading-*` 两组令牌。
   - V7：live 刻度外 `font-size` 吸附令牌；删除 Vite/Mapp 死样式与 `App.css`；
     `NewsDetailPage` 动态 CMS 标题从行楷改回 `--font-body`（修豆腐缺字 bug）；
-    `QifSlideCard` 两处 11px 遗留（他人在途）。
+    `QifSlideCard` 两处 11px 已随该组件重设计提交后收编为 `--text-xs`。
   - V9：`subset-font`+`fontkit` devDep；新增 `pnpm fonts:build`/`fonts:check`
     （挂 `prebuild`）；子集重建 120→232 字形（补入快讯/调焦等缺字）。
   - V1–V4/V10：删除 `lemie-qiuxu`/`Alimama`/`IBM Plex Mono` 共 5 个未引用字体文件；
