@@ -24,7 +24,6 @@
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "server": "json-server -p 3001 test.json",
     "fonts:build": "node scripts/build-font-subsets.mjs",
     "fonts:check": "node scripts/check-font-subsets.mjs"
   },
@@ -34,7 +33,6 @@
     "@fontsource-variable/noto-sans-sc": "^5.3.0",
     "@fontsource/geist-mono": "^5.3.0",
     "@fontsource/zhi-mang-xing": "^5.3.0",
-    "axios": "^1.18.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "gsap": "^3.15.0",
@@ -56,7 +54,6 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.3",
     "fontkit": "^2.0.4",
-    "json-server": "^1.0.0-beta.15",
     "oxlint": "^1.71.0",
     "subset-font": "^2.9.0",
     "tailwindcss": "^4.3.3",

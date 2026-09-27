@@ -13,7 +13,6 @@ pnpm dev        # 开发
 pnpm build      # 构建 → dist/
 pnpm preview    # 预览构建产物
 pnpm lint       # oxlint
-pnpm server     # json-server（Mapp 资讯页演示数据，端口 3001）
 ```
 
 ## 部署（GitHub Pages）

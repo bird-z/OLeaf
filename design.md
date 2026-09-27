@@ -273,8 +273,9 @@
     `App.css` 整文件删除（`.counter`/`#next-steps`/`#docs`/`#spacer`/`.ticks` 均为 Vite/Mapp
     遗留），并从 `App.jsx` 移除导入。对应 JS 组件 Mapp/NewsCard/AnimatedList 仍待后续清理。
   - `ThemeToggle` 图标 18px 标注为图形尺寸（非令牌）。
-  - 待办：`QifSlideCard.css` 两处 11px 已随该组件提交后收编为 `--text-xs`；`Mapp.jsx`/
-    `NewsCard.jsx`/`AnimatedList.jsx` 与 `test.json`/`pnpm server` 的死代码删除另开任务。
+  - 收尾：`QifSlideCard.css` 两处 11px 已随该组件提交后收编为 `--text-xs`；孤儿演示链
+    `Mapp.jsx`/`NewsCard.jsx`/`AnimatedList.jsx`/`AnimatedList.css`/`test.json` 与
+    `json-server`/`axios` 依赖已删除（见下条）。
 
 - 2026-09-27 · 行楷子集化管线（V9）：
   - 新增 `scripts/build-font-subsets.mjs`（Node 原生 `subset-font`，免 Python）从
@@ -287,6 +288,14 @@
     「标本库暂时不可用」「观察记录尚少」等，修复現存 tofu。
   - `fontkit`/`subset-font` 两个 devDep 引入 `package.json`/`pnpm-lock.yaml`（高危共享文件，已认领）。
   - 注：`·`(U+00B7) 源字体本就无此字形，始终走回退字（Noto Sans SC），未纳入必需清单。
+
+- 2026-09-27 · 删除孤儿 Mapp 演示链：
+  - `src/Mapp.jsx`（未挂路由）、`src/components/NewsCard.jsx`（依赖未安装的 `framer-motion`）、
+    `src/components/AnimatedList.jsx`、未被 import 的 `AnimatedList.css`、`test.json` 全数删除。
+  - `package.json` 移除 `server` 脚本与 `json-server`(dev)、`axios` 依赖；`main.jsx` 删除
+    注释掉的 axios 演示残片；`README.md` / `docs/前端开发文档.md` 同步去掉演示数据说明。
+  - 至此 V7 收尾：`index.css` 曾引用的 `.error-msg`/`.news-*`/`.card-rank`/`.loading-spinner`
+    /`.empty-state`/`.animated-list` 死样式与对应 orphan 组件均已一致清除。
 
 ## 13.AGENT>
 Agent:

@@ -75,6 +75,7 @@ All rights reserved」，仓库内无授权文件 —— **默认不接入生产
   - V5/V6：`tokens.css` 新增 `--text-2xs/--text-xl/--text-2xl/--text-wordmark` 与
     `--tracking-*`/`--leading-*` 两组令牌。
   - V7：live 刻度外 `font-size` 吸附令牌；删除 Vite/Mapp 死样式与 `App.css`；
+    孤儿 Mapp 演示链（`Mapp.jsx`/`NewsCard.jsx`/`AnimatedList.*`/`test.json` + `json-server`/`axios`）已删除；
     `NewsDetailPage` 动态 CMS 标题从行楷改回 `--font-body`（修豆腐缺字 bug）；
     `QifSlideCard` 两处 11px 已随该组件重设计提交后收编为 `--text-xs`。
   - V9：`subset-font`+`fontkit` devDep；新增 `pnpm fonts:build`/`fonts:check`
