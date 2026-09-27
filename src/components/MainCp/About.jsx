@@ -72,11 +72,14 @@ function About() {
 
         <div className="about__gallery">
           {/* 卡片尺寸：改这两个数即可整体放大/缩小相册卡片（比例保持 1.42:1）；
-              相册列宽不够时组件会自动等比缩小，卡片位置/图文间距见 About.css 顶部调参区。 */}
+              相册列宽不够时组件会自动等比缩小，卡片位置/图文间距见 About.css 顶部调参区。
+              reserveFan={false}：扇出不再占列宽（允许溢出到图片右侧留白里），
+              所以窄列里卡片也不会被挤小。 */}
           <DepthCarousel
             items={GALLERY}
             cardWidth={520}
             cardHeight={366}
+            reserveFan={false}
             tint="var(--color-ink)"
             aria-label="协会活动相册"
           />

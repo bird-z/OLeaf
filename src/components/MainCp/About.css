@@ -7,7 +7,8 @@
  *   [本分支] 挂载 ScrollMask 幕布入场（原备用组件）；head 右侧 mono 节序标记
  *            （01 · About，非 eyebrow——与 hero meta 同一 mono outlier 语言）；
  *            section 加 id="about" 锚点；tags hover 微交互
- *   [pi-G] 图文排布：卡片由列内居中改为锚点左移（默认 34%）贴近正文，列间距参数化；
+ *   [pi-G] 图文排布：卡片由列内居中改为锚点左移（默认 41%）贴近正文，列间距参数化；
+ *          相册列改为按内容给宽度（不再比例分栏），右侧不再空一大块；
  *          删除相册图注（03 / 03 + 图片名），卡片放大到 520×366 见 About.jsx
  * pre-emit critique: P4 H4 E4 S5 R5 V4
  */
@@ -15,16 +16,19 @@
 @import '../../../tokens.css';
 
 .about {
-  /* ══ 图文排布调参区（想改「文字 ↔ 相册」的距离，只改下面两个值） ══
-   * --about-media-gap    ：两栏之间的水平空隙。
-   * --about-media-anchor ：卡片在相册列内的横向锚点。
-   *     50% = 列内居中（原来是这个值：相册列比卡片宽得多，卡片左右各空约 200px，
-   *           看起来离正文很远，图注也被挤到图片左下角）。
-   *     调小 = 卡片整体左移、贴近正文；右边空出来的地方正好给扇出的后几张卡片。
-   *     建议范围 28%–45%，数值越小图文越紧。
-   * 卡片自身的尺寸在 About.jsx 的 <DepthCarousel cardWidth / cardHeight>。 */
+  /* ══ 图文排布调参区（想改「文字 ↔ 相册」的关系，只改下面三个值） ══
+   * --about-media-width ：相册列宽度。列宽 = 卡片大小 + 右侧容纳扇出的留白：
+   *                       列越宽卡片越大、正文列越窄。卡片 520×366（见 About.jsx），
+   *                       列宽 ≥ 卡片 + 120px 时卡片按满尺寸显示，更窄则等比缩小。
+   * --about-media-anchor：卡片在相册列内的横向锚点。
+   *                       41% ≈ 卡片左边缘贴住列左边缘（即图片紧挨正文）；
+   *                       调大 = 图片往右让、离正文更远；调小 = 更贴正文（会压到栏间距）。
+   * --about-media-gap   ：正文列与相册列之间的空隙。
+   * 为什么相册列给宽度而不是按比例分栏：比例分栏在宽屏上会把列撑得远宽于卡片，
+   * 多出来的空档全落到图片右边，看起来就像「图片被正文挤到一边、右边空一大块」。 */
+  --about-media-width: clamp(24rem, 46vw, 36rem);
+  --about-media-anchor: 41%;
   --about-media-gap: clamp(var(--space-md), 2vw, var(--space-xl));
-  --about-media-anchor: 34%;
   position: relative;
   z-index: 2; /* 压过 ScrollExpand 的 sticky stage（定位元素默认画在静态块上层），杜绝图片跨页 */
   padding: var(--space-3xl) clamp(var(--space-md), 4vw, var(--space-2xl)) var(--space-2xl);
@@ -67,7 +71,8 @@
 /* ── 双栏：文左 + 相册右（DepthCarousel） ── */
 .about__grid {
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); /* 相册栏加宽，配合放大卡片 */
+  /* 正文列吃掉剩余宽度；相册列 = 卡片 + 扇出留白（宽度见 .about 顶部调参区） */
+  grid-template-columns: minmax(0, 1fr) var(--about-media-width);
   gap: var(--space-xl) var(--about-media-gap); /* 列间距 = 可调参数；行间距保留给移动端堆叠 */
   align-items: center;
 }
