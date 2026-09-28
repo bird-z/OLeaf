@@ -1,4 +1,4 @@
-import { useAnchorScroll } from '../../lib/scrollTo.js';
+import { Link } from 'react-router-dom';
 import QifSiteNav from '../QifSiteNav.jsx';
 import SiteBanner from '../SiteBanner.jsx';
 import SiteBreadcrumb from '../SiteBreadcrumb.jsx';
@@ -7,13 +7,12 @@ import './PageShell.css';
 
 /* PageShell — 活动档案页统一骨架（科学/科普/活动三页锁定语言）
  * 锁定：子页导航（首页同款 nav1⇄胶囊）+ gate.jpg 照片横幅 + 页头压横幅下缘
- *       + 面包屑 + mono 节序 · 行楷页头 · 双语 lede · 粗规则线页尾 CTA → /#join
+ *       + 面包屑 + mono 节序 · 行楷页头 · 双语 lede · 粗规则线页尾 CTA → /join
  * 放开：children 内容区（每页一种宏观结构，各不相同）
  * accent: 'eco'（叶绿侧重）| 'accent'（品牌紫侧重），驱动节序号与 CTA hover 色
  * crumbs: 面包屑项 [{label,to?,anchor?}]，缺省为「首页 > title」
  */
 function PageShell({ no, id, title, en, lede, accent = 'eco', displayTitle = true, crumbs, children }) {
-  const anchorScroll = useAnchorScroll(); // HashRouter：页尾 CTA 回主站 #join 须走 JS 滚动
   const items = crumbs ?? [{ label: '首页', to: '/' }, { label: title }];
   return (
     <div className={`page-shell page-shell--${accent}`} id={id}>
@@ -40,10 +39,10 @@ function PageShell({ no, id, title, en, lede, accent = 'eco', displayTitle = tru
 
         <footer className="page-shell__tail">
           <p className="page-shell__tail-text">想一起做点有意思的事？</p>
-          <a className="page-shell__tail-cta" href="#join" onClick={anchorScroll('join')}>
+          <Link className="page-shell__tail-cta" to="/join">
             加入我们
             <span aria-hidden="true">→</span>
-          </a>
+          </Link>
         </footer>
       </ScrollMask>
     </div>

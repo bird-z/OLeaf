@@ -19,7 +19,7 @@ const CardNav = ({
 }) => {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
-  const anchorScroll = useAnchorScroll(); // HashRouter：CTA #join 走 JS 滚动，防白屏
+  const anchorScroll = useAnchorScroll(); // HashRouter：卡片内 # 锚点走 JS 滚动，防白屏
   const navRef = useRef(null);
   const hamburgerRef = useRef(null);
   const cardsRef = useRef([]);
@@ -189,14 +189,13 @@ const CardNav = ({
 
           <div className="card-nav-actions">
             {actions}
-            <a
+            <Link
               className="card-nav-cta-button"
-              href="#join"
-              onClick={anchorScroll('join')}
+              to="/join"
               style={buttonBgColor ? { backgroundColor: buttonBgColor, color: buttonTextColor } : undefined}
             >
               Join Us
-            </a>
+            </Link>
           </div>
         </div>
 

@@ -370,6 +370,22 @@
   - 顺手修复：`QifSiteNav` 品牌区 `<Link to="/">` 原先被 `preventDefault` 无差别拦截，
     子页点击无法回首页；现仅在 pathname==='/' 时拦截做平滑回顶。
 
+- 2025-09-28 · 导航九项各自落独立页面（双 lane 并行：占位体系 + 重指向）：
+  - 背景：九项导航中「协会概况/组织机构/会员风采/校园墙」借首页锚点、
+    「加入我们」全部 CTA 走 #join；参考校官网子页模式，每项栏目落独立页面。
+  - 新建占位体系：`src/data/sectionRegistry.js`（五页元数据 no=07–11 + fields
+    字段契约，供稿接口形状的唯一来源）；`src/lib/sectionData.js` 的
+    `useSection(key)` 恒返回 `status:'pending'`（未来接 CMS 只改此函数，
+    且必须经 payload.js 出口）；`src/pages/SectionPage.jsx` 共享骨架
+    （PageShell 外壳 + 「开发中…/UNDER DEVELOPMENT」占位面板 + 契约字段清单，
+    占位文案用 --font-body 不进字体子集）；五个薄 wrapper 页。
+  - 重指向：HERO_LINKS 四项 anchor→to、JOIN_LINK→to:'/join'（QifSiteNav
+    renderLink 把 join CTA 分支提前并支持 to）；全站 #join 清零——
+    CardNav「Join Us」、Slogan hero CTA、PageShell 页尾 CTA 均改 `<Link to="/join">`。
+    首页区块本体保留（作为预览），仅改链接。
+  - 清理：homeNav.js 删除 SiteHeader 遗留的死导出 PRIMARY_LINKS/ARCHIVE_LINKS。
+  - 字体：行楷子集 fonts:check 通过（新页头策展词 232 字形全覆盖）。
+
 ## 13.AGENT>
 Agent:
 默认不调用视觉模型检查:compile是例外，允许对可视

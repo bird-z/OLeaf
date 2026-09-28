@@ -136,18 +136,23 @@ function QifSiteNav({ mode = 'home' }) {
         </a>
       );
     }
+    // join 现为独立路由（to:'/join'）但仍渲染 CTA 样式：先判 key 再走 to/anchor。
+    if (item.key === 'join') {
+      return item.to ? (
+        <Link key={item.key} className="qif-hero-header__cta" to={item.to}>
+          {item.label}
+        </Link>
+      ) : (
+        <a key={item.key} className="qif-hero-header__cta" {...anchorProps(item.anchor)}>
+          {item.label}
+        </a>
+      );
+    }
     if (item.to) {
       return (
         <Link key={item.key} className="qif-hero-header__link" to={item.to}>
           {item.label}
         </Link>
-      );
-    }
-    if (item.key === 'join') {
-      return (
-        <a key={item.key} className="qif-hero-header__cta" {...anchorProps(item.anchor)}>
-          {item.label}
-        </a>
       );
     }
     return (

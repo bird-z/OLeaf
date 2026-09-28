@@ -1,34 +1,22 @@
 /* 首页融合导航（QifSiteNav）的导航数据源。
- * nav1（页顶两行头部）用 PRIMARY_LINKS / ARCHIVE_LINKS / JOIN_LINK；
- * nav2（CardNav 胶囊）用 CARD_GROUPS（3 张卡片）。
- * 锚点值对应首页各 section 的 id，站内路由值对应 HashRouter 的 to。 */
+ * nav1（页顶两行头部）用 HERO_LINKS + JOIN_LINK；nav2（CardNav 胶囊）用 CARD_GROUPS（3 张卡片）。
+ * 板块项走站内路由（to，各板块独立页面）；首页锚点值对应首页各 section 的 id，
+ * 由 useAnchorScroll 处理。新闻详情页（/news/:id）由内容入口进入，不在导航。 */
 
-export const PRIMARY_LINKS = [
-  { key: 'about', label: '概况', anchor: 'about' },
-  { key: 'news', label: '快讯', anchor: 'news' },
-  { key: 'members', label: '成员', anchor: 'members' },
-];
-
-export const ARCHIVE_LINKS = [
-  { key: 'studios', label: '特色工作室', anchor: 'studios' },
-  { key: 'science', label: '科学与工程', to: '/science' },
-  { key: 'popular', label: '知识普及', to: '/popular' },
-  { key: 'events', label: '教育活动', to: '/events' },
-];
-
-export const JOIN_LINK = { key: 'join', label: '加入我们', anchor: 'join' };
+export const JOIN_LINK = { key: 'join', label: '加入我们', to: '/join' };
 
 /* 两行头部（slogan 态）第二行的平铺导航项（9 项横排，参考 bioqif 原版）。
  * home 键 —— 平滑滚动回页顶；anchor 项走 useAnchorScroll；to 项走 <Link>；
- * 无独立页面的栏目锚到承载其内容的最近区块（组织机构→概况，校园墙→成员照片墙）。 */
+ * 每项栏目对应独立页面（板块页 /about /org /members /wall /join 为占位壳，
+ * 档案页 /science /events /popular 为正式页）。 */
 export const HERO_LINKS = [
   { key: 'home', label: '首页', home: 'top' },
-  { key: 'about', label: '协会概况', anchor: 'about' },
-  { key: 'org', label: '组织机构', anchor: 'about' },
+  { key: 'about', label: '协会概况', to: '/about' },
+  { key: 'org', label: '组织机构', to: '/org' },
   { key: 'science', label: '学术科创', to: '/science' },
   { key: 'events', label: '品牌活动', to: '/events' },
-  { key: 'members', label: '会员风采', anchor: 'members' },
-  { key: 'wall', label: '校园墙', anchor: 'members' },
+  { key: 'members', label: '会员风采', to: '/members' },
+  { key: 'wall', label: '校园墙', to: '/wall' },
   { key: 'popular', label: '知识普及', to: '/popular' },
   JOIN_LINK,
 ];
@@ -56,7 +44,7 @@ export const CARD_GROUPS = [
   {
     label: '加入',
     links: [
-      { label: '加入我们', href: '#join', ariaLabel: '加入我们' },
+      { label: '加入我们', href: '/join', ariaLabel: '加入我们' },
       { label: '联系我们', href: '#contact', ariaLabel: '联系我们' },
     ],
   },
