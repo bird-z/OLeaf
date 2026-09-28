@@ -386,6 +386,13 @@
   - 清理：homeNav.js 删除 SiteHeader 遗留的死导出 PRIMARY_LINKS/ARCHIVE_LINKS。
   - 字体：行楷子集 fonts:check 通过（新页头策展词 232 字形全覆盖）。
 
+- 2025-09-28 · CardNav 主站卡链接改版 + 「特色工作室」独立页：
+  - CARD_GROUPS「主站」卡：概况→「首页」（`/`）、快讯→「API」（`http://localhost:3000`，
+    P5 生产地址未定沿用 dev 值）、成员→「OLD」（`https://bioqif.com` 旧版官网，外链）。
+  - CARD_GROUPS「档案」卡：特色工作室 `#studios` 锚点 → `/studios` 新独立页。
+  - 新增 `sectionRegistry.studios`（no=12，fields=studios[]/apply）+ 薄 wrapper
+    `StudiosPage.jsx` + App.jsx `/studios` 路由，复用 SectionPage 占位骨架。
+
 ## 13.AGENT>
 Agent:
 默认不调用视觉模型检查:compile是例外，允许对可视

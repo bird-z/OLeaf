@@ -7,6 +7,7 @@ import OrgPage from './pages/OrgPage.jsx'
 import MembersPage from './pages/MembersPage.jsx'
 import WallPage from './pages/WallPage.jsx'
 import JoinPage from './pages/JoinPage.jsx'
+import StudiosPage from './pages/StudiosPage.jsx'
 import SciencePage from './pages/SciencePage.jsx'
 import EventsPage from './pages/EventsPage.jsx'
 import PopularPage from './pages/PopularPage.jsx'
@@ -34,6 +35,7 @@ function App() {
         <Route path="/members" element={<MembersPage />} />
         <Route path="/wall" element={<WallPage />} />
         <Route path="/join" element={<JoinPage />} />
+        <Route path="/studios" element={<StudiosPage />} />
         <Route path="/science" element={<SciencePage />} />
         <Route path="/events" element={<EventsPage />} />
         <Route path="/popular" element={<PopularPage />} />

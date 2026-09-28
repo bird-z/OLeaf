@@ -27,15 +27,15 @@ export const CARD_GROUPS = [
   {
     label: '主站',
     links: [
-      { label: '概况', href: '#about', ariaLabel: '协会概况' },
-      { label: '快讯', href: '#news', ariaLabel: '启扉快讯' },
-      { label: '成员', href: '#members', ariaLabel: '成员风采' },
+      { label: '首页', href: '/', ariaLabel: '返回首页' },
+      { label: 'API', href: 'http://localhost:3000', ariaLabel: 'BioQif API 中转站控制台' },
+      { label: 'OLD', href: 'https://bioqif.com', ariaLabel: '旧版官网（外部链接）' },
     ],
   },
   {
     label: '档案',
     links: [
-      { label: '特色工作室', href: '#studios', ariaLabel: '特色工作室' },
+      { label: '特色工作室', href: '/studios', ariaLabel: '特色工作室' },
       { label: '科学与工程', href: '/science', ariaLabel: '科学与工程' },
       { label: '知识普及', href: '/popular', ariaLabel: '知识普及' },
       { label: '教育活动', href: '/events', ariaLabel: '教育活动' },
