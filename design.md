@@ -334,6 +334,19 @@
   - 已知取舍：宽屏（≥1530）下正文列被 `max-width: 65ch` 限制后，剩余宽度会重新堆回图文之间；
     需要时可调 `--about-media-width` 上限或给本节加内容最大宽度（本次未做，避免改动整节比例）。
 
+- 2025-09-28 · PRD A6+C：子页导航统一接入 `CARD_GROUPS`，消灭全部死链：
+  - `MainCp/Nav.jsx`（仅挂于 `PageShell` 的子页骨架）原先维护一套英文分组
+    （Academic/Services/About），含 `Research`/`Publications`/`Team`/`Contact` 四个
+    `href="#"` 死链；现改为复用 `homeNav.js` 的 `CARD_GROUPS`，与首页 nav2 胶囊
+    共用同一导航数据源，口径统一。原内联数据中的 API 中转站链接
+    （`localhost:3000`）随整卡移除，P5 有生产地址后再加入。
+  - `CardNav.jsx`：卡内 `#` 锚点链接原先只做裸 `<a>` 跳转——首页上碰巧可用
+    （hash 落到 `#about` 无路由匹配但不崩），子页上会被 HashRouter 当路由
+    解析为白屏。现统一走 `useAnchorScroll`：Home 直接平滑滚动，子页先
+    `navigate('/')` 再滚动；`/` 开头站内路径仍用 `<Link>`，http 外链保持裸 `<a>`。
+  - `homeNav.js`：`HERO_LINKS` 中「资源共享」更名为「知识普及」（PRD C），
+    与页面标题及 `CARD_GROUPS` 口径一致。
+
 ## 13.AGENT>
 Agent:
 默认不调用视觉模型检查:compile是例外，允许对可视

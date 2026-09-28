@@ -1,29 +1,18 @@
 import CardNav from "../CardNav";
 import ThemeToggle from "../ThemeToggle.jsx";
+import { CARD_GROUPS } from "../../data/homeNav.js";
 import logo from "../../assets/logo2.png";
 
+/* 子页导航（PageShell 骨架）：与首页 nav2 共用 CARD_GROUPS，
+ * 一次消灭全部 href="#" 死链并统一导航口径（PRD A6）。
+ * 锚点项（#about 等）由 CardNav 内部走 useAnchorScroll：子页先回 Home 再滚动。 */
 function Nav() {
   return (
     <CardNav
       logo={logo}
       logoAlt="BioQif · 江农学生协会"
       actions={<ThemeToggle />}
-      items={[
-        { label: 'Academic', links: [
-          { label: 'API', href: 'http://localhost:3000', ariaLabel: 'BioQif API 中转站控制台' },
-          { label: 'Research', href: '#', ariaLabel: 'View activity' },
-          { label: 'Publications', href: '#', ariaLabel: 'View activity' },
-        ]},
-        { label: 'Services', links: [
-          { label: 'Science | 科学与工程', href: '/science', ariaLabel: '科学与工程' },
-          { label: 'Acknowledgment | 知识普及', href: '/popular', ariaLabel: '知识普及' },
-          { label: 'Events | 教育活动', href: '/events', ariaLabel: '教育活动' },
-        ]},
-        { label: 'About', links: [
-          { label: 'Team', href: '#', ariaLabel: 'Meet the team' },
-          { label: 'Contact', href: '#', ariaLabel: 'Contact us' },
-        ]},
-      ]}
+      items={CARD_GROUPS}
     />
   )
 }

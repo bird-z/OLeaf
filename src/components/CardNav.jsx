@@ -220,7 +220,14 @@ const CardNav = ({
                   const handleClick = () => {
                     if (isExpanded) toggleMenu();
                   };
-                  // 站内路径用 <Link>（SPA 无刷新），站外/锚点保持 <a>
+                  // 站内路径用 <Link>（SPA 无刷新）；# 锚点走 useAnchorScroll
+                  //（HashRouter 下原生 # 会被当作 hash 路由，子页上直跳白屏）；
+                  // 其余（http 外链）保持裸 <a>。
+                  const isAnchor = lnk.href?.startsWith('#');
+                  const anchorClick = e => {
+                    anchorScroll(lnk.href.slice(1))(e);
+                    handleClick();
+                  };
                   return lnk.href?.startsWith('/') ? (
                     <Link
                       key={`${lnk.label}-${i}`}
@@ -237,7 +244,7 @@ const CardNav = ({
                       className="nav-card-link"
                       href={lnk.href}
                       aria-label={lnk.ariaLabel}
-                      onClick={handleClick}
+                      onClick={isAnchor ? anchorClick : handleClick}
                     >
                       {inner}
                     </a>

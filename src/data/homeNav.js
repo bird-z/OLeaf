@@ -29,7 +29,7 @@ export const HERO_LINKS = [
   { key: 'events', label: '品牌活动', to: '/events' },
   { key: 'members', label: '会员风采', anchor: 'members' },
   { key: 'wall', label: '校园墙', anchor: 'members' },
-  { key: 'popular', label: '资源共享', to: '/popular' },
+  { key: 'popular', label: '知识普及', to: '/popular' },
   JOIN_LINK,
 ];
 
