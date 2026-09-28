@@ -136,7 +136,8 @@
 .members__wall,
 .drift-wall,
 .depth-carousel,
-.news-carousel {
+.news-carousel,
+.subpage-banner {
   --color-paper:         oklch(98.5% 0.004 290);
   --color-paper-2:       oklch(96% 0.006 290);
   --color-rule:          oklch(87% 0.008 290);

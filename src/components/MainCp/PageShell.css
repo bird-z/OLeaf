@@ -7,20 +7,33 @@
 
 .page-shell {
   min-height: 100svh;
-  padding: var(--space-3xl) clamp(var(--space-md), 4vw, var(--space-2xl)) var(--space-2xl);
+  padding: 0 clamp(var(--space-md), 4vw, var(--space-2xl)) var(--space-2xl);
   background: var(--color-paper-dark);
   color: var(--color-photo-ink);
   font-family: var(--font-body);
   text-align: left;
 }
 
-/* ── 页头：单栏堆叠，mono 节序在上（gate 54 合法堆叠，非左右分布） ── */
+/* 横幅/面包屑出格到视口边缘：负 margin 抵消 .page-shell 的左右 padding。
+ * 横幅贴视口顶（含 nav1 fixed 头部覆盖区，故 page-shell 上 padding 归零）。 */
+.page-shell__banner,
+.page-shell__crumbs {
+  margin-left: calc(clamp(var(--space-md), 4vw, var(--space-2xl)) * -1);
+  margin-right: calc(clamp(var(--space-md), 4vw, var(--space-2xl)) * -1);
+}
+
+/* 面包屑与正文之间的节奏（接档原页头 margin-bottom） */
+.page-shell__crumbs {
+  margin-bottom: var(--space-2xl);
+}
+
+/* ── 页头：单栏堆叠，mono 节序在上（gate 54 合法堆叠，非左右分布）。
+ * 现已压进照片横幅下缘（SiteBanner 插槽）：行楷暖白/lede 次级白由
+ * 影像恒定组令牌自动取暗场值，无需额外配色。 ── */
 .page-shell__head {
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
-  margin-bottom: var(--space-2xl);
-  padding-top: var(--space-3xl); /* 给 fixed 玻璃 nav 让位 */
 }
 
 .page-shell__index {

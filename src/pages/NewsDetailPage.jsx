@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import SiteHeader from '../components/SiteHeader.jsx'
+import QifSiteNav from '../components/QifSiteNav.jsx'
+import SiteBanner from '../components/SiteBanner.jsx'
+import SiteBreadcrumb from '../components/SiteBreadcrumb.jsx'
 import { QifScaleBar } from '../components/qifObs.jsx'
 import { useArticles } from '../lib/useArticles.js'
 import { incrementArticleView } from '../lib/payload.js'
@@ -10,7 +12,7 @@ import './NewsDetailPage.css'
 
 /* 新闻详情页：自 bioqif Article.tsx 迁移并兼容 shnda。
  * - query ?id= 改为路由参数 /news/:id
- * - SiteLayout（header+footer）改为 SiteHeader + 本页阅读骨架
+ * - 导航统一为 QifSiteNav subpage 态 + gate.jpg 横幅（与 PageShell 族同一外壳）
  * - 正文继续用 CMS contentHtml 渲染 */
 function NewsDetailPage() {
   const { id } = useParams()
@@ -50,17 +52,16 @@ function NewsDetailPage() {
 
   return (
     <div className="qif-news-detail">
-      <SiteHeader />
+      <QifSiteNav mode="subpage" />
+      <SiteBanner />
 
-      <div className="qif-news-detail__breadcrumb">
-        <div className="qif-news-detail__breadcrumb-inner">
-          <Link to="/">首页</Link>
-          <i>›</i>
-          <a href="#/" onClick={anchorScroll('news')}>启扉快讯</a>
-          <i>›</i>
-          <span>正文</span>
-        </div>
-      </div>
+      <SiteBreadcrumb
+        items={[
+          { label: '首页', to: '/' },
+          { label: '启扉快讯', anchor: 'news' },
+          { label: '正文' },
+        ]}
+      />
 
       <main className="qif-news-detail__main">
         {loading ? (

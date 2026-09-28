@@ -1,0 +1,49 @@
+/* SiteBanner —— 子页统一照片横幅（gate.jpg 校门照）
+ * 参考 jxau.edu.cn 子页：全宽照片横幅 + 半透明压图导航 + 标题压横幅下缘。
+ * scrim 两层思路与 QifSiteNav nav1 一致：顶部渐深保证固定头部可读，
+ * 底部渐深让压在下缘的页头文字落在暗场上（影像恒定组，昼夜恒暗）。
+ */
+
+@import '../../tokens.css';
+
+.subpage-banner {
+  position: relative;
+  display: flex;
+  align-items: flex-end; /* 页头贴横幅下缘（参考站标题卡 + 首页 Hero 压图） */
+  min-height: clamp(220px, 34svh, 400px);
+  overflow: hidden;
+  background: var(--color-paper-dark); /* 图未就位前的暗底兜底 */
+}
+
+.subpage-banner__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 62%;
+}
+
+/* 顶部压 nav1 文字区，底部压页头文字区，中段尽量透出照片 */
+.subpage-banner__scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklch, var(--color-ink) 52%, transparent),
+      color-mix(in oklch, var(--color-ink) 18%, transparent) 46%,
+      color-mix(in oklch, var(--color-ink) 62%, transparent)
+    );
+}
+
+/* 页头压横幅下缘：占满横幅宽度、与 PageShell 正文同一水平 padding；
+ * 页头内容超高度时 min-height 容器自然撑高（文章页长标题不破版）。 */
+.subpage-banner__head {
+  width: 100%;
+  padding: 96px clamp(var(--space-md), 4vw, var(--space-2xl)) var(--space-lg);
+}
+
+/* 压图页头无需额外配色规则：subpage-banner 在影像恒定组内，
+ * photo-ink/photo-warm/photo-muted/eco-bright/accent-bright 已被翻为暗场值，
+ * PageShell 页头原有令牌引用自动取到白字。 */

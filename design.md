@@ -347,6 +347,29 @@
   - `homeNav.js`：`HERO_LINKS` 中「资源共享」更名为「知识普及」（PRD C），
     与页面标题及 `CARD_GROUPS` 口径一致。
 
+- 2025-09-28 · 子页导航统一为首页样式（参考 jxau.edu.cn 子页布局）：
+  - 动机：子页三套导航并存——`PageShell` 页用裸 CardNav 胶囊、`NewsDetailPage`
+    用独立 `SiteHeader`（自带一份导航数据副本），与首页 nav1 两行头部语言断裂。
+  - `QifSiteNav` 新增 `mode` prop（默认 `'home'` 原行为不变；`'subpage'` 时 nav1⇄nav2
+    切换参照物由 `.hero` 换为 `.subpage-banner`，over-media 白字判定直接看横幅底边）。
+    子页即获得首页同款「两行头部压图⇄滚出后玻璃胶囊」形变；<1024px 恒为胶囊。
+  - 新增 `SiteBanner.jsx/.css`：`gate.jpg` 校门照全宽横幅 + 双层 scrim（顶部给 fixed
+    nav1 让读、底部给压图页头让读），容器 `min-height: clamp(220px,34svh,400px)` +
+    flex-end，长页头自然撑高不破版。`tokens.css` 影像恒定组新增 `.subpage-banner`，
+    页头令牌（photo-warm/photo-muted/eco-bright…）昼间自动取暗场值，零额外配色。
+  - 新增 `SiteBreadcrumb.jsx/.css`：统一面包屑（样式提取自 NewsDetailPage），
+    `to` 走 `<Link>`、`anchor` 走 `useAnchorScroll`，首项恒为「首页」。
+  - `PageShell`：`<Nav />` → `<QifSiteNav mode="subpage"/>`；页头（节序/行楷标题/lede）
+    移出 ScrollMask 压进横幅下缘插槽；横幅与面包屑经负 margin 出格到视口边缘；
+    新增 `crumbs` prop（缺省「首页 > title」，ArticlePage 传「首页 > 知识普及 > 正文」）。
+    `lede` 为空字符串时不再渲染空 `<p>`。
+  - `NewsDetailPage`：`SiteHeader` → 同外壳（subpage 导航 + 横幅），面包屑换
+    `SiteBreadcrumb`；CSS 删 `padding-top:60px` 与旧面包屑样式块。
+  - 删除 `MainCp/Nav.jsx`、`SiteHeader.jsx/.css`：全站导航收敛为
+    `homeNav.js`（HERO_LINKS/CARD_GROUPS）单一数据源 + QifSiteNav/CardNav 单组件族。
+  - 顺手修复：`QifSiteNav` 品牌区 `<Link to="/">` 原先被 `preventDefault` 无差别拦截，
+    子页点击无法回首页；现仅在 pathname==='/' 时拦截做平滑回顶。
+
 ## 13.AGENT>
 Agent:
 默认不调用视觉模型检查:compile是例外，允许对可视

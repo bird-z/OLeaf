@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useAnchorScroll } from '../lib/scrollTo.js';
 import ThemeToggle from './ThemeToggle.jsx';
 import CardNav from './CardNav.jsx';
@@ -8,16 +8,17 @@ import qifLogo from '../assets/logo2.png';
 import { HERO_LINKS, CARD_GROUPS } from '../data/homeNav.js';
 import './QifSiteNav.css';
 
-/* 首页融合导航：slogan 态 = nav1（透明两行头部，参考 bioqif 排版）⇄ 滑出 Hero = nav2（CardNav 玻璃胶囊）。
- * - 触发点：p = clamp(scrollY / (0.7 × hero 实测高度), 0, 1)，rAF 节流写 --nav-p 在外层容器；
+/* 融合导航：nav1 两行头部（双徽+校会名/标语⇄HERO_LINKS 平铺）⇄ nav2（CardNav 玻璃胶囊）。
+ * - 触发点：p = clamp((scrollY - 参照顶) / (0.7 × 参照高), 0, 1)，rAF 节流写 --nav-p；
+ *   mode='home' 参照 .hero（Slogan），mode='subpage' 参照 .subpage-banner（子页横幅）。
  * - data-active 在 p 0.5 处切换，用于 inert / aria-hidden 门控（避免两个导航同级可聚焦）；
  * - 页内锚点一律走 useAnchorScroll（HashRouter 下原生 # 会覆盖 hash 路由）；「首页」= 回页顶；
- * - 仅首页使用且仅桌面展示两行头部；<1024px 恒为 nav2 胶囊（子页继续 MainCp/Nav）。 */
+ * - <1024px 恒为 nav2 胶囊；nav1 压暗场媒体期间强制白字（首页看轮播、子页看横幅）。 */
 
-const HERO_EXIT_RATIO = 0.7; // Hero 滚出 70% 完成模式切换
+const HERO_EXIT_RATIO = 0.7; // 参照块滚出 70% 完成模式切换
 const DESKTOP_MQ = '(min-width: 1024px)';
 
-function QifSiteNav() {
+function QifSiteNav({ mode = 'home' }) {
   const [active, setActive] = useState('hero'); // 'hero' | 'card'
   const wrapRef = useRef(null);
   const headerRef = useRef(null);
@@ -35,8 +36,8 @@ function QifSiteNav() {
     const update = () => {
       raf = 0;
       // 首页第一屏是新闻轮播：切换进度以 Slogan（.hero）顶边为起点，
-      // 轮播停留期间保持 nav1 两行头部。
-      const hero = document.querySelector('.hero');
+      // 轮播停留期间保持 nav1 两行头部；子页以横幅顶边为起点。
+      const hero = document.querySelector(mode === 'subpage' ? '.subpage-banner' : '.hero');
       const heroTop = hero ? hero.getBoundingClientRect().top + window.scrollY : 0;
       const range = Math.max(1, (hero ? hero.offsetHeight : window.innerHeight) * HERO_EXIT_RATIO);
       const raw = desktop.matches ? Math.min(1, Math.max(0, (window.scrollY - heroTop) / range)) : 1;
@@ -49,20 +50,23 @@ function QifSiteNav() {
         setActive(next);
       }
 
-      // 轮播覆盖期间固定暗场令牌（强制白字），避免浅色主题下两行头部
+      // 压暗场媒体期间固定暗场令牌（强制白字），避免浅色主题下两行头部
       // 压在暗色照片上出现深字压暗图。
-      // 判定分两路：轮播为 sticky 钉屏时 rect 恒在视口顶、bottom 永真，
+      // 首页判定分两路：轮播为 sticky 钉屏时 rect 恒在视口顶、bottom 永真，
       // 须改看 .page-covered（usePageTurn 写的覆盖事实源）；
       // reduced-motion/卸载时是普通流块，回落为底部边界几何判定。
-      const carousel = document.querySelector('.news-carousel');
-      const carouselBottom = carousel ? carousel.getBoundingClientRect().bottom : 0;
+      // 子页无轮播：直接看横幅底边是否还在 nav 中线之下。
       const navMid = (headerRef.current?.offsetHeight || 0) / 2;
-      const covered =
-        document.documentElement.classList.contains('page-covered');
-      el.classList.toggle(
-        'qif-site-nav--over-media',
-        !!carousel && !covered && carouselBottom > navMid
-      );
+      let overMedia = false;
+      if (mode === 'subpage') {
+        overMedia = !!hero && hero.getBoundingClientRect().bottom > navMid;
+      } else {
+        const carousel = document.querySelector('.news-carousel');
+        const carouselBottom = carousel ? carousel.getBoundingClientRect().bottom : 0;
+        const covered = document.documentElement.classList.contains('page-covered');
+        overMedia = !!carousel && !covered && carouselBottom > navMid;
+      }
+      el.classList.toggle('qif-site-nav--over-media', overMedia);
     };
 
     const onScroll = () => {
@@ -79,7 +83,7 @@ function QifSiteNav() {
       desktop.removeEventListener('change', onScroll);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, []);
+  }, [mode]);
 
   /* 头部实测高度 → --nav1-height：Hero 顶部 padding 引用该令牌让位。
    * 写死值会小于真实渲染高度，导致 hero__meta 行透到导航行上叠层；
@@ -109,7 +113,12 @@ function QifSiteNav() {
     };
   }, []);
 
+  const { pathname } = useLocation();
+
+  /* 品牌区点击：在首页平滑回页顶并阻止 <Link> 默认跳转；
+   * 在子页放行为 <Link to="/"> 常规导航回首页（子页 scrollTop 无意义）。 */
   const scrollTop = event => {
+    if (pathname !== '/') return;
     event.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };

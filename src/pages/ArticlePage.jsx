@@ -20,7 +20,15 @@ function ArticlePage() {
 
   if (!article) {
     return (
-      <PageShell no="05" id="popular" title="文章未找到" en="Not Found" lede="这篇文章可能已被移动或重命名。" accent="eco">
+      <PageShell
+        no="05"
+        id="popular"
+        title="文章未找到"
+        en="Not Found"
+        lede="这篇文章可能已被移动或重命名。"
+        accent="eco"
+        crumbs={[{ label: '首页', to: '/' }, { label: '知识普及', to: '/popular' }, { label: '正文' }]}
+      >
         <Link className="article__back" to="/popular">← 返回知识普及</Link>
       </PageShell>
     );
@@ -37,6 +45,7 @@ function ArticlePage() {
       lede=""
       accent="eco"
       displayTitle={false}
+      crumbs={[{ label: '首页', to: '/' }, { label: '知识普及', to: '/popular' }, { label: '正文' }]}
     >
       <Link className="article__back" to="/popular">← 返回知识普及</Link>
       <article className="article__body">
