@@ -3,11 +3,8 @@ import { HashRouter, Routes, Route } from 'react-router-dom'
 import QifFocusLoader from './components/QifFocusLoader.jsx'
 import Home from './pages/Home.jsx'
 import AboutPage from './pages/AboutPage.jsx'
-import OrgPage from './pages/OrgPage.jsx'
-import MembersPage from './pages/MembersPage.jsx'
-import WallPage from './pages/WallPage.jsx'
-import JoinPage from './pages/JoinPage.jsx'
 import StudiosPage from './pages/StudiosPage.jsx'
+import JoinPage from './pages/JoinPage.jsx'
 import SciencePage from './pages/SciencePage.jsx'
 import EventsPage from './pages/EventsPage.jsx'
 import PopularPage from './pages/PopularPage.jsx'
@@ -20,7 +17,7 @@ import './components/CardNav.css'
  * 样张页自身用动态 import，也无导航入口。见 docs/fonts.md。 */
 const FontSpecimen = import.meta.env.DEV ? lazy(() => import('./pages/FontSpecimen.jsx')) : null
 
-/* 路由：主站单页 + 板块页（About/Org/Members/Wall/Join，占位壳）+ 活动档案页族（Science/Events/Popular/Article）。
+/* 路由：主站单页 + 占位板块页（About/Studios/Join）+ 活动档案页族（Science/Events/Popular/Article）。
  * API 中转站为独立服务（localhost:3000），Nav 直链，不经本站路由。
  * HashRouter：GitHub Pages 无 SPA history 回退，/#/path 规避刷新 404。 */
 function App() {
@@ -31,11 +28,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/org" element={<OrgPage />} />
-        <Route path="/members" element={<MembersPage />} />
-        <Route path="/wall" element={<WallPage />} />
-        <Route path="/join" element={<JoinPage />} />
         <Route path="/studios" element={<StudiosPage />} />
+        <Route path="/join" element={<JoinPage />} />
         <Route path="/science" element={<SciencePage />} />
         <Route path="/events" element={<EventsPage />} />
         <Route path="/popular" element={<PopularPage />} />

@@ -5,18 +5,14 @@
 
 export const JOIN_LINK = { key: 'join', label: '加入我们', to: '/join' };
 
-/* 两行头部（slogan 态）第二行的平铺导航项（9 项横排，参考 bioqif 原版）。
+/* 两行头部（slogan 态）第二行的平铺导航项（6 项横排：首页 + 协会概况 + 三大板块 + 加入我们）。
  * home 键 —— 平滑滚动回页顶；anchor 项走 useAnchorScroll；to 项走 <Link>；
- * 每项栏目对应独立页面（板块页 /about /org /members /wall /join 为占位壳，
- * 档案页 /science /events /popular 为正式页）。 */
+ * 栏目对应独立页面：/about /studios /join 为占位壳，/science /events /popular 为正式档案页。 */
 export const HERO_LINKS = [
   { key: 'home', label: '首页', home: 'top' },
   { key: 'about', label: '协会概况', to: '/about' },
-  { key: 'org', label: '组织机构', to: '/org' },
-  { key: 'science', label: '学术科创', to: '/science' },
-  { key: 'events', label: '品牌活动', to: '/events' },
-  { key: 'members', label: '会员风采', to: '/members' },
-  { key: 'wall', label: '校园墙', to: '/wall' },
+  { key: 'science', label: '科学与工程', to: '/science' },
+  { key: 'events', label: '教育活动', to: '/events' },
   { key: 'popular', label: '知识普及', to: '/popular' },
   JOIN_LINK,
 ];
@@ -28,7 +24,7 @@ export const CARD_GROUPS = [
     label: '主站',
     links: [
       { label: '首页', href: '/', ariaLabel: '返回首页' },
-      { label: 'API', href: 'http://localhost:3000', ariaLabel: 'BioQif API 中转站控制台' },
+      { label: 'API', href: 'http://localhost:3000', ariaLabel: 'EcoRem API 中转站控制台' },
       { label: 'OLD', href: 'https://bioqif.com', ariaLabel: '旧版官网（外部链接）' },
     ],
   },
