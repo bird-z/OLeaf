@@ -139,7 +139,7 @@ export const TYPE_ROLES = [
   { id: 'D1', name: '展示·首屏主标', family: '--font-display', size: '--text-display', weight: 400, tracking: '0.04em', cases: '原样', color: '--color-photo-warm', anchor: 'Slogan .hero__title', sample: '启迪生命 / 扉向未来' },
   { id: 'D2', name: '展示·节标', family: '--font-display', size: '--text-display-s', weight: 400, tracking: '0.04em', cases: '原样', color: '--color-photo-warm', anchor: 'About/Studios/Members/Join __title', sample: '因热爱而启程 · 特色工作室 · 繁花 · 从好奇出发' },
   { id: 'D3', name: '展示·短句', family: '--font-display', size: '--text-lg ~ --text-md', weight: 400, tracking: '0.02–0.04em', cases: '原样', color: '--color-photo-warm / --color-eco-bright', anchor: '成员引文 / 姓氏字头像 / DriftWall', sample: '在显微镜下第一次看清花粉的形态时' },
-  { id: 'W', name: '品牌字标', family: '--font-body', size: '导航 --text-md · 首屏 clamp(2.25–4.5rem)', weight: 800, tracking: '-0.02 ~ -0.035em', cases: '原样', color: '--color-eco-bright + --color-photo-ink', anchor: 'Slogan__wordmark / CardNav .logo-wordmark', sample: 'BioQif · Bio · 生命 — Qif · 启扉' },
+  { id: 'W', name: '品牌字标', family: '--font-body', size: '导航 --text-md · 首屏 clamp(2.25–4.5rem)', weight: 800, tracking: '-0.02 ~ -0.035em', cases: '原样', color: '--color-eco-bright + --color-photo-ink', anchor: 'Slogan__wordmark / CardNav .logo-wordmark', sample: 'EcoRem · Eco · 生态 — Rem · 修护' },
   { id: 'T', name: '标题（界面黑体）', family: '--font-body', size: '--text-md / --text-lg', weight: '600–800', tracking: '-0.01em', cases: '原样', color: '--color-photo-ink', anchor: '卡片名 / 部门名 / 面板标题 / h1,h2', sample: '生生不息 · DATASEEK · 秘书部' },
   { id: 'L', name: '行文', family: '--font-body', size: 'L1 --text-md · L2 --text-base · L3 --text-sm', weight: '400（强调 700）', tracking: '0', cases: '原样', color: '主 --color-photo-ink / 次 --color-photo-muted', anchor: 'About__copy / 文章 body / 卡片 desc', sample: '协会秉持「启迪生命、扉向未来」的理念，围绕学术交流、科技创新开展活动。' },
   { id: 'U', name: '界面', family: '--font-body', size: 'CTA --text-base · 导航 --text-sm~--text-base · 标签 --text-xs', weight: '400–600', tracking: '0.04–0.08em（中文标签）', cases: '原样', color: '--color-accent-bright / --color-photo-ink', anchor: 'hero__cta / 导航 / 筛选标签', sample: '加入我们 · 学术交流 · 科创实践' },
@@ -316,6 +316,6 @@ export const SPECIMEN_COPY = {
   memberRole: '会长',
   body: '协会秉持“启迪生命、扉向未来”的理念，围绕学术交流、科技创新、实验实践、自然观察和公益科普等方向开展活动，致力于搭建开放、协作、富有创新活力的跨学科交流平台。',
   ui: ['加入我们', '学术交流', '科创实践', '自然探索', '公益科普'],
-  monoLabels: ['01 · ABOUT', '03 · STUDIOS', '04 · MEMBERS', '05 · JOIN', 'STUDIO NO.01', 'JXAU · BioQif', 'SCIENCE · 科学与工程'],
+  monoLabels: ['01 · ABOUT', '03 · STUDIOS', '04 · MEMBERS', '05 · JOIN', 'STUDIO NO.01', 'JXAU · EcoRem', 'SCIENCE · 科学与工程'],
   numerals: '0123456789 · 2026-09-27 · 06:41'
 };

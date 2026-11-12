@@ -297,7 +297,7 @@ export default function FontSpecimen() {
                 <div className={`fs-spec__sub ${c.cls}`} style={{ fontWeight: c.weight }}>
                   {SPECIMEN_COPY.cardNames.join(' · ')}
                   <br />
-                  BioQif Association · 2026
+                  EcoRem Association · 2026
                 </div>
               </article>
             ))}
@@ -344,7 +344,7 @@ export default function FontSpecimen() {
                   }`}
                   style={{ fontSize: `var(${t.token})` }}
                 >
-                  启迪生命 BioQif 0123
+                  修护生态 EcoRem 0123
                 </span>
               </div>
             ))}

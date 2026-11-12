@@ -175,11 +175,11 @@ function QifSiteNav({ mode = 'home' }) {
               <span className="qif-hero-header__names">
                 <span className="qif-hero-header__school">江西农业大学</span>
                 <span className="qif-hero-header__cn">生物启扉协会</span>
-                <span className="qif-hero-header__en">BIOQIF ASSOCIATION</span>
+                <span className="qif-hero-header__en">ECOREM ASSOCIATION</span>
               </span>
             </Link>
             <div className="qif-hero-header__slogan">
-              <span className="qif-hero-header__slogan-cn">启迪生命 · 扉向未来</span>
+              <span className="qif-hero-header__slogan-cn">修护生态 · 共生未来</span>
               <span className="qif-hero-header__slogan-en">ENLIGHTENMENT · INNOVATION · FUTURE</span>
             </div>
           </div>

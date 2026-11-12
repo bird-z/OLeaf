@@ -20,7 +20,7 @@ function Footer() {
                 <p className="footer__org-cn">
                   江西农业大学 <span className="footer__org-name">生物启扉协会</span>
                 </p>
-                <p className="footer__org-en">Biology Qif Association</p>
+                <p className="footer__org-en">EcoRem Association</p>
               </div>
             </div>
             <p className="footer__motto">Enlightenment · Innovation · Future</p>
@@ -58,7 +58,7 @@ function Footer() {
         <div className="footer__bar">
           <p className="footer__copyright">© 2026 江西农业大学生物启扉协会</p>
           <img className="footer__life" src={lifeMark} alt="" aria-hidden="true" />
-          <p className="footer__slogan">启迪生命 · 扉向未来</p>
+          <p className="footer__slogan">修护生态 · 共生未来</p>
         </div>
       </ScrollMask>
     </footer>

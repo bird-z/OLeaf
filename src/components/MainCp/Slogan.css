@@ -107,7 +107,7 @@
   color: var(--color-photo-muted);
 }
 
-/* ── BioQif wordmark：Bio（亮叶绿）+ Qif（照片白），颜色即词源 ── */
+/* ── EcoRem wordmark：Eco（亮叶绿）+ Rem（照片白），颜色即词源 ── */
 .hero__brand {
   display: flex;
   align-items: baseline;

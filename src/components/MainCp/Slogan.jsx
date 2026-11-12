@@ -91,15 +91,15 @@ function Slogan() {
       </div>
 
       <div className="hero__meta" data-reveal style={{ '--i': 0 }}>
-        <span>JXAU · BioQif</span>
+        <span>JXAU · EcoRem</span>
         <span>Slogan</span>
       </div>
 
       <div className="hero__brand" data-reveal style={{ '--i': 1 }}>
         <span className="hero__wordmark">
-          <span className="hero__wordmark-eco">Bio</span>Qif
+          <span className="hero__wordmark-eco">Eco</span>Rem
         </span>
-        <span className="hero__brand-gloss">Bio · 生命 — Qif · 启扉</span>
+        <span className="hero__brand-gloss">Eco · 生态 — Rem · 修护</span>
       </div>
 
       <h1 className="hero__title" id="hero-title">
