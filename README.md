@@ -28,3 +28,8 @@ pnpm lint       # oxlint
 - `tokens.css` 是全站唯一设计令牌源（Cobalt 骨架 + 品牌紫交互 + 叶绿 eco 语义）
 - 字体：行楷（display 标题，子集化 woff2 于 `src/assets/fonts/`）· Geist（正文）· Geist Mono（数据/标签）
 - 新增 display 文案需更新行楷子集字形
+
+## 贡献者
+
+- [@yu-mao-code](https://github.com/yu-mao-code)
+
