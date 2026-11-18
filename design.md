@@ -402,6 +402,18 @@
   - 新增 `sectionRegistry.studios`（no=12，fields=studios[]/apply）+ 薄 wrapper
     `StudiosPage.jsx` + App.jsx `/studios` 路由，复用 SectionPage 占位骨架。
 
+- 2026-11-18 · 科学与工程页（issue #4）示例数据替换为真实项目资料：
+  - 背景：`STAGES` 三段式骨架已在，但 5 个项目的 desc 全部带「（示例）」，页面上不允许出现该字样。
+  - `SciencePage.jsx`：`STAGES` 数据项换成基于协会真实在办事项的项目——生生不息（节气视觉模板库 /
+    第一届「黑客松」影像回顾 /「黑客松」AI 创作作品集）、DATASEEK（校园物种观察档案 /
+    协会图文数据整理），删掉全部「（示例）」标注；每个 stage 新增 `gloss`（一句阶段说明）、
+    每个 project 新增 `accent`（生生不息=eco、DATASEEK=accent，与 /studios 工作室卡同色）。
+    项目不足的阶段渲染虚线空态「本阶段暂无公开项目」，不编造项目。
+  - `SciencePage.css`：新增阶段头（标题 + 项目计数）、阶段 gloss 行、状态前置圆点、
+    工作室标识按 `data-accent` 上色、空阶段虚线占位；`40rem` 以下阶段头允许换行、
+    gloss 下间距收窄。未引入新令牌，颜色/间距全部沿用 `tokens.css`。
+  - 验证：`pnpm build`（含 fonts:check）、`pnpm lint` 通过（lint 仅存量 button.tsx 告警）。
+
 ## 13.AGENT>
 Agent:
 默认不调用视觉模型检查:compile是例外，允许对可视
