@@ -19,7 +19,7 @@
 | ├ Members（含校园墙） | `MainCp/Members.jsx` | ⚠️ | 6 名成员信息 + 引文为示例数据，待真实名单 |
 | └ Join + Footer | `MainCp/Join.jsx` `Footer.jsx` | ⚠️ | 「了解部门」「在线报名」「B站」均为占位 |
 | `/#/science` 科学与工程 | `src/pages/SciencePage.jsx` | ⚠️ 骨架完成 | 全部 4 个项目为「（示例）」占位，待真实项目资料 |
-| `/#/events` 教育活动 | `src/pages/EventsPage.jsx` | ⚠️ 骨架完成 | 2026 春两项活动无照片（`照片待补充` 占位卡）；学期/日期待定 |
+| `/#/events` 教育活动 | `src/pages/EventsPage.jsx` | ⚠️ 部分完成 | 「科普进课堂」已补照片与日期（2026.06.16）；「校园自然观察日」仍无照片、日期待定 |
 | `/#/popular` 知识普及 | `src/pages/PopularPage.jsx` | ✅ 可用 | 数据走本地 `articles.json`，文章由内容团队补充 |
 | `/#/popular/:category/:title` | `src/pages/ArticlePage.jsx` | ✅ 完成 | — |
 | `/#/news/:id` 新闻详情 | `src/pages/NewsDetailPage.jsx` | ✅ 完成 | 依赖 CMS 列表接口（无详情接口，列表内查找） |
@@ -52,7 +52,7 @@ A6 可独立先做（不依赖业务输入，只复用已有数据源）。
 | # | 页面 | 文件 / 数据位置 | 占位内容 | 替换方式 |
 |---|---|---|---|---|
 | B1 | 科学与工程 | `SciencePage.jsx` `STAGES` | 4 个项目 desc 均标「（示例）」 | 拿到真实项目资料后改数组项，结构不变 |
-| B2 | 教育活动 | `EventsPage.jsx` `EVENT_GROUPS` | 2026 春两项 `image: null` + 日期「待定」 | 补照片入 `src/assets/`、填日期；无图项保留占位卡机制 |
+| B2 | 教育活动 | `EventsPage.jsx` `EVENT_GROUPS` | 「科普进课堂」已于 2026-11-18 补齐（合影 + 2026.06.16）；「校园自然观察日」仍 `image: null` + 日期「待定」 | 余项供稿后照旧替换：照片入 `src/assets/`、填日期；无图项保留占位卡机制 |
 | B3 | 成员风采 | `Members.jsx` 成员数组 | 6 名成员姓名/部门/引文为示例 | 收齐真实名单与照片后替换 |
 | B4 | 快讯/详情数据 | CMS（线上仅 1 篇） | 空态文案兜底已就绪 | 协会在 CMS 发布更多 `BANNER`/`工作动态` 文章，前端零改动 |
 
