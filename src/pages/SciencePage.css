@@ -54,12 +54,37 @@
   min-width: 0;
 }
 
+/* 阶段头：标题 + 项目计数，下一行一句阶段说明 */
+.science__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-2xs);
+}
+
 .science__label {
-  margin: 0 0 var(--space-lg);
+  margin: 0;
   font-size: var(--text-lg);
   font-weight: 600;
   letter-spacing: 0.02em;
   color: var(--color-photo-ink);
+}
+
+.science__count {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  color: var(--color-photo-muted);
+  white-space: nowrap;
+}
+
+.science__gloss {
+  margin: 0 0 var(--space-lg);
+  max-width: 46ch;
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  color: var(--color-photo-muted);
 }
 
 .science__cards {
@@ -88,6 +113,7 @@
   margin-bottom: var(--space-sm);
 }
 
+/* 工作室标识按 accent 上色，与 /studios 卡片一一对应 */
 .science__studio {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
@@ -96,12 +122,26 @@
   color: var(--color-accent-bright);
 }
 
-/* 状态三色：孵化中=muted · 进行中=eco · 已发布=accent */
+.science__card[data-accent='eco'] .science__studio {
+  color: var(--color-eco-bright);
+}
+
+/* 状态三色：孵化中=muted · 进行中=eco · 已发布=accent，前置圆点点明状态 */
 .science__status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   letter-spacing: 0.08em;
   white-space: nowrap;
+}
+
+.science__dot {
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 50%;
+  background: currentColor;
 }
 
 .science__status--孵化中 {
@@ -131,9 +171,29 @@
   color: var(--color-photo-muted);
 }
 
+/* 空阶段：诚实占位，不塞编造项目 */
+.science__empty {
+  margin: 0;
+  padding: var(--space-lg);
+  border: 1px dashed color-mix(in oklch, var(--color-photo-ink) 18%, transparent);
+  border-radius: var(--radius-card);
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  color: var(--color-photo-muted);
+}
+
 /* ── Mobile：时间线收窄 ── */
 @media (max-width: 40rem) {
   .science__stage {
     gap: var(--space-md);
+  }
+
+  .science__head {
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+  }
+
+  .science__gloss {
+    margin-bottom: var(--space-md);
   }
 }
