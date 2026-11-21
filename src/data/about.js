@@ -3,11 +3,8 @@
  * intro 与首页 About 模块（src/components/MainCp/About.jsx）共用同一份文案，
  * 改协会简介时两处需同步，避免首页与概况页说法不一致。
  *
- * milestones / charter 为待供稿项：
- *   - milestones 目前仅有活动页可印证的两条（第一次全体会议、第一届黑客松），
- *     还差成立时间/换届/招新等节点，验收要求至少 3 条；
- *   - charter 需章程文件链接或 PDF，放到 src/assets/docs/ 后填 href。
- * 缺项在页面以「待补充」态显式呈现，不编造内容。 */
+ * 章程 PDF 位于 src/assets/docs/charter.pdf，通过 ?url 导入，
+ * 构建时由 Vite 产出带 hash 的静态资源路径。 */
 
 export const ABOUT_INTRO = {
   lede:
@@ -43,8 +40,10 @@ export const ABOUT_MILESTONES = [
   },
 ];
 
+import charterPdf from '../assets/docs/charter.pdf?url';
+
 export const ABOUT_CHARTER = {
   label: '生物启扉协会章程',
   note: '协会章程全文（PDF）',
-  href: '', // 待补：章程文件链接，或上传 PDF 到 src/assets/docs/ 后改为相对路径
+  href: charterPdf,
 };
