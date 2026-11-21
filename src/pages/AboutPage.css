@@ -1,0 +1,230 @@
+/* AboutPage — 协会概况 · Editorial Dossier
+ * 暗场页（PageShell 底色 --color-paper-dark），配色一律取暗底令牌：
+ *   --color-photo-ink / --color-photo-muted 正文，--color-eco-bright 强调（accent=eco），
+ *   --color-photo-warm 标题。分隔线用 ink 低透明度混合。
+ * 版式：简介走「编者按」窄栏（限 62ch 行长），大事记走左侧年份轨，章程走整行入口卡。
+ */
+
+@import '../../tokens.css';
+
+.about-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xl);
+  min-width: 0;
+  max-width: 76rem;
+}
+
+/* ── 区块通用：序号 + 标题 + 下划线 ── */
+.about-page__block-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid color-mix(in oklch, var(--color-photo-ink) 16%, transparent);
+}
+
+.about-page__block-index {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-mono);
+  color: var(--color-eco-bright);
+}
+
+.about-page__block-title {
+  margin: 0;
+  font-family: var(--font-body); /* 不进行楷子集，避免新增标题缺字回退 */
+  font-size: var(--text-md);
+  font-weight: 700;
+  line-height: var(--leading-title);
+  letter-spacing: var(--tracking-title);
+  color: var(--color-photo-ink);
+}
+
+.about-page__block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  min-width: 0;
+}
+
+/* ── 01 简介：编者按 ── */
+.about-page__intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  min-width: 0;
+}
+
+/* 首段放大到 lg，作为整页的「报头」；行长限 46ch 保持阅读节奏 */
+.about-page__lede {
+  margin: 0;
+  max-width: 46ch;
+  font-size: var(--text-lg);
+  line-height: 1.62;
+  color: var(--color-photo-ink);
+  overflow-wrap: anywhere;
+}
+
+.about-page__body {
+  display: grid;
+  gap: var(--space-md);
+  max-width: 62ch;
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+  color: color-mix(in oklch, var(--color-photo-ink) 76%, transparent);
+}
+
+.about-page__body p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.about-page__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.about-page__tag {
+  padding: var(--space-2xs) var(--space-sm);
+  border: 1px solid color-mix(in oklch, var(--color-eco-bright) 42%, transparent);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: 0.14em;
+  color: var(--color-eco-bright);
+}
+
+/* ── 02 大事记：左年份轨 + 右事件 ── */
+.about-milestones {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  min-width: 0;
+}
+
+.about-milestones__item {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr);
+  gap: var(--space-lg);
+  align-items: baseline;
+  padding: var(--space-md) 0;
+  border-top: 1px solid color-mix(in oklch, var(--color-photo-ink) 10%, transparent);
+}
+
+.about-milestones__item:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.about-milestones__year {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  letter-spacing: 0.1em;
+  color: var(--color-eco-bright);
+  font-variant-numeric: tabular-nums;
+}
+
+.about-milestones__event {
+  margin: 0;
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+  color: var(--color-photo-ink);
+  overflow-wrap: anywhere;
+}
+
+/* ── 03 章程：整行入口卡 ── */
+.about-charter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  padding: var(--space-lg) var(--space-xl);
+  border: 1px solid color-mix(in oklch, var(--color-photo-ink) 18%, transparent);
+  background: color-mix(in oklch, var(--color-photo-ink) 3%, transparent);
+  text-decoration: none;
+  color: inherit;
+  transition:
+    border-color var(--dur-short) var(--ease-out),
+    background-color var(--dur-short) var(--ease-out);
+}
+
+a.about-charter:hover {
+  border-color: color-mix(in oklch, var(--color-eco-bright) 60%, transparent);
+  background: color-mix(in oklch, var(--color-eco-bright) 8%, transparent);
+}
+
+a.about-charter:focus-visible {
+  outline: 2px solid var(--color-focus-on-dark);
+  outline-offset: 3px;
+}
+
+.about-charter__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  min-width: 0;
+}
+
+.about-charter__label {
+  font-size: var(--text-base);
+  font-weight: 700;
+  line-height: var(--leading-title);
+  color: var(--color-photo-ink);
+}
+
+.about-charter__note {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: 0.14em;
+  color: var(--color-photo-muted);
+}
+
+.about-charter__arrow {
+  flex: none;
+  font-size: var(--text-md);
+  color: var(--color-eco-bright);
+  transition: transform var(--dur-short) var(--ease-out);
+}
+
+a.about-charter:hover .about-charter__arrow {
+  transform: translate(2px, -2px);
+}
+
+/* 章程未接入：虚线边 + 弱化文字，避免看起来像「可点但坏了」 */
+.about-charter--pending {
+  border-style: dashed;
+  border-color: color-mix(in oklch, var(--color-photo-muted) 40%, transparent);
+  background: transparent;
+}
+
+.about-charter--pending .about-charter__label {
+  color: var(--color-photo-muted);
+}
+
+/* ── 窄屏（≤640px，覆盖 375px 验收宽度）：年份轨改上下堆叠 ── */
+@media (max-width: 640px) {
+  .about-page {
+    gap: var(--space-2xl);
+  }
+
+  .about-page__lede {
+    font-size: var(--text-md);
+    max-width: none;
+  }
+
+  .about-milestones__item {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xs);
+    padding: var(--space-sm) 0;
+  }
+
+  .about-charter {
+    padding: var(--space-md) var(--space-lg);
+  }
+}
