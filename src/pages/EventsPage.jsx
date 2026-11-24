@@ -1,6 +1,8 @@
 import PageShell from '../components/MainCp/PageShell.jsx';
 import pscImg from '../assets/psc.jpg';
 import hackathonImg from '../assets/hackathon.jpg';
+import scienceClassImg from '../assets/science-class.jpg';
+import aiChemMaterialsImg from '../assets/ai-chem-materials.jpg';
 import './EventsPage.css';
 
 /* 数据驱动·可扩展：新增活动往对应学期数组加一项即可。
@@ -34,9 +36,20 @@ const EVENT_GROUPS = [
       },
       {
         title: '科普进课堂',
-        date: '待定',
-        image: null,
+        date: '2026.06.16',
+        image: scienceClassImg,
         desc: '把有趣的科学带出校园，给中小学生们上一堂不一样的自然课。'
+      }
+    ]
+  },
+  {
+    term: '2026 秋',
+    events: [
+      {
+        title: 'AI 在生化环材方面的应用',
+        date: '2026.10.24',
+        image: aiChemMaterialsImg,
+        desc: 'TRAE on Campus @ 江西农业大学——聚焦 AI 在生化环材领域的应用，与同学们共探智能时代的新可能。'
       }
     ]
   }
